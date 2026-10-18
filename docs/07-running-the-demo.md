@@ -80,4 +80,4 @@ Open `support_ticket_ai/demo.py` and follow the sequence: download, verify, prep
 
 An accurate interview description is: “I built a reproducible local demo that pins source data, verifies checksums, trains a baseline, and serves reviewed predictions through a tested API.”
 
-Remaining model work: confidence calibration, unsupported-request detection, stronger template-family evaluation, and a final held-out assessment. Public deployment is separate work.
+An [offline calibration experiment](08-calibration-experiment.md) is now available. Remaining model work includes calibration under distribution shift, unsupported-request detection, stronger template-family evaluation, and a final held-out assessment. Public deployment is separate work.

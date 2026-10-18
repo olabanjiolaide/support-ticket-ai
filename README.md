@@ -2,13 +2,15 @@
 
 A Python portfolio project for classifying support requests and routing uncertain predictions to human review.
 
-**Status: baseline, prediction CLI, local FastAPI service, and validation similarity audit implemented.** Confidence calibration is pending. The test set has not been evaluated. All predictions require human review.
+**Status: baseline, prediction CLI, local FastAPI service, similarity audit, and offline calibration experiment implemented.** Calibration is not activated in the live prediction interfaces. The test set has not been evaluated. All predictions require human review.
 
 See [the baseline audit and results](docs/04-baseline-results.md). Validation macro-F1 is 0.9984 on a synthetic source; template overlap may inflate this result. It is not a production accuracy claim.
 
 The [prediction and overlap guide](docs/05-prediction-and-overlap.md) documents the command-line interface, similarity measurements, and an observed error on a manually written payment request.
 
 The [API guide](docs/06-prediction-api.md) explains local startup, request validation, and liveness/readiness checks. No hosted service has been deployed.
+
+The [calibration experiment](docs/08-calibration-experiment.md) improved development probability metrics but increased confidence in a known wrong suggestion. Its threshold policy remains an offline simulation.
 
 ## Run the complete demo
 
@@ -48,10 +50,10 @@ CSV files must contain `ticket_id`, `text`, and `category`. IDs must be unique; 
 2. **Complete:** pinned source import, data audit, provenance manifest, and duplicate-aware splits. See [preparation instructions](docs/03-importing-and-splitting.md).
 3. **Complete:** majority-class and TF-IDF/logistic-regression baselines; validation macro-F1, class metrics, and confusion matrix.
 4. **Complete locally:** CLI and prediction API, input validation, checked model bundles, versioned output, and health/readiness checks.
-5. Evaluate calibration and choose a human-review threshold using validation data.
+5. **Offline experiment complete:** temperature scaling and threshold simulation on disjoint validation subsets; live automatic routing remains disabled.
 6. **Complete locally:** pinned-download demo builder, portable server command, limitations guide, and GitHub Actions bundle workflow.
 
-Validation metrics are available; test performance and probability calibration have not been established. Workflow status should be checked in the Actions tab.
+Validation and exploratory calibration metrics are available; held-out test performance and calibration under distribution shift remain unestablished. Workflow status should be checked in the Actions tab.
 
 ## Learn from your phone
 

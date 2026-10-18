@@ -1,0 +1,362 @@
+{
+  "experiment": "offline_temperature_scaling_and_review_simulation",
+  "test_evaluated": false,
+  "api_behavior_changed": false,
+  "all_live_predictions_require_review": true,
+  "source_revision": "72ea2203180d14a416b579c657033ecd21e59a11",
+  "preparation_manifest_sha256": "7f91ea2a73a0a733d759d1b332962c26aed01a4423bc44d2b8f02fbabbe57e0d",
+  "model_sha256": "cccc36d4074548c23e15cf51e12acc740accfadbb19539d76986a4326f5dbd8e",
+  "partition_seed": 73,
+  "versions": {
+    "python": "3.12.14",
+    "numpy": "2.3.5",
+    "scipy": "1.17.0",
+    "scikit-learn": "1.8.0"
+  },
+  "partition_policy": "Per-class SHA-256 ordering; approximately 40/30/30 of validation",
+  "parts": {
+    "calibration_fit": {
+      "rows": 1457,
+      "sorted_ids_sha256": "24aad5e4d220c38a1b5feae22280ec91ac770c7ba59bab70375e44e9c3f2a1d0"
+    },
+    "threshold_selection": {
+      "rows": 1091,
+      "sorted_ids_sha256": "e0177638335ddd2c5e5e6e9fda7a880c9c22b143397c284f628cda845f323c0a"
+    },
+    "development_audit": {
+      "rows": 1094,
+      "sorted_ids_sha256": "f6520d5c2449fd1632acd1831883e4bc5f32e4a807534b12f3b7922dffda6559"
+    }
+  },
+  "temperature": 0.2326808254232322,
+  "temperature_bounds": [
+    0.05,
+    10
+  ],
+  "temperature_fit_objective": "Multiclass negative log likelihood on calibration_fit only",
+  "selection": {
+    "minimum_count": 50,
+    "target_empirical_accuracy": 0.99,
+    "selected_threshold": 0.5,
+    "candidates": [
+      {
+        "threshold": 0.5,
+        "selected_rows": 1090,
+        "coverage": 0.999083409715857,
+        "review_fraction": 0.0009165902841430373,
+        "selected_accuracy": 0.9963302752293578,
+        "selected_errors": 4
+      },
+      {
+        "threshold": 0.6,
+        "selected_rows": 1090,
+        "coverage": 0.999083409715857,
+        "review_fraction": 0.0009165902841430373,
+        "selected_accuracy": 0.9963302752293578,
+        "selected_errors": 4
+      },
+      {
+        "threshold": 0.7,
+        "selected_rows": 1089,
+        "coverage": 0.998166819431714,
+        "review_fraction": 0.0018331805682859637,
+        "selected_accuracy": 0.9963269054178145,
+        "selected_errors": 4
+      },
+      {
+        "threshold": 0.8,
+        "selected_rows": 1089,
+        "coverage": 0.998166819431714,
+        "review_fraction": 0.0018331805682859637,
+        "selected_accuracy": 0.9963269054178145,
+        "selected_errors": 4
+      },
+      {
+        "threshold": 0.9,
+        "selected_rows": 1088,
+        "coverage": 0.997250229147571,
+        "review_fraction": 0.002749770852429001,
+        "selected_accuracy": 0.9972426470588235,
+        "selected_errors": 3
+      },
+      {
+        "threshold": 0.95,
+        "selected_rows": 1088,
+        "coverage": 0.997250229147571,
+        "review_fraction": 0.002749770852429001,
+        "selected_accuracy": 0.9972426470588235,
+        "selected_errors": 3
+      },
+      {
+        "threshold": 0.98,
+        "selected_rows": 1084,
+        "coverage": 0.9935838680109991,
+        "review_fraction": 0.006416131989000928,
+        "selected_accuracy": 0.9990774907749077,
+        "selected_errors": 1
+      },
+      {
+        "threshold": 0.99,
+        "selected_rows": 1082,
+        "coverage": 0.9917506874427131,
+        "review_fraction": 0.008249312557286892,
+        "selected_accuracy": 0.9990757855822551,
+        "selected_errors": 1
+      }
+    ]
+  },
+  "manual_counterexample": {
+    "text": "I was charged twice for my subscription.",
+    "author_assigned_expected_category": "PAYMENT",
+    "suggested_category": "ACCOUNT",
+    "uncalibrated_score": 0.26012119864650735,
+    "temperature_scaled_score": 0.8959240926781018,
+    "passes_simulated_threshold": true,
+    "status": "Illustrative author-written probe, not an independent benchmark sample."
+  },
+  "development_audit": {
+    "uncalibrated": {
+      "rows": 1094,
+      "accuracy": 0.9990859232175503,
+      "negative_log_likelihood": 0.0823736126660684,
+      "multiclass_brier_sum_over_classes": 0.01742671789057518,
+      "top_label_ece_15_bins": 0.06989590654256289,
+      "reliability_bins": [
+        {
+          "lower": 0.0,
+          "upper": 0.06666666666666667,
+          "count": 0,
+          "mean_confidence": null,
+          "accuracy": null
+        },
+        {
+          "lower": 0.06666666666666667,
+          "upper": 0.13333333333333333,
+          "count": 0,
+          "mean_confidence": null,
+          "accuracy": null
+        },
+        {
+          "lower": 0.13333333333333333,
+          "upper": 0.2,
+          "count": 0,
+          "mean_confidence": null,
+          "accuracy": null
+        },
+        {
+          "lower": 0.2,
+          "upper": 0.26666666666666666,
+          "count": 3,
+          "mean_confidence": 0.22322343194395308,
+          "accuracy": 1.0
+        },
+        {
+          "lower": 0.26666666666666666,
+          "upper": 0.3333333333333333,
+          "count": 5,
+          "mean_confidence": 0.3024205932024192,
+          "accuracy": 1.0
+        },
+        {
+          "lower": 0.3333333333333333,
+          "upper": 0.4,
+          "count": 0,
+          "mean_confidence": null,
+          "accuracy": null
+        },
+        {
+          "lower": 0.4,
+          "upper": 0.4666666666666667,
+          "count": 3,
+          "mean_confidence": 0.44499356066341295,
+          "accuracy": 0.6666666666666666
+        },
+        {
+          "lower": 0.4666666666666667,
+          "upper": 0.5333333333333333,
+          "count": 3,
+          "mean_confidence": 0.5113644393141416,
+          "accuracy": 1.0
+        },
+        {
+          "lower": 0.5333333333333333,
+          "upper": 0.6,
+          "count": 12,
+          "mean_confidence": 0.5724055205252719,
+          "accuracy": 1.0
+        },
+        {
+          "lower": 0.6,
+          "upper": 0.6666666666666666,
+          "count": 5,
+          "mean_confidence": 0.6335441431243722,
+          "accuracy": 1.0
+        },
+        {
+          "lower": 0.6666666666666666,
+          "upper": 0.7333333333333333,
+          "count": 21,
+          "mean_confidence": 0.7110363548533408,
+          "accuracy": 1.0
+        },
+        {
+          "lower": 0.7333333333333333,
+          "upper": 0.8,
+          "count": 31,
+          "mean_confidence": 0.7708151698927989,
+          "accuracy": 1.0
+        },
+        {
+          "lower": 0.8,
+          "upper": 0.8666666666666667,
+          "count": 60,
+          "mean_confidence": 0.8385203492753163,
+          "accuracy": 1.0
+        },
+        {
+          "lower": 0.8666666666666667,
+          "upper": 0.9333333333333333,
+          "count": 190,
+          "mean_confidence": 0.905279008856656,
+          "accuracy": 1.0
+        },
+        {
+          "lower": 0.9333333333333333,
+          "upper": 1.0,
+          "count": 761,
+          "mean_confidence": 0.9728057525109776,
+          "accuracy": 1.0
+        }
+      ]
+    },
+    "temperature_scaled": {
+      "rows": 1094,
+      "accuracy": 0.9990859232175503,
+      "negative_log_likelihood": 0.0036681099848385134,
+      "multiclass_brier_sum_over_classes": 0.0020683609928048826,
+      "top_label_ece_15_bins": 0.002607536656512613,
+      "reliability_bins": [
+        {
+          "lower": 0.0,
+          "upper": 0.06666666666666667,
+          "count": 0,
+          "mean_confidence": null,
+          "accuracy": null
+        },
+        {
+          "lower": 0.06666666666666667,
+          "upper": 0.13333333333333333,
+          "count": 0,
+          "mean_confidence": null,
+          "accuracy": null
+        },
+        {
+          "lower": 0.13333333333333333,
+          "upper": 0.2,
+          "count": 0,
+          "mean_confidence": null,
+          "accuracy": null
+        },
+        {
+          "lower": 0.2,
+          "upper": 0.26666666666666666,
+          "count": 0,
+          "mean_confidence": null,
+          "accuracy": null
+        },
+        {
+          "lower": 0.26666666666666666,
+          "upper": 0.3333333333333333,
+          "count": 0,
+          "mean_confidence": null,
+          "accuracy": null
+        },
+        {
+          "lower": 0.3333333333333333,
+          "upper": 0.4,
+          "count": 0,
+          "mean_confidence": null,
+          "accuracy": null
+        },
+        {
+          "lower": 0.4,
+          "upper": 0.4666666666666667,
+          "count": 0,
+          "mean_confidence": null,
+          "accuracy": null
+        },
+        {
+          "lower": 0.4666666666666667,
+          "upper": 0.5333333333333333,
+          "count": 0,
+          "mean_confidence": null,
+          "accuracy": null
+        },
+        {
+          "lower": 0.5333333333333333,
+          "upper": 0.6,
+          "count": 1,
+          "mean_confidence": 0.5931285335234653,
+          "accuracy": 1.0
+        },
+        {
+          "lower": 0.6,
+          "upper": 0.6666666666666666,
+          "count": 2,
+          "mean_confidence": 0.6207134275337722,
+          "accuracy": 1.0
+        },
+        {
+          "lower": 0.6666666666666666,
+          "upper": 0.7333333333333333,
+          "count": 1,
+          "mean_confidence": 0.7285624275375182,
+          "accuracy": 1.0
+        },
+        {
+          "lower": 0.7333333333333333,
+          "upper": 0.8,
+          "count": 1,
+          "mean_confidence": 0.7887770447336742,
+          "accuracy": 0.0
+        },
+        {
+          "lower": 0.8,
+          "upper": 0.8666666666666667,
+          "count": 1,
+          "mean_confidence": 0.8092673694914866,
+          "accuracy": 1.0
+        },
+        {
+          "lower": 0.8666666666666667,
+          "upper": 0.9333333333333333,
+          "count": 3,
+          "mean_confidence": 0.9158291443996026,
+          "accuracy": 1.0
+        },
+        {
+          "lower": 0.9333333333333333,
+          "upper": 1.0,
+          "count": 1085,
+          "mean_confidence": 0.999830653754553,
+          "accuracy": 1.0
+        }
+      ]
+    },
+    "frozen_threshold_simulation": {
+      "threshold": 0.5,
+      "selected_rows": 1094,
+      "coverage": 1.0,
+      "review_fraction": 0.0,
+      "selected_accuracy": 0.9990859232175503,
+      "selected_errors": 1
+    }
+  },
+  "limitations": [
+    "Exploratory development analysis on previously inspected validation data; not a new held-out test.",
+    "Synthetic source and possible template overlap limit generalization claims.",
+    "Empirical selection accuracy is not a statistical guarantee or a deployment authorization.",
+    "Temperature scaling preserves the predicted class; it cannot fix classification errors or detect unsupported requests.",
+    "API and CLI still return uncalibrated scores and require human review."
+  ]
+}
