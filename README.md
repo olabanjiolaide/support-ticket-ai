@@ -2,7 +2,7 @@
 
 A Python portfolio project for classifying support requests and routing uncertain predictions to human review.
 
-**Status: milestone 1 — validated data loading.** Model training, confidence calibration, and the prediction API are planned; they are not implemented yet.
+**Status: data loading and duplicate-aware preparation implemented.** External dataset acquisition, model training, confidence calibration, and the prediction API are pending.
 
 ## Run the first milestone
 
@@ -24,7 +24,7 @@ CSV files must contain `ticket_id`, `text`, and `category`. IDs must be unique; 
 ## Planned milestones
 
 1. **Complete:** CSV validation, command-line summary, tests, and an automated test workflow.
-2. Select a suitably licensed dataset; document provenance and design leakage-resistant splits.
+2. **Implementation complete; data audit pending:** dataset plan, local CSV importer, provenance manifest, and duplicate-aware splits. See [preparation instructions](docs/03-importing-and-splitting.md).
 3. Train a majority-class baseline and a TF-IDF/logistic-regression pipeline; report macro-F1 and per-class errors.
 4. Add a prediction API with input validation and versioned model metadata.
 5. Evaluate calibration and choose a human-review threshold using validation data.

@@ -15,7 +15,9 @@ class Ticket:
     category: str
 
 
-def load_tickets(path: str | Path) -> list[Ticket]:
+def load_tickets(
+    path: str | Path, *, categories: frozenset[str] = CATEGORIES
+) -> list[Ticket]:
     """Load a nonempty UTF-8 CSV, or raise ValueError for invalid records.
 
     Surrounding whitespace is stripped. Category names remain case-sensitive.
@@ -38,7 +40,7 @@ def load_tickets(path: str | Path) -> list[Ticket]:
                 fields = {key: row[key].strip() for key in REQUIRED_COLUMNS}
                 if not all(fields.values()):
                     raise ValueError(f"Record {record_number}: required fields cannot be blank.")
-                if fields["category"] not in CATEGORIES:
+                if fields["category"] not in categories:
                     raise ValueError(f"Record {record_number}: unsupported category.")
                 ticket_id = fields["ticket_id"]
                 if ticket_id in seen_ids:
