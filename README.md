@@ -40,7 +40,9 @@ Run commands from the repository root. The sample-data command prints the number
 
 ## Data contract
 
-CSV files must contain `ticket_id`, `text`, and `category`. IDs must be unique; every field must be nonempty. Categories are `billing`, `account`, or `technical`. Extra columns are permitted and ignored. Files use UTF-8, with an optional byte-order mark.
+The original demo CSV must contain `ticket_id`, `text`, and `category`. IDs must be unique; every field must be nonempty. Its default categories are `billing`, `account`, and `technical`. Extra columns are permitted and ignored. Files use UTF-8, with an optional byte-order mark.
+
+The trained Bitext model uses the source dataset's 11 categories instead, including ACCOUNT, PAYMENT, and ORDER. The importer preserves those labels and records their vocabulary in the preparation manifest. See [the baseline audit](docs/04-baseline-results.md) for the complete list.
 
 `data/sample_tickets.csv` contains 12 hand-written synthetic examples for demonstrating the loader. It is not a benchmark, training corpus, or evidence of model quality. Do not upload real customer tickets or personal information.
 
