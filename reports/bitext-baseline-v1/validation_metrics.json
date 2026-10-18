@@ -1,0 +1,547 @@
+{
+  "evaluation_split": "validation",
+  "test_evaluated": false,
+  "source_revision": "72ea2203180d14a416b579c657033ecd21e59a11",
+  "source_sha256": "6f81102b0100b97b8468eb04368033a23206bf1fde9d53500d5806ec1001a434",
+  "preparation_manifest_sha256": "7f91ea2a73a0a733d759d1b332962c26aed01a4423bc44d2b8f02fbabbe57e0d",
+  "seed": 42,
+  "training_counts": {
+    "ACCOUNT": 3750,
+    "CANCEL": 659,
+    "CONTACT": 1376,
+    "DELIVERY": 1151,
+    "FEEDBACK": 1394,
+    "INVOICE": 1261,
+    "ORDER": 2147,
+    "PAYMENT": 1390,
+    "REFUND": 1803,
+    "SHIPPING": 1365,
+    "SUBSCRIPTION": 694
+  },
+  "validation_counts": {
+    "ACCOUNT": 804,
+    "CANCEL": 141,
+    "CONTACT": 295,
+    "DELIVERY": 247,
+    "FEEDBACK": 298,
+    "INVOICE": 270,
+    "ORDER": 460,
+    "PAYMENT": 298,
+    "REFUND": 387,
+    "SHIPPING": 293,
+    "SUBSCRIPTION": 149
+  },
+  "versions": {
+    "python": "3.12.14",
+    "scikit-learn": "1.8.0",
+    "numpy": "2.3.5",
+    "scipy": "1.17.0",
+    "joblib": "1.5.3"
+  },
+  "configuration": {
+    "ngram_range": [
+      1,
+      2
+    ],
+    "max_features": 50000,
+    "min_df": 1,
+    "sublinear_tf": true,
+    "C": 1.0,
+    "max_iter": 1000,
+    "class_weight": null,
+    "solver": "lbfgs"
+  },
+  "vocabulary_size": 10559,
+  "majority": {
+    "accuracy": 0.22075782537067545,
+    "macro_f1": 0.032879401300453935,
+    "per_class": {
+      "ACCOUNT": {
+        "precision": 0.22075782537067545,
+        "recall": 1.0,
+        "f1-score": 0.3616734143049933,
+        "support": 804.0
+      },
+      "CANCEL": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 141.0
+      },
+      "CONTACT": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 295.0
+      },
+      "DELIVERY": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 247.0
+      },
+      "FEEDBACK": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 298.0
+      },
+      "INVOICE": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 270.0
+      },
+      "ORDER": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 460.0
+      },
+      "PAYMENT": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 298.0
+      },
+      "REFUND": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 387.0
+      },
+      "SHIPPING": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 293.0
+      },
+      "SUBSCRIPTION": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 149.0
+      },
+      "accuracy": 0.22075782537067545,
+      "macro avg": {
+        "precision": 0.02006889321551595,
+        "recall": 0.09090909090909091,
+        "f1-score": 0.032879401300453935,
+        "support": 3642.0
+      },
+      "weighted avg": {
+        "precision": 0.04873401746238964,
+        "recall": 0.22075782537067545,
+        "f1-score": 0.07984223643635766,
+        "support": 3642.0
+      }
+    },
+    "confusion_matrix_labels": [
+      "ACCOUNT",
+      "CANCEL",
+      "CONTACT",
+      "DELIVERY",
+      "FEEDBACK",
+      "INVOICE",
+      "ORDER",
+      "PAYMENT",
+      "REFUND",
+      "SHIPPING",
+      "SUBSCRIPTION"
+    ],
+    "confusion_matrix_rows_true_columns_predicted": [
+      [
+        804,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        141,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        295,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        247,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        298,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        270,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        460,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        298,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        387,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        293,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        149,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  "tfidf_logistic_regression": {
+    "accuracy": 0.9978034047226798,
+    "macro_f1": 0.9983936051983153,
+    "per_class": {
+      "ACCOUNT": {
+        "precision": 0.9901477832512315,
+        "recall": 1.0,
+        "f1-score": 0.995049504950495,
+        "support": 804.0
+      },
+      "CANCEL": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 141.0
+      },
+      "CONTACT": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 295.0
+      },
+      "DELIVERY": {
+        "precision": 1.0,
+        "recall": 0.9959514170040485,
+        "f1-score": 0.9979716024340771,
+        "support": 247.0
+      },
+      "FEEDBACK": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 298.0
+      },
+      "INVOICE": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 270.0
+      },
+      "ORDER": {
+        "precision": 1.0,
+        "recall": 0.9956521739130435,
+        "f1-score": 0.9978213507625272,
+        "support": 460.0
+      },
+      "PAYMENT": {
+        "precision": 1.0,
+        "recall": 0.9932885906040269,
+        "f1-score": 0.9966329966329966,
+        "support": 298.0
+      },
+      "REFUND": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 387.0
+      },
+      "SHIPPING": {
+        "precision": 1.0,
+        "recall": 0.9897610921501706,
+        "f1-score": 0.9948542024013722,
+        "support": 293.0
+      },
+      "SUBSCRIPTION": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 149.0
+      },
+      "accuracy": 0.9978034047226798,
+      "macro avg": {
+        "precision": 0.9991043439319302,
+        "recall": 0.9976957521519353,
+        "f1-score": 0.9983936051983153,
+        "support": 3642.0
+      },
+      "weighted avg": {
+        "precision": 0.9978250460554613,
+        "recall": 0.9978034047226798,
+        "f1-score": 0.9978049213158738,
+        "support": 3642.0
+      }
+    },
+    "confusion_matrix_labels": [
+      "ACCOUNT",
+      "CANCEL",
+      "CONTACT",
+      "DELIVERY",
+      "FEEDBACK",
+      "INVOICE",
+      "ORDER",
+      "PAYMENT",
+      "REFUND",
+      "SHIPPING",
+      "SUBSCRIPTION"
+    ],
+    "confusion_matrix_rows_true_columns_predicted": [
+      [
+        804,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        141,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        295,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        1,
+        0,
+        0,
+        246,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        298,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        270,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        2,
+        0,
+        0,
+        0,
+        0,
+        0,
+        458,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        2,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        296,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        387,
+        0,
+        0
+      ],
+      [
+        3,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        290,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        149
+      ]
+    ]
+  },
+  "limitations": [
+    "Synthetic source; no production reliability claim.",
+    "Normalized exact deduplication does not remove template/paraphrase overlap.",
+    "Single seed, fixed configuration; probabilities not calibrated."
+  ],
+  "model_sha256": "cccc36d4074548c23e15cf51e12acc740accfadbb19539d76986a4326f5dbd8e"
+}

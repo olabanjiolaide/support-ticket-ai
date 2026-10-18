@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "source_url": "https://github.com/bitext/customer-support-llm-chatbot-training-dataset",
+  "source_revision": "72ea2203180d14a416b579c657033ecd21e59a11",
+  "source_filename": "bitext.csv",
+  "source_sha256": "6f81102b0100b97b8468eb04368033a23206bf1fde9d53500d5806ec1001a434",
+  "publisher_license_sha256": "f6054388eae4947a769ca2020c54e6d394eb01c41d58db55bb6cfd24ce71cdd8",
+  "license_metadata": "CDLA-Sharing-1.0",
+  "seed": 42,
+  "normalization": "NFKC + casefold + whitespace collapse; punctuation preserved",
+  "split_policy": "per-class hash ordering, 15% validation and test rounded, minimum one each",
+  "audit": {
+    "input_rows": 26872,
+    "unique_normalized_requests": 24274,
+    "conflicting_groups_quarantined": 0,
+    "conflicting_rows_quarantined": 0,
+    "duplicate_rows_removed": 2598,
+    "retained_rows": 24274,
+    "categories": [
+      "ACCOUNT",
+      "CANCEL",
+      "CONTACT",
+      "DELIVERY",
+      "FEEDBACK",
+      "INVOICE",
+      "ORDER",
+      "PAYMENT",
+      "REFUND",
+      "SHIPPING",
+      "SUBSCRIPTION"
+    ],
+    "split_counts": {
+      "train": {
+        "ACCOUNT": 3750,
+        "CANCEL": 659,
+        "CONTACT": 1376,
+        "DELIVERY": 1151,
+        "FEEDBACK": 1394,
+        "INVOICE": 1261,
+        "ORDER": 2147,
+        "PAYMENT": 1390,
+        "REFUND": 1803,
+        "SHIPPING": 1365,
+        "SUBSCRIPTION": 694
+      },
+      "validation": {
+        "ACCOUNT": 804,
+        "CANCEL": 141,
+        "CONTACT": 295,
+        "DELIVERY": 247,
+        "FEEDBACK": 298,
+        "INVOICE": 270,
+        "ORDER": 460,
+        "PAYMENT": 298,
+        "REFUND": 387,
+        "SHIPPING": 293,
+        "SUBSCRIPTION": 149
+      },
+      "test": {
+        "ACCOUNT": 804,
+        "CANCEL": 141,
+        "CONTACT": 295,
+        "DELIVERY": 247,
+        "FEEDBACK": 298,
+        "INVOICE": 270,
+        "ORDER": 460,
+        "PAYMENT": 298,
+        "REFUND": 387,
+        "SHIPPING": 293,
+        "SUBSCRIPTION": 149
+      }
+    }
+  },
+  "split_sha256": {
+    "train": "938ba7b0d3f2d8edeed45a6d962798f0385796ee26bc0164a8d465b8e76b49fd",
+    "validation": "fcba8ebe718877e86b07173d727649e4c28d654ea604e28fe0740c88766ed85e",
+    "test": "be49fb8817ccb28b1cad18eca2b54a57a012492e29ff422b54142c79f08dec9f"
+  }
+}

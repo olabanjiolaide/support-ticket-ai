@@ -13,7 +13,7 @@ import sys
 import tempfile
 import unicodedata
 
-SOURCE_URL = "https://huggingface.co/datasets/bitext/Bitext-customer-support-llm-chatbot-training-dataset"
+SOURCE_URL = "https://github.com/bitext/customer-support-llm-chatbot-training-dataset"
 FIELDS = ["ticket_id", "text", "category"]
 
 

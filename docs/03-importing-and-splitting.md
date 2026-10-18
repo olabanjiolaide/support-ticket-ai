@@ -17,7 +17,7 @@ python -m unittest discover -s tests -v
 
 The command rejects an existing output directory, preserving prior experiment versions. The manifest records source and split checksums, category counts, duplicate removal, conflicts, source revision, and license checksum. The publisher license is copied alongside the output. The supplied revision is recorded, not verified against the network; obtain the file from that exact revision yourself.
 
-Generated data stays under the ignored `artifacts/` directory. No external dataset has been downloaded or trained on in this milestone. Tests use tiny synthetic fixtures.
+Generated data stays under the ignored `artifacts/` directory. Tests use tiny synthetic fixtures. A subsequent [baseline run](04-baseline-results.md) imported the pinned external source and evaluated validation performance.
 
 ## Loading the imported categories
 

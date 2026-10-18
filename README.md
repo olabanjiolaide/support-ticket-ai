@@ -2,13 +2,16 @@
 
 A Python portfolio project for classifying support requests and routing uncertain predictions to human review.
 
-**Status: data loading and duplicate-aware preparation implemented.** External dataset acquisition, model training, confidence calibration, and the prediction API are pending.
+**Status: first baseline trained and evaluated on validation data.** Prediction API and confidence calibration are pending. The test set has not been evaluated.
+
+See [the baseline audit and results](docs/04-baseline-results.md). Validation macro-F1 is 0.9984 on a synthetic source; template overlap may inflate this result. It is not a production accuracy claim.
 
 ## Run the first milestone
 
-Python 3.11 or newer is required. This milestone has no third-party dependencies.
+Python 3.11–3.13 is supported. The demo loader uses the standard library. Install the pinned dependencies for model training and the full test suite.
 
 ```bash
+python -m pip install -r requirements.txt
 python -m support_ticket_ai data/sample_tickets.csv
 python -m unittest discover -s tests -v
 ```
@@ -24,13 +27,13 @@ CSV files must contain `ticket_id`, `text`, and `category`. IDs must be unique; 
 ## Planned milestones
 
 1. **Complete:** CSV validation, command-line summary, tests, and an automated test workflow.
-2. **Implementation complete; data audit pending:** dataset plan, local CSV importer, provenance manifest, and duplicate-aware splits. See [preparation instructions](docs/03-importing-and-splitting.md).
-3. Train a majority-class baseline and a TF-IDF/logistic-regression pipeline; report macro-F1 and per-class errors.
+2. **Complete:** pinned source import, data audit, provenance manifest, and duplicate-aware splits. See [preparation instructions](docs/03-importing-and-splitting.md).
+3. **Complete:** majority-class and TF-IDF/logistic-regression baselines; validation macro-F1, class metrics, and confusion matrix.
 4. Add a prediction API with input validation and versioned model metadata.
 5. Evaluate calibration and choose a human-review threshold using validation data.
 6. Package a reproducible demo and document limitations.
 
-No accuracy or confidence claims have been established. Workflow status should be checked in the Actions tab.
+Validation metrics are available; test performance and probability calibration have not been established. Workflow status should be checked in the Actions tab.
 
 ## Learn from your phone
 
