@@ -10,6 +10,20 @@ The [prediction and overlap guide](docs/05-prediction-and-overlap.md) documents 
 
 The [API guide](docs/06-prediction-api.md) explains local startup, request validation, and liveness/readiness checks. No hosted service has been deployed.
 
+## Run the complete demo
+
+From the repository root, with Python 3.11–3.13 in a virtual environment:
+
+```bash
+python -m pip install -r requirements.txt
+python -m support_ticket_ai.demo artifacts/demo-v1
+python -m support_ticket_ai.serve --model-dir artifacts/demo-v1/model
+```
+
+The demo downloads approximately 19 MB of pinned source data, verifies checksums, prepares splits, trains the baseline, and creates a trusted local model bundle. Use a fresh output path on each run. Open http://127.0.0.1:8000/docs on the computer running the server.
+
+See [complete setup and phone instructions](docs/07-running-the-demo.md). From your phone, the **Build local demo bundle** GitHub Actions workflow can build a downloadable model and reports. This workflow does not host the API.
+
 ## Run the first milestone
 
 Python 3.11–3.13 is supported. The demo loader uses the standard library. Install the pinned dependencies for model training and the full test suite.
@@ -20,7 +34,7 @@ python -m support_ticket_ai data/sample_tickets.csv
 python -m unittest discover -s tests -v
 ```
 
-Run commands from the repository root. The first command prints the number of tickets per category. Invalid data produces an error and a nonzero exit code.
+Run commands from the repository root. The sample-data command prints the number of tickets per category. Invalid data produces an error and a nonzero exit code.
 
 ## Data contract
 
@@ -35,7 +49,7 @@ CSV files must contain `ticket_id`, `text`, and `category`. IDs must be unique; 
 3. **Complete:** majority-class and TF-IDF/logistic-regression baselines; validation macro-F1, class metrics, and confusion matrix.
 4. **Complete locally:** CLI and prediction API, input validation, checked model bundles, versioned output, and health/readiness checks.
 5. Evaluate calibration and choose a human-review threshold using validation data.
-6. Package a reproducible demo and document limitations.
+6. **Complete locally:** pinned-download demo builder, portable server command, limitations guide, and GitHub Actions bundle workflow.
 
 Validation metrics are available; test performance and probability calibration have not been established. Workflow status should be checked in the Actions tab.
 

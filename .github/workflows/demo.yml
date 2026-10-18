@@ -1,0 +1,33 @@
+name: Build local demo bundle
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - support_ticket_ai/demo.py
+      - .github/workflows/demo.yml
+permissions:
+  contents: read
+jobs:
+  demo:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - run: python -m pip install -r requirements.txt
+      - run: python -m unittest discover -s tests -v
+      - run: python -m support_ticket_ai.demo artifacts/demo-v1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: support-ticket-demo-${{ github.sha }}
+          retention-days: 7
+          if-no-files-found: error
+          path: |
+            artifacts/demo-v1/demo_summary.json
+            artifacts/demo-v1/model/
+            artifacts/demo-v1/prepared/manifest.json
+            artifacts/demo-v1/source/LICENSE.txt
+            artifacts/demo-v1/source/source_provenance.json
