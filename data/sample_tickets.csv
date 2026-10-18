@@ -1,0 +1,13 @@
+ticket_id,text,category
+demo-001,I was charged twice for my subscription.,billing
+demo-002,Please send me an invoice for last month.,billing
+demo-003,My refund has not arrived.,billing
+demo-004,I need to update my payment card.,billing
+demo-005,I cannot reset my password.,account
+demo-006,Please change the email address on my account.,account
+demo-007,My account is locked after several login attempts.,account
+demo-008,How can I enable two factor authentication?,account
+demo-009,The app crashes when I upload a file.,technical
+demo-010,The dashboard shows an error after the update.,technical
+demo-011,Notifications stopped working on my phone.,technical
+demo-012,The export button produces an empty file.,technical
