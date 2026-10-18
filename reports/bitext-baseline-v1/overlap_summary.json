@@ -1,0 +1,40 @@
+{
+  "validation_rows": 3642,
+  "nearest_training_cosine_mean": 0.7737923121514827,
+  "nearest_training_cosine_quantiles": {
+    "0.5": 0.7818349325824917,
+    "0.9": 0.9251733648339726,
+    "0.95": 0.9550234943831001,
+    "0.99": 1.0
+  },
+  "thresholds": {
+    "0.8": {
+      "count": 1612,
+      "fraction": 0.442613948380011
+    },
+    "0.9": {
+      "count": 602,
+      "fraction": 0.16529379461834157
+    },
+    "0.95": {
+      "count": 207,
+      "fraction": 0.05683690280065898
+    },
+    "0.99": {
+      "count": 103,
+      "fraction": 0.02828116419549698
+    }
+  },
+  "evaluation_split": "validation",
+  "test_evaluated": false,
+  "space": "Training-fitted word TF-IDF from the baseline pipeline",
+  "source_revision": "72ea2203180d14a416b579c657033ecd21e59a11",
+  "preparation_manifest_sha256": "7f91ea2a73a0a733d759d1b332962c26aed01a4423bc44d2b8f02fbabbe57e0d",
+  "model_sha256": "cccc36d4074548c23e15cf51e12acc740accfadbb19539d76986a4326f5dbd8e",
+  "normalized_exact_overlap": 0,
+  "limitations": [
+    "Cosine similarity is a diagnostic, not a template-family independence test.",
+    "Shared words may reflect legitimate category signals or repeated templates.",
+    "Similarity thresholds are descriptive; not used for routing or tuning."
+  ]
+}

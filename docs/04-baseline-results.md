@@ -55,4 +55,4 @@ Open `support_ticket_ai/train.py` and find `model.fit(texts, targets)`. Those ar
 
 Macro-F1 gives each category equal weight when averaging its F1 score. This makes weaker small categories easier to notice than accuracy alone.
 
-Next: inspect template overlap, add a prediction interface, and handle unsupported requests before considering a final held-out evaluation.
+Follow-up: the [prediction and overlap milestone](05-prediction-and-overlap.md) adds a similarity diagnostic and prediction CLI, including a manually written error case. Template-family independence and unsupported-request detection remain unestablished.

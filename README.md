@@ -2,9 +2,11 @@
 
 A Python portfolio project for classifying support requests and routing uncertain predictions to human review.
 
-**Status: first baseline trained and evaluated on validation data.** Prediction API and confidence calibration are pending. The test set has not been evaluated.
+**Status: baseline, prediction CLI, and validation similarity audit implemented.** Prediction API and confidence calibration are pending. The test set has not been evaluated. All predictions require human review.
 
 See [the baseline audit and results](docs/04-baseline-results.md). Validation macro-F1 is 0.9984 on a synthetic source; template overlap may inflate this result. It is not a production accuracy claim.
+
+The [prediction and overlap guide](docs/05-prediction-and-overlap.md) documents the command-line interface, similarity measurements, and an observed error on a manually written payment request.
 
 ## Run the first milestone
 
@@ -29,7 +31,7 @@ CSV files must contain `ticket_id`, `text`, and `category`. IDs must be unique; 
 1. **Complete:** CSV validation, command-line summary, tests, and an automated test workflow.
 2. **Complete:** pinned source import, data audit, provenance manifest, and duplicate-aware splits. See [preparation instructions](docs/03-importing-and-splitting.md).
 3. **Complete:** majority-class and TF-IDF/logistic-regression baselines; validation macro-F1, class metrics, and confusion matrix.
-4. Add a prediction API with input validation and versioned model metadata.
+4. **CLI complete; API pending:** input validation, checked model bundles, and versioned prediction output.
 5. Evaluate calibration and choose a human-review threshold using validation data.
 6. Package a reproducible demo and document limitations.
 
