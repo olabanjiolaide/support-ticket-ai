@@ -24,6 +24,8 @@ The [scope-detector experiment](docs/14-scope-detector-experiment.md) adds a sep
 
 The [frozen semantic-embedding experiment](docs/15-semantic-embedding-experiment.md) improves indirect wording on provisional probes: 18/22 correct versus 10/22 for word features. With a separately selected cutoff and semantic scope gate, it accepts 52/66 valid probes (49 correct) and rejects 24/24 unrelated probes, but accepts 5/8 ambiguous requests. It remains offline, and the guide discloses a training duplicate discovered in the older cutoff-selection collection.
 
+The [human label-review pilot](docs/16-human-label-review.md) collects interpretations of 40 new, unscored requests, five at a time, without model suggestions. It supports one routing intent, multiple routing intents, insufficient context, and unsupported tasks. Human review and adjudication are still pending.
+
 ## Run the complete demo
 
 From the repository root, with Python 3.11–3.13 in a virtual environment:

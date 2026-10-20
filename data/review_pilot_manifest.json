@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "collection": "review_pilot_v1",
+  "authorship": "assistant-authored synthetic requests; no gold labels",
+  "rows": 40,
+  "author_assigned_scenario_families": 20,
+  "collection_sha256": "ff8f4f7792e28b09b2fd1967c125ec45a18fc278e9ceaa40fb0ee9547ccaabf9",
+  "model_scored": false,
+  "human_labels_collected_in_repository": 0,
+  "audit_partition_reserved": false,
+  "source_test_read": false,
+  "normalized_exact_overlap_rows_against_checked_collections": 0,
+  "checked_collections": {
+    "train.csv": "938ba7b0d3f2d8edeed45a6d962798f0385796ee26bc0164a8d465b8e76b49fd",
+    "development_challenge.csv": "58920a4aecb51ad493aa5d51e101dd4b9847135eb188326c978f004520217442",
+    "robustness_probes.csv": "c46606e93cb295c56f343c0f131d28312cf55d85f2b7bbaacb55b92fe37b58c7",
+    "scope_training_negatives.csv": "82fcbd6cabee7406dafa7f54128feab3aae1fb3e354ff638fd9f0a2f5b945d89"
+  },
+  "limitations": [
+    "Annotation pilot, not a final independent audit.",
+    "Family groups are author assigned; semantic/template independence is not established.",
+    "Human review, second-reviewer comparison, and adjudication are pending."
+  ]
+}
