@@ -20,6 +20,8 @@ The [broader robustness diagnostics](docs/12-robustness-diagnostics.md) add 98 p
 
 The [character-feature experiment](docs/13-character-feature-experiment.md) compares a fixed spelling-tolerant candidate with the word baseline. Correct categories on provisional supported probes rose from 34/66 to 45/66 before abstention, but coverage and unrelated-task failures remain unresolved. This is an offline experiment; the live model is unchanged.
 
+The [scope-detector experiment](docs/14-scope-detector-experiment.md) adds a separate binary support-scope gate offline. Combined with the word-category cutoff, unrelated false suggestions fall from 4/24 to 1/24 while supported coverage remains 14/66 on existing provisional probes. Negative training examples reflect known failure families, so these are development findings, not independent audit results.
+
 ## Run the complete demo
 
 From the repository root, with Python 3.11–3.13 in a virtual environment:

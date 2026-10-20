@@ -1,0 +1,49 @@
+case_id,slice,text,expected_category,label_status
+scope-train-general-01,general,Explain the difference between a lake and a reservoir.,UNSUPPORTED,provisional
+scope-train-general-02,general,Calculate the volume of a cube with side length seven.,UNSUPPORTED,provisional
+scope-train-general-03,general,Help me practice irregular verbs in German.,UNSUPPORTED,provisional
+scope-train-general-04,general,Compose a haiku describing autumn leaves.,UNSUPPORTED,provisional
+scope-train-general-05,general,Write a detective scene set inside a museum.,UNSUPPORTED,provisional
+scope-train-general-06,general,Suggest a vegetarian dinner using lentils.,UNSUPPORTED,provisional
+scope-train-general-07,general,Explain how an electric motor turns.,UNSUPPORTED,provisional
+scope-train-general-08,general,What is the square root of one hundred forty four?,UNSUPPORTED,provisional
+scope-train-general-09,general,Plan a weekend walking tour of Lisbon.,UNSUPPORTED,provisional
+scope-train-general-10,general,Invent a superhero whose power is controlling shadows.,UNSUPPORTED,provisional
+scope-train-general-11,general,Write SQL to count rows grouped by department.,UNSUPPORTED,provisional
+scope-train-general-12,general,Create a Java function that finds the smallest integer.,UNSUPPORTED,provisional
+scope-train-general-13,general,Explain how binary search works with an example.,UNSUPPORTED,provisional
+scope-train-general-14,general,Give me an outline for an essay about ancient Egypt.,UNSUPPORTED,provisional
+scope-train-general-15,general,Teach me how to read musical notation.,UNSUPPORTED,provisional
+scope-train-general-16,general,Describe the rules of badminton.,UNSUPPORTED,provisional
+scope-train-general-17,general,Name five animals that live in a desert.,UNSUPPORTED,provisional
+scope-train-general-18,general,Convert five miles into kilometers.,UNSUPPORTED,provisional
+scope-train-general-19,general,Create a study schedule for a biology exam.,UNSUPPORTED,provisional
+scope-train-general-20,general,Explain why the sky looks blue during daylight.,UNSUPPORTED,provisional
+scope-train-general-21,general,Write an imaginary conversation between two astronauts.,UNSUPPORTED,provisional
+scope-train-general-22,general,Give me a geography quiz about rivers.,UNSUPPORTED,provisional
+scope-train-general-23,general,How are glass bottles manufactured?,UNSUPPORTED,provisional
+scope-train-general-24,general,Describe the difference between a metaphor and a simile.,UNSUPPORTED,provisional
+scope-train-support_keyword-01,support_keyword,Write a fairy tale featuring a magical invoice.,UNSUPPORTED,provisional
+scope-train-support_keyword-02,support_keyword,Translate the word invoice into Portuguese.,UNSUPPORTED,provisional
+scope-train-support_keyword-03,support_keyword,Create sample invoice data for an imaginary bakery in a coding tutorial.,UNSUPPORTED,provisional
+scope-train-support_keyword-04,support_keyword,Explain the word invoice in a vocabulary lesson.,UNSUPPORTED,provisional
+scope-train-support_keyword-05,support_keyword,Write a joke about a refund that travels through time.,UNSUPPORTED,provisional
+scope-train-support_keyword-06,support_keyword,Translate refund policy into Japanese.,UNSUPPORTED,provisional
+scope-train-support_keyword-07,support_keyword,Create a fictional refund conversation for an acting exercise.,UNSUPPORTED,provisional
+scope-train-support_keyword-08,support_keyword,Define refund for a school dictionary.,UNSUPPORTED,provisional
+scope-train-support_keyword-09,support_keyword,Compose a song about a shipping address on Mars.,UNSUPPORTED,provisional
+scope-train-support_keyword-10,support_keyword,Translate shipping address into Dutch.,UNSUPPORTED,provisional
+scope-train-support_keyword-11,support_keyword,Write Python code to validate an invented shipping address.,UNSUPPORTED,provisional
+scope-train-support_keyword-12,support_keyword,Describe shipping routes used in medieval trade.,UNSUPPORTED,provisional
+scope-train-support_keyword-13,support_keyword,Write a screenplay about a customer service representative.,UNSUPPORTED,provisional
+scope-train-support_keyword-14,support_keyword,Explain customer service as a topic in a business textbook.,UNSUPPORTED,provisional
+scope-train-support_keyword-15,support_keyword,Translate contact customer support into Swedish.,UNSUPPORTED,provisional
+scope-train-support_keyword-16,support_keyword,Invent a chatbot greeting for a fictional support agent.,UNSUPPORTED,provisional
+scope-train-support_keyword-17,support_keyword,Explain payment processing as a computer science concept.,UNSUPPORTED,provisional
+scope-train-support_keyword-18,support_keyword,Generate imaginary credit card payment records for a database lesson.,UNSUPPORTED,provisional
+scope-train-support_keyword-19,support_keyword,Write a poem with the words payment and delivery.,UNSUPPORTED,provisional
+scope-train-support_keyword-20,support_keyword,Describe the history of subscription magazines.,UNSUPPORTED,provisional
+scope-train-support_keyword-21,support_keyword,Translate cancel an order into Korean.,UNSUPPORTED,provisional
+scope-train-support_keyword-22,support_keyword,Write a play about a king who issues a cancellation order.,UNSUPPORTED,provisional
+scope-train-support_keyword-23,support_keyword,Explain account passwords in an introductory cybersecurity lecture.,UNSUPPORTED,provisional
+scope-train-support_keyword-24,support_keyword,Create a newsletter subscription form in HTML for an imaginary store.,UNSUPPORTED,provisional
