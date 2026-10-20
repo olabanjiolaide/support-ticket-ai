@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f7f8fa" />
+    <title>Support Ticket AI · Workspace</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='11' fill='%231d2939'/%3E%3Cpath d='M12 13h16v11H18l-6 5z' fill='none' stroke='white' stroke-width='2'/%3E%3C/svg%3E"
+    />
+    <link rel="stylesheet" href="/assets/styles.css" />
+    <script src="/assets/app.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#ticket">Skip to ticket form</a>
+    <aside class="sidebar" aria-label="Workspace navigation">
+      <a class="brand" href="/" aria-label="Support Ticket AI home">
+        <span class="brand-mark" aria-hidden="true"
+          ><svg viewBox="0 0 24 24">
+            <path d="M5 5h14v10H10l-5 4V5Z" />
+            <path d="M9 9h6M9 12h3" /></svg
+        ></span>
+        <span
+          >Support Ticket <strong>AI</strong
+          ><small>A little clarity. A better handoff.</small></span
+        >
+      </a>
+      <div class="nav-label">YOUR WORKSPACE</div>
+      <nav>
+        <a class="nav-item active" href="#workspace" aria-current="page"
+          ><svg viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="4" y="4" width="6" height="6" rx="1" />
+            <rect x="14" y="4" width="6" height="6" rx="1" />
+            <rect x="4" y="14" width="6" height="6" rx="1" />
+            <rect x="14" y="14" width="6" height="6" rx="1" /></svg
+          >Ticket workspace</a
+        >
+        <a class="nav-item" href="#how-it-works"
+          ><svg viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="12" r="8" />
+            <path d="M12 11v5M12 8v.5" /></svg
+          >How it works</a
+        >
+        <a class="nav-item api-link" href="/docs" target="_blank" rel="noopener"
+          ><svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="m8 7-5 5 5 5M16 7l5 5-5 5M14 4l-4 16" /></svg
+          >API reference<span class="external" aria-hidden="true">↗</span></a
+        >
+      </nav>
+      <div class="sidebar-note">
+        <span class="small-tag">PORTFOLIO PROTOTYPE</span>
+        <p>Thoughtful suggestions.<br />People make the final call.</p>
+        <div class="note-divider"></div>
+        <span class="author">Built by Olabanji Olaide</span>
+      </div>
+    </aside>
+
+    <div class="page">
+      <header class="topbar">
+        <span
+          ><span class="breadcrumb">Workspace</span
+          ><span class="slash">/</span>Ticket classification</span
+        ><span class="local-badge"><span></span>Local demo</span>
+      </header>
+      <main id="workspace">
+        <div class="page-heading">
+          <div>
+            <p class="eyebrow">FROM REQUEST TO NEXT STEP</p>
+            <h1>Make sense of the message.</h1>
+            <p class="intro">
+              Turn a support request into a category suggestion, ready for your
+              review.
+            </p>
+          </div>
+          <div
+            id="service-status"
+            class="service-status checking"
+            role="status"
+          >
+            <span class="status-dot"></span
+            ><span id="service-label">Checking model</span>
+          </div>
+        </div>
+
+        <div id="connection-notice" class="connection-notice" hidden>
+          <span id="connection-message"></span
+          ><button id="retry" type="button">
+            Check again <span aria-hidden="true">↻</span>
+          </button>
+        </div>
+
+        <div class="workspace-grid">
+          <section class="card composer" aria-labelledby="composer-title">
+            <div class="card-heading">
+              <div class="step-label">
+                <span class="step-number">01</span><span>THE REQUEST</span>
+              </div>
+              <span class="quiet-tag">One ticket at a time</span>
+            </div>
+            <h2 id="composer-title">What does the customer need?</h2>
+            <p class="section-description">
+              Paste a message or start with an example below.
+            </p>
+            <form id="ticket-form">
+              <label for="ticket">Customer message</label>
+              <textarea
+                id="ticket"
+                name="text"
+                rows="7"
+                placeholder="e.g. I can’t access my account after resetting my password."
+                aria-describedby="input-hint character-count form-error"
+                required
+              ></textarea>
+              <div class="field-meta">
+                <span id="input-hint">Use a short, clear support request.</span
+                ><span id="character-count">0 / 2,000</span>
+              </div>
+              <div class="examples">
+                <span class="example-label">TRY AN EXAMPLE</span>
+                <div class="example-buttons">
+                  <button type="button" class="example" data-example="account">
+                    Account access <span aria-hidden="true">↗</span></button
+                  ><button type="button" class="example" data-example="payment">
+                    Payment issue <span aria-hidden="true">↗</span></button
+                  ><button type="button" class="example" data-example="order">
+                    Order tracking <span aria-hidden="true">↗</span>
+                  </button>
+                </div>
+              </div>
+              <p
+                id="form-error"
+                class="form-error"
+                role="alert"
+                tabindex="-1"
+                hidden
+              ></p>
+              <div class="form-actions">
+                <button
+                  id="submit"
+                  class="primary-button"
+                  type="submit"
+                  disabled
+                >
+                  <span id="submit-label">Suggest category</span
+                  ><svg
+                    id="submit-arrow"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <path d="M5 12h14m-6-6 6 6-6 6" /></svg
+                  ><span
+                    id="submit-spinner"
+                    class="spinner"
+                    hidden
+                    aria-hidden="true"
+                  ></span></button
+                ><button id="clear" class="text-button" type="button" disabled>
+                  Clear
+                </button>
+              </div>
+            </form>
+            <div class="composer-footer">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <rect x="6" y="10" width="12" height="10" rx="2" />
+                <path d="M8 10V7a4 4 0 0 1 8 0v3" /></svg
+              ><span
+                >This interface sends the message to your local server. It keeps
+                no ticket history.</span
+              >
+            </div>
+          </section>
+
+          <section
+            class="card result-card"
+            aria-labelledby="result-title"
+            aria-busy="false"
+            id="result-panel"
+          >
+            <div class="card-heading">
+              <div class="step-label">
+                <span class="step-number">02</span><span>THE SUGGESTION</span>
+              </div>
+              <span class="quiet-tag">AI assisted</span>
+            </div>
+            <div id="result-idle" class="result-empty">
+              <div class="empty-illustration" aria-hidden="true">
+                <svg viewBox="0 0 104 90">
+                  <rect x="22" y="13" width="60" height="51" rx="8" />
+                  <path d="M35 30h34M35 40h24M35 50h13" />
+                  <circle cx="76" cy="64" r="15" />
+                  <path d="m70 64 4 4 8-9" />
+                </svg>
+              </div>
+              <h2 id="result-title" tabindex="-1">A clearer next step.</h2>
+              <p>
+                Your category suggestion will appear here after you submit a
+                message.
+              </p>
+              <div class="empty-rule"></div>
+              <span class="review-reminder"
+                ><span class="tiny-dot"></span>You stay in the loop</span
+              >
+            </div>
+            <div id="result-loading" class="result-empty" role="status" hidden>
+              <span class="large-spinner" aria-hidden="true"></span>
+              <h2>Reading the request…</h2>
+              <p>Finding the most likely category.</p>
+            </div>
+            <div id="result-success" hidden>
+              <p class="result-kicker">SUGGESTED CATEGORY</p>
+              <h2 id="category" class="category" tabindex="-1"></h2>
+              <p class="result-subtitle">
+                A starting point for the right handoff.
+              </p>
+              <div class="review-box">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <circle cx="12" cy="8" r="3" />
+                  <path d="M6 20v-3a6 6 0 0 1 12 0v3M15 4l3-1" />
+                </svg>
+                <div>
+                  <strong>Human review required</strong>
+                  <p>Confirm the category before routing this request.</p>
+                </div>
+              </div>
+              <div class="score-block">
+                <span
+                  >Model score
+                  <span class="uncalibrated-tag">Uncalibrated</span></span
+                ><strong id="score"></strong>
+                <p>
+                  This score is not a verified probability that the suggestion
+                  is correct.
+                </p>
+              </div>
+              <details class="response-details">
+                <summary>
+                  View API response
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="m8 10 4 4 4-4" />
+                  </svg>
+                </summary>
+                <pre
+                  id="json-response"
+                  tabindex="0"
+                  aria-label="Prediction JSON response"
+                ></pre>
+              </details>
+            </div>
+          </section>
+        </div>
+
+        <section
+          class="how-section"
+          id="how-it-works"
+          aria-labelledby="how-title"
+        >
+          <div class="how-heading">
+            <h2 id="how-title">Simple by design. Reviewed by you.</h2>
+            <span>THE WORKFLOW</span>
+          </div>
+          <div class="how-grid">
+            <article>
+              <span class="how-number">01</span>
+              <div>
+                <h3>Write a request</h3>
+                <p>Use your own message or explore an example.</p>
+              </div>
+            </article>
+            <article>
+              <span class="how-number">02</span>
+              <div>
+                <h3>Get a suggestion</h3>
+                <p>The trained model identifies a likely category.</p>
+              </div>
+            </article>
+            <article>
+              <span class="how-number">03</span>
+              <div>
+                <h3>Make the final call</h3>
+                <p>Review the suggestion before taking action.</p>
+              </div>
+            </article>
+          </div>
+        </section>
+        <footer class="page-footer">
+          <span class="footer-mark" aria-hidden="true">✳</span>
+          <p>
+            A learning prototype trained on synthetic support requests.
+            Suggestions can be wrong.
+          </p>
+          <a href="/docs" target="_blank" rel="noopener"
+            >Explore the API <span aria-hidden="true">↗</span></a
+          >
+        </footer>
+      </main>
+    </div>
+  </body>
+</html>

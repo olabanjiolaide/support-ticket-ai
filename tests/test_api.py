@@ -95,3 +95,23 @@ class ApiTests(unittest.TestCase):
             self.assertEqual(response.status_code, 200)
             self.assertIn("/predict", response.json()["paths"])
             self.assertIn("PredictionResponse", response.json()["components"]["schemas"])
+
+    def test_workspace_and_local_assets_are_served(self):
+        with TestClient(create_app(self.root)) as client:
+            response = client.get("/")
+            self.assertEqual(response.status_code, 200)
+            self.assertIn("text/html", response.headers["content-type"])
+            self.assertIn('id="ticket-form"', response.text)
+            for path, media_type in [("/assets/styles.css", "text/css"),
+                                     ("/assets/app.js", "javascript")]:
+                asset = client.get(path)
+                self.assertEqual(asset.status_code, 200)
+                self.assertIn(media_type, asset.headers["content-type"])
+            self.assertEqual(client.get("/docs").status_code, 200)
+
+    def test_workspace_available_when_model_is_not_configured(self):
+        with patch.dict("os.environ", {}, clear=True):
+            with TestClient(create_app()) as client:
+                self.assertEqual(client.get("/").status_code, 200)
+                self.assertEqual(client.get("/readyz").status_code, 503)
+                self.assertEqual(client.get("/assets/../api.py").status_code, 404)

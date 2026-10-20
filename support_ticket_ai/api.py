@@ -8,7 +8,8 @@ from typing import Annotated, Literal
 
 from fastapi import FastAPI, HTTPException
 from fastapi.exceptions import RequestValidationError
-from fastapi.responses import JSONResponse
+from fastapi.responses import FileResponse, JSONResponse
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 from .predict import MAX_TEXT_LENGTH, TicketPredictor
@@ -58,6 +59,12 @@ def create_app(model_dir: Path | None = None) -> FastAPI:
         description="Category suggestions requiring human review; scores are not calibrated.",
         lifespan=lifespan,
     )
+    web_directory = Path(__file__).resolve().parent / "web"
+    application.mount("/assets", StaticFiles(directory=web_directory), name="assets")
+
+    @application.get("/", include_in_schema=False)
+    def workspace():
+        return FileResponse(web_directory / "index.html", headers={"Cache-Control": "no-cache"})
 
     @application.exception_handler(RequestValidationError)
     async def validation_error_handler(request, error):

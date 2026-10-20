@@ -34,7 +34,9 @@ python -m support_ticket_ai.serve --model-dir artifacts/demo-v1/model
 
 The build needs an internet connection to download approximately 19 MB from the publisher's pinned GitHub revision. A checksum mismatch or oversized download stops the build. Existing output directories are never overwritten. If a build fails, inspect the incomplete directory and choose a new output name when retrying.
 
-The server binds to the local loopback interface. Open http://127.0.0.1:8000/docs on the same computer, expand POST /predict, choose Try it out, and submit:
+The server binds to the local loopback interface. Open http://127.0.0.1:8000/ on the same computer, choose the Account access example, and click Suggest category. The [workspace guide](09-ticket-workspace.md) explains the interface.
+
+For the developer API reference, open http://127.0.0.1:8000/docs, expand POST /predict, choose Try it out, and submit:
 
 ```json
 {"text": "I cannot reset my password."}

@@ -6,6 +6,7 @@ The service exposes the existing reviewed prediction function through HTTP. It l
 
 | Endpoint | Purpose | Responses |
 | --- | --- | --- |
+| GET / | Ticket workspace with model status and prediction form | Browser interface |
 | GET /healthz | Check that the service responds | 200 alive |
 | GET /readyz | Check that the model loaded successfully | 200 ready, or 503 unavailable |
 | POST /predict | Submit one ticket and receive a category suggestion | 200 prediction, 422 invalid request, 503 unavailable model, 500 inference failure |
@@ -30,7 +31,7 @@ $env:SUPPORT_TICKET_MODEL_DIR = "artifacts/baseline-v1"
 python -m uvicorn support_ticket_ai.api:app --host 127.0.0.1 --port 8000
 ```
 
-Open http://127.0.0.1:8000/docs on the computer running the service. This is a local development service, not a published link for your phone. No hosted service has been deployed.
+Open http://127.0.0.1:8000/ for the ticket workspace, or http://127.0.0.1:8000/docs for the developer API reference. This is a local development service, not a published link for your phone. No hosted service has been deployed.
 
 ## Request and response
 

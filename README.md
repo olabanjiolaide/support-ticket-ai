@@ -12,6 +12,8 @@ The [API guide](docs/06-prediction-api.md) explains local startup, request valid
 
 The [calibration experiment](docs/08-calibration-experiment.md) improved development probability metrics but increased confidence in a known wrong suggestion. Its threshold policy remains an offline simulation.
 
+![Support Ticket AI workspace showing a real local-model prediction](docs/images/workspace.png)
+
 ## Run the complete demo
 
 From the repository root, with Python 3.11–3.13 in a virtual environment:
@@ -22,9 +24,11 @@ python -m support_ticket_ai.demo artifacts/demo-v1
 python -m support_ticket_ai.serve --model-dir artifacts/demo-v1/model
 ```
 
-The demo downloads approximately 19 MB of pinned source data, verifies checksums, prepares splits, trains the baseline, and creates a trusted local model bundle. Use a fresh output path on each run. Open http://127.0.0.1:8000/docs on the computer running the server.
+The demo downloads approximately 19 MB of pinned source data, verifies checksums, prepares splits, trains the baseline, and creates a trusted local model bundle. Use a fresh output path on each run. Open http://127.0.0.1:8000/ for the ticket workspace. The developer API reference remains at http://127.0.0.1:8000/docs.
 
 See [complete setup and phone instructions](docs/07-running-the-demo.md). From your phone, the **Build local demo bundle** GitHub Actions workflow can build a downloadable model and reports. This workflow does not host the API.
+
+See [the workspace guide](docs/09-ticket-workspace.md) for examples, result explanations, and updating an existing local checkout without retraining.
 
 ## Run the first milestone
 
