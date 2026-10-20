@@ -1,0 +1,4535 @@
+{
+  "experiment": "frozen_sentence_embeddings_category_and_scope",
+  "test_evaluated": false,
+  "live_model_changed": false,
+  "candidate_bundle_exported": false,
+  "encoder_fine_tuned": false,
+  "policy_installed": false,
+  "encoder": {
+    "id": "sentence-transformers/all-MiniLM-L6-v2",
+    "revision": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41",
+    "dimensions": 384,
+    "normalize_embeddings": true,
+    "max_sequence_length_wordpieces": 256,
+    "device": "cpu",
+    "torch_threads": 2,
+    "batch_size": 64,
+    "test_double_used": false
+  },
+  "seed": 42,
+  "category_head": {
+    "C": 1.0,
+    "max_iter": 1000,
+    "class_weight": null
+  },
+  "scope_head": {
+    "C": 1.0,
+    "max_iter": 1000,
+    "class_weight": "balanced",
+    "scope_cutoff": 0.5
+  },
+  "training_counts": {
+    "supported": 16990,
+    "unsupported": 48
+  },
+  "selection_criteria": {
+    "minimum_supported_coverage": 0.25,
+    "minimum_selected_supported_accuracy": 0.9,
+    "minimum_unsupported_rejection": 0.9
+  },
+  "candidate_category_thresholds": [
+    0.5,
+    0.6,
+    0.7,
+    0.8,
+    0.85,
+    0.9,
+    0.95,
+    0.98,
+    0.99
+  ],
+  "threshold_selection_partition": "existing_challenge_selection_only",
+  "probe_label_status_counts": {
+    "provisional": 98
+  },
+  "baseline_model_sha256": "cccc36d4074548c23e15cf51e12acc740accfadbb19539d76986a4326f5dbd8e",
+  "preparation_manifest_sha256": "7f91ea2a73a0a733d759d1b332962c26aed01a4423bc44d2b8f02fbabbe57e0d",
+  "probes_sha256": "c46606e93cb295c56f343c0f131d28312cf55d85f2b7bbaacb55b92fe37b58c7",
+  "challenge_sha256": "58920a4aecb51ad493aa5d51e101dd4b9847135eb188326c978f004520217442",
+  "negatives_sha256": "82fcbd6cabee7406dafa7f54128feab3aae1fb3e354ff638fd9f0a2f5b945d89",
+  "training_overlap": {
+    "training_sha256": "938ba7b0d3f2d8edeed45a6d962798f0385796ee26bc0164a8d465b8e76b49fd",
+    "exact_overlap_case_ids": [],
+    "exact_overlap_rows": 0,
+    "method": "NFKC + casefold + whitespace collapse; near-template overlap not measured"
+  },
+  "challenge_training_overlap_before_exclusion": {
+    "training_sha256": "938ba7b0d3f2d8edeed45a6d962798f0385796ee26bc0164a8d465b8e76b49fd",
+    "exact_overlap_case_ids": [
+      "sel-subscription-1"
+    ],
+    "exact_overlap_rows": 1,
+    "method": "NFKC + casefold + whitespace collapse; near-template overlap not measured"
+  },
+  "excluded_challenge_case_ids": [
+    "sel-subscription-1"
+  ],
+  "retained_challenge_partition_counts": {
+    "selection": 33,
+    "audit": 23,
+    "regression": 3
+  },
+  "versions": {
+    "python": "3.12.14",
+    "scikit-learn": "1.8.0",
+    "numpy": "2.3.5",
+    "scipy": "1.17.0",
+    "joblib": "1.5.3",
+    "sentence-transformers": "5.1.2",
+    "transformers": "4.57.6",
+    "torch": "2.8.0+cpu",
+    "huggingface-hub": "0.36.2",
+    "tokenizers": "0.22.2",
+    "safetensors": "0.8.0"
+  },
+  "timing": {
+    "encoder_load_seconds": 6.288294422000035,
+    "encoding_seconds_by_partition": {
+      "train": 60.053689135999775,
+      "validation": 12.38230795599975,
+      "probes": 0.3590589430004911,
+      "challenge": 0.187149536999641,
+      "negatives": 0.1678363230003015
+    },
+    "platform": "Linux-6.18.55-x86_64-with-glibc2.39",
+    "processor": "x86_64"
+  },
+  "models": {
+    "word": {
+      "validation": {
+        "accuracy": 0.9978034047226798,
+        "macro_f1": 0.9983936051983153,
+        "per_class": {
+          "ACCOUNT": {
+            "precision": 0.9901477832512315,
+            "recall": 1.0,
+            "f1-score": 0.995049504950495,
+            "support": 804.0
+          },
+          "CANCEL": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1-score": 1.0,
+            "support": 141.0
+          },
+          "CONTACT": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1-score": 1.0,
+            "support": 295.0
+          },
+          "DELIVERY": {
+            "precision": 1.0,
+            "recall": 0.9959514170040485,
+            "f1-score": 0.9979716024340771,
+            "support": 247.0
+          },
+          "FEEDBACK": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1-score": 1.0,
+            "support": 298.0
+          },
+          "INVOICE": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1-score": 1.0,
+            "support": 270.0
+          },
+          "ORDER": {
+            "precision": 1.0,
+            "recall": 0.9956521739130435,
+            "f1-score": 0.9978213507625272,
+            "support": 460.0
+          },
+          "PAYMENT": {
+            "precision": 1.0,
+            "recall": 0.9932885906040269,
+            "f1-score": 0.9966329966329966,
+            "support": 298.0
+          },
+          "REFUND": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1-score": 1.0,
+            "support": 387.0
+          },
+          "SHIPPING": {
+            "precision": 1.0,
+            "recall": 0.9897610921501706,
+            "f1-score": 0.9948542024013722,
+            "support": 293.0
+          },
+          "SUBSCRIPTION": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1-score": 1.0,
+            "support": 149.0
+          },
+          "accuracy": 0.9978034047226798,
+          "macro avg": {
+            "precision": 0.9991043439319302,
+            "recall": 0.9976957521519353,
+            "f1-score": 0.9983936051983153,
+            "support": 3642.0
+          },
+          "weighted avg": {
+            "precision": 0.9978250460554613,
+            "recall": 0.9978034047226798,
+            "f1-score": 0.9978049213158738,
+            "support": 3642.0
+          }
+        },
+        "confusion_matrix_labels": [
+          "ACCOUNT",
+          "CANCEL",
+          "CONTACT",
+          "DELIVERY",
+          "FEEDBACK",
+          "INVOICE",
+          "ORDER",
+          "PAYMENT",
+          "REFUND",
+          "SHIPPING",
+          "SUBSCRIPTION"
+        ],
+        "confusion_matrix_rows_true_columns_predicted": [
+          [
+            804,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            141,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            295,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            0,
+            246,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            298,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            270,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            2,
+            0,
+            0,
+            0,
+            0,
+            0,
+            458,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            2,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            296,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            387,
+            0,
+            0
+          ],
+          [
+            3,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            290,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            149
+          ]
+        ]
+      },
+      "forced_supported_probe_metrics": {
+        "threshold": null,
+        "supported_rows": 66,
+        "unsupported_rows": 24,
+        "selected_supported_rows": 66,
+        "supported_coverage": 1.0,
+        "selected_supported_accuracy": 0.5151515151515151,
+        "selected_supported_errors": 32,
+        "withheld_supported_rows": 0,
+        "withheld_correct_supported_rows": 0,
+        "unsupported_rejected_rows": 0,
+        "unsupported_rejection": 0.0,
+        "unsupported_suggestions": 24,
+        "ambiguous_rows": 8,
+        "ambiguous_withheld_rows": 0,
+        "ambiguous_withheld_fraction": 0.0
+      },
+      "fixed_070_probe_diagnostic": {
+        "threshold": 0.7,
+        "supported_rows": 66,
+        "unsupported_rows": 24,
+        "selected_supported_rows": 14,
+        "supported_coverage": 0.21212121212121213,
+        "selected_supported_accuracy": 1.0,
+        "selected_supported_errors": 0,
+        "withheld_supported_rows": 52,
+        "withheld_correct_supported_rows": 20,
+        "unsupported_rejected_rows": 20,
+        "unsupported_rejection": 0.8333333333333334,
+        "unsupported_suggestions": 4,
+        "ambiguous_rows": 8,
+        "ambiguous_withheld_rows": 6,
+        "ambiguous_withheld_fraction": 0.75
+      },
+      "policies": {
+        "category_only": {
+          "selection": {
+            "candidates": [
+              {
+                "threshold": 0.5,
+                "supported_rows": 21,
+                "unsupported_rows": 12,
+                "selected_supported_rows": 16,
+                "supported_coverage": 0.7619047619047619,
+                "selected_supported_accuracy": 1.0,
+                "selected_supported_errors": 0,
+                "withheld_supported_rows": 5,
+                "withheld_correct_supported_rows": 2,
+                "unsupported_rejected_rows": 9,
+                "unsupported_rejection": 0.75,
+                "unsupported_suggestions": 3,
+                "ambiguous_rows": 0,
+                "ambiguous_withheld_rows": 0,
+                "ambiguous_withheld_fraction": null
+              },
+              {
+                "threshold": 0.6,
+                "supported_rows": 21,
+                "unsupported_rows": 12,
+                "selected_supported_rows": 14,
+                "supported_coverage": 0.6666666666666666,
+                "selected_supported_accuracy": 1.0,
+                "selected_supported_errors": 0,
+                "withheld_supported_rows": 7,
+                "withheld_correct_supported_rows": 4,
+                "unsupported_rejected_rows": 10,
+                "unsupported_rejection": 0.8333333333333334,
+                "unsupported_suggestions": 2,
+                "ambiguous_rows": 0,
+                "ambiguous_withheld_rows": 0,
+                "ambiguous_withheld_fraction": null
+              },
+              {
+                "threshold": 0.7,
+                "supported_rows": 21,
+                "unsupported_rows": 12,
+                "selected_supported_rows": 13,
+                "supported_coverage": 0.6190476190476191,
+                "selected_supported_accuracy": 1.0,
+                "selected_supported_errors": 0,
+                "withheld_supported_rows": 8,
+                "withheld_correct_supported_rows": 5,
+                "unsupported_rejected_rows": 11,
+                "unsupported_rejection": 0.9166666666666666,
+                "unsupported_suggestions": 1,
+                "ambiguous_rows": 0,
+                "ambiguous_withheld_rows": 0,
+                "ambiguous_withheld_fraction": null
+              },
+              {
+                "threshold": 0.8,
+                "supported_rows": 21,
+                "unsupported_rows": 12,
+                "selected_supported_rows": 12,
+                "supported_coverage": 0.5714285714285714,
+                "selected_supported_accuracy": 1.0,
+                "selected_supported_errors": 0,
+                "withheld_supported_rows": 9,
+                "withheld_correct_supported_rows": 6,
+                "unsupported_rejected_rows": 12,
+                "unsupported_rejection": 1.0,
+                "unsupported_suggestions": 0,
+                "ambiguous_rows": 0,
+                "ambiguous_withheld_rows": 0,
+                "ambiguous_withheld_fraction": null
+              },
+              {
+                "threshold": 0.85,
+                "supported_rows": 21,
+                "unsupported_rows": 12,
+                "selected_supported_rows": 9,
+                "supported_coverage": 0.42857142857142855,
+                "selected_supported_accuracy": 1.0,
+                "selected_supported_errors": 0,
+                "withheld_supported_rows": 12,
+                "withheld_correct_supported_rows": 9,
+                "unsupported_rejected_rows": 12,
+                "unsupported_rejection": 1.0,
+                "unsupported_suggestions": 0,
+                "ambiguous_rows": 0,
+                "ambiguous_withheld_rows": 0,
+                "ambiguous_withheld_fraction": null
+              },
+              {
+                "threshold": 0.9,
+                "supported_rows": 21,
+                "unsupported_rows": 12,
+                "selected_supported_rows": 2,
+                "supported_coverage": 0.09523809523809523,
+                "selected_supported_accuracy": 1.0,
+                "selected_supported_errors": 0,
+                "withheld_supported_rows": 19,
+                "withheld_correct_supported_rows": 16,
+                "unsupported_rejected_rows": 12,
+                "unsupported_rejection": 1.0,
+                "unsupported_suggestions": 0,
+                "ambiguous_rows": 0,
+                "ambiguous_withheld_rows": 0,
+                "ambiguous_withheld_fraction": null
+              },
+              {
+                "threshold": 0.95,
+                "supported_rows": 21,
+                "unsupported_rows": 12,
+                "selected_supported_rows": 2,
+                "supported_coverage": 0.09523809523809523,
+                "selected_supported_accuracy": 1.0,
+                "selected_supported_errors": 0,
+                "withheld_supported_rows": 19,
+                "withheld_correct_supported_rows": 16,
+                "unsupported_rejected_rows": 12,
+                "unsupported_rejection": 1.0,
+                "unsupported_suggestions": 0,
+                "ambiguous_rows": 0,
+                "ambiguous_withheld_rows": 0,
+                "ambiguous_withheld_fraction": null
+              },
+              {
+                "threshold": 0.98,
+                "supported_rows": 21,
+                "unsupported_rows": 12,
+                "selected_supported_rows": 2,
+                "supported_coverage": 0.09523809523809523,
+                "selected_supported_accuracy": 1.0,
+                "selected_supported_errors": 0,
+                "withheld_supported_rows": 19,
+                "withheld_correct_supported_rows": 16,
+                "unsupported_rejected_rows": 12,
+                "unsupported_rejection": 1.0,
+                "unsupported_suggestions": 0,
+                "ambiguous_rows": 0,
+                "ambiguous_withheld_rows": 0,
+                "ambiguous_withheld_fraction": null
+              },
+              {
+                "threshold": 0.99,
+                "supported_rows": 21,
+                "unsupported_rows": 12,
+                "selected_supported_rows": 2,
+                "supported_coverage": 0.09523809523809523,
+                "selected_supported_accuracy": 1.0,
+                "selected_supported_errors": 0,
+                "withheld_supported_rows": 19,
+                "withheld_correct_supported_rows": 16,
+                "unsupported_rejected_rows": 12,
+                "unsupported_rejection": 1.0,
+                "unsupported_suggestions": 0,
+                "ambiguous_rows": 0,
+                "ambiguous_withheld_rows": 0,
+                "ambiguous_withheld_fraction": null
+              }
+            ],
+            "selected_threshold": 0.7
+          },
+          "previously_inspected_audit": {
+            "policy_selected": true,
+            "metrics": {
+              "threshold": 0.7,
+              "supported_rows": 11,
+              "unsupported_rows": 12,
+              "selected_supported_rows": 3,
+              "supported_coverage": 0.2727272727272727,
+              "selected_supported_accuracy": 1.0,
+              "selected_supported_errors": 0,
+              "withheld_supported_rows": 8,
+              "withheld_correct_supported_rows": 8,
+              "unsupported_rejected_rows": 12,
+              "unsupported_rejection": 1.0,
+              "unsupported_suggestions": 0,
+              "ambiguous_rows": 0,
+              "ambiguous_withheld_rows": 0,
+              "ambiguous_withheld_fraction": null
+            },
+            "by_slice": {}
+          },
+          "broader_development_probes": {
+            "policy_selected": true,
+            "metrics": {
+              "threshold": 0.7,
+              "supported_rows": 66,
+              "unsupported_rows": 24,
+              "selected_supported_rows": 14,
+              "supported_coverage": 0.21212121212121213,
+              "selected_supported_accuracy": 1.0,
+              "selected_supported_errors": 0,
+              "withheld_supported_rows": 52,
+              "withheld_correct_supported_rows": 20,
+              "unsupported_rejected_rows": 20,
+              "unsupported_rejection": 0.8333333333333334,
+              "unsupported_suggestions": 4,
+              "ambiguous_rows": 8,
+              "ambiguous_withheld_rows": 6,
+              "ambiguous_withheld_fraction": 0.75
+            },
+            "by_slice": {
+              "ambiguous": {
+                "threshold": 0.7,
+                "supported_rows": 0,
+                "unsupported_rows": 0,
+                "selected_supported_rows": 0,
+                "supported_coverage": null,
+                "selected_supported_accuracy": null,
+                "selected_supported_errors": 0,
+                "withheld_supported_rows": 0,
+                "withheld_correct_supported_rows": 0,
+                "unsupported_rejected_rows": 0,
+                "unsupported_rejection": null,
+                "unsupported_suggestions": 0,
+                "ambiguous_rows": 8,
+                "ambiguous_withheld_rows": 6,
+                "ambiguous_withheld_fraction": 0.75
+              },
+              "general_knowledge": {
+                "threshold": 0.7,
+                "supported_rows": 0,
+                "unsupported_rows": 8,
+                "selected_supported_rows": 0,
+                "supported_coverage": null,
+                "selected_supported_accuracy": null,
+                "selected_supported_errors": 0,
+                "withheld_supported_rows": 0,
+                "withheld_correct_supported_rows": 0,
+                "unsupported_rejected_rows": 8,
+                "unsupported_rejection": 1.0,
+                "unsupported_suggestions": 0,
+                "ambiguous_rows": 0,
+                "ambiguous_withheld_rows": 0,
+                "ambiguous_withheld_fraction": null
+              },
+              "indirect": {
+                "threshold": 0.7,
+                "supported_rows": 22,
+                "unsupported_rows": 0,
+                "selected_supported_rows": 2,
+                "supported_coverage": 0.09090909090909091,
+                "selected_supported_accuracy": 1.0,
+                "selected_supported_errors": 0,
+                "withheld_supported_rows": 20,
+                "withheld_correct_supported_rows": 8,
+                "unsupported_rejected_rows": 0,
+                "unsupported_rejection": null,
+                "unsupported_suggestions": 0,
+                "ambiguous_rows": 0,
+                "ambiguous_withheld_rows": 0,
+                "ambiguous_withheld_fraction": null
+              },
+              "keyword_trap": {
+                "threshold": 0.7,
+                "supported_rows": 0,
+                "unsupported_rows": 8,
+                "selected_supported_rows": 0,
+                "supported_coverage": null,
+                "selected_supported_accuracy": null,
+                "selected_supported_errors": 0,
+                "withheld_supported_rows": 0,
+                "withheld_correct_supported_rows": 0,
+                "unsupported_rejected_rows": 4,
+                "unsupported_rejection": 0.5,
+                "unsupported_suggestions": 4,
+                "ambiguous_rows": 0,
+                "ambiguous_withheld_rows": 0,
+                "ambiguous_withheld_fraction": null
+              },
+              "other_task": {
+                "threshold": 0.7,
+                "supported_rows": 0,
+                "unsupported_rows": 8,
+                "selected_supported_rows": 0,
+                "supported_coverage": null,
+                "selected_supported_accuracy": null,
+                "selected_supported_errors": 0,
+                "withheld_supported_rows": 0,
+                "withheld_correct_supported_rows": 0,
+                "unsupported_rejected_rows": 8,
+                "unsupported_rejection": 1.0,
+                "unsupported_suggestions": 0,
+                "ambiguous_rows": 0,
+                "ambiguous_withheld_rows": 0,
+                "ambiguous_withheld_fraction": null
+              },
+              "plain": {
+                "threshold": 0.7,
+                "supported_rows": 22,
+                "unsupported_rows": 0,
+                "selected_supported_rows": 11,
+                "supported_coverage": 0.5,
+                "selected_supported_accuracy": 1.0,
+                "selected_supported_errors": 0,
+                "withheld_supported_rows": 11,
+                "withheld_correct_supported_rows": 7,
+                "unsupported_rejected_rows": 0,
+                "unsupported_rejection": null,
+                "unsupported_suggestions": 0,
+                "ambiguous_rows": 0,
+                "ambiguous_withheld_rows": 0,
+                "ambiguous_withheld_fraction": null
+              },
+              "typo": {
+                "threshold": 0.7,
+                "supported_rows": 22,
+                "unsupported_rows": 0,
+                "selected_supported_rows": 1,
+                "supported_coverage": 0.045454545454545456,
+                "selected_supported_accuracy": 1.0,
+                "selected_supported_errors": 0,
+                "withheld_supported_rows": 21,
+                "withheld_correct_supported_rows": 5,
+                "unsupported_rejected_rows": 0,
+                "unsupported_rejection": null,
+                "unsupported_suggestions": 0,
+                "ambiguous_rows": 0,
+                "ambiguous_withheld_rows": 0,
+                "ambiguous_withheld_fraction": null
+              }
+            }
+          }
+        }
+      },
+      "probe_cases": [
+        {
+          "case_id": "account-01",
+          "slice": "plain",
+          "text": "I need to update the name on my customer profile.",
+          "expected_category": "ACCOUNT",
+          "label_status": "provisional",
+          "top_category": "ACCOUNT",
+          "score": 0.7835087387585534
+        },
+        {
+          "case_id": "account-02",
+          "slice": "plain",
+          "text": "Where do I reset the password for my customer account?",
+          "expected_category": "ACCOUNT",
+          "label_status": "provisional",
+          "top_category": "ACCOUNT",
+          "score": 0.9298466564582841
+        },
+        {
+          "case_id": "account-03",
+          "slice": "typo",
+          "text": "cant loggin to my acount pls help",
+          "expected_category": "ACCOUNT",
+          "label_status": "provisional",
+          "top_category": "ACCOUNT",
+          "score": 0.5691582616958362
+        },
+        {
+          "case_id": "account-04",
+          "slice": "typo",
+          "text": "need to chnage my acount passwrod",
+          "expected_category": "ACCOUNT",
+          "label_status": "provisional",
+          "top_category": "ACCOUNT",
+          "score": 0.7461512567377152
+        },
+        {
+          "case_id": "account-05",
+          "slice": "indirect",
+          "text": "The email I registered with is no longer mine; where can I replace it?",
+          "expected_category": "ACCOUNT",
+          "label_status": "provisional",
+          "top_category": "ACCOUNT",
+          "score": 0.36252223460547656
+        },
+        {
+          "case_id": "account-06",
+          "slice": "indirect",
+          "text": "I signed up here before but have forgotten the credentials to get back in.",
+          "expected_category": "ACCOUNT",
+          "label_status": "provisional",
+          "top_category": "REFUND",
+          "score": 0.35280374582941765
+        },
+        {
+          "case_id": "cancel-01",
+          "slice": "plain",
+          "text": "What penalties apply when an order is cancelled?",
+          "expected_category": "CANCEL",
+          "label_status": "provisional",
+          "top_category": "ORDER",
+          "score": 0.5018896751337528
+        },
+        {
+          "case_id": "cancel-02",
+          "slice": "plain",
+          "text": "Is cancelling a purchase free of charge?",
+          "expected_category": "CANCEL",
+          "label_status": "provisional",
+          "top_category": "ORDER",
+          "score": 0.3786133510025297
+        },
+        {
+          "case_id": "cancel-03",
+          "slice": "typo",
+          "text": "how much is the cancelation fee?",
+          "expected_category": "CANCEL",
+          "label_status": "provisional",
+          "top_category": "CANCEL",
+          "score": 0.3085242218633223
+        },
+        {
+          "case_id": "cancel-04",
+          "slice": "typo",
+          "text": "will i pay a penelty for cancling?",
+          "expected_category": "CANCEL",
+          "label_status": "provisional",
+          "top_category": "DELIVERY",
+          "score": 0.27431620367899806
+        },
+        {
+          "case_id": "cancel-05",
+          "slice": "indirect",
+          "text": "Before I call off my purchase, I need to know whether doing so costs anything.",
+          "expected_category": "CANCEL",
+          "label_status": "provisional",
+          "top_category": "ORDER",
+          "score": 0.22318043569698673
+        },
+        {
+          "case_id": "cancel-06",
+          "slice": "indirect",
+          "text": "Would withdrawing my purchase leave me owing a fee?",
+          "expected_category": "CANCEL",
+          "label_status": "provisional",
+          "top_category": "ORDER",
+          "score": 0.20823692391811882
+        },
+        {
+          "case_id": "contact-01",
+          "slice": "plain",
+          "text": "Please provide your customer service email address.",
+          "expected_category": "CONTACT",
+          "label_status": "provisional",
+          "top_category": "CONTACT",
+          "score": 0.6035919888356229
+        },
+        {
+          "case_id": "contact-02",
+          "slice": "plain",
+          "text": "How can I reach your support department by telephone?",
+          "expected_category": "CONTACT",
+          "label_status": "provisional",
+          "top_category": "CONTACT",
+          "score": 0.4461559432752495
+        },
+        {
+          "case_id": "contact-03",
+          "slice": "typo",
+          "text": "need to speek to a suport agnet",
+          "expected_category": "CONTACT",
+          "label_status": "provisional",
+          "top_category": "CONTACT",
+          "score": 0.1625830400789478
+        },
+        {
+          "case_id": "contact-04",
+          "slice": "typo",
+          "text": "whats ur custmer servce number",
+          "expected_category": "CONTACT",
+          "label_status": "provisional",
+          "top_category": "ORDER",
+          "score": 0.43615188678426514
+        },
+        {
+          "case_id": "contact-05",
+          "slice": "indirect",
+          "text": "I would rather discuss this with someone who works for your company.",
+          "expected_category": "CONTACT",
+          "label_status": "provisional",
+          "top_category": "FEEDBACK",
+          "score": 0.4317162252599294
+        },
+        {
+          "case_id": "contact-06",
+          "slice": "indirect",
+          "text": "Can a member of your customer care team take over this conversation?",
+          "expected_category": "CONTACT",
+          "label_status": "provisional",
+          "top_category": "REFUND",
+          "score": 0.27831012216439444
+        },
+        {
+          "case_id": "delivery-01",
+          "slice": "plain",
+          "text": "Is weekend delivery available?",
+          "expected_category": "DELIVERY",
+          "label_status": "provisional",
+          "top_category": "DELIVERY",
+          "score": 0.6563753690998373
+        },
+        {
+          "case_id": "delivery-02",
+          "slice": "plain",
+          "text": "What is the estimated delivery time for the express option?",
+          "expected_category": "DELIVERY",
+          "label_status": "provisional",
+          "top_category": "DELIVERY",
+          "score": 0.4099619920432902
+        },
+        {
+          "case_id": "delivery-03",
+          "slice": "typo",
+          "text": "do u ofer same day delivry",
+          "expected_category": "DELIVERY",
+          "label_status": "provisional",
+          "top_category": "ACCOUNT",
+          "score": 0.24158798147560576
+        },
+        {
+          "case_id": "delivery-04",
+          "slice": "typo",
+          "text": "how long dose standard delivry take",
+          "expected_category": "DELIVERY",
+          "label_status": "provisional",
+          "top_category": "REFUND",
+          "score": 0.48475056126527966
+        },
+        {
+          "case_id": "delivery-05",
+          "slice": "indirect",
+          "text": "I need something to arrive tomorrow; is there a service level that can do that?",
+          "expected_category": "DELIVERY",
+          "label_status": "provisional",
+          "top_category": "DELIVERY",
+          "score": 0.311029025403707
+        },
+        {
+          "case_id": "delivery-06",
+          "slice": "indirect",
+          "text": "Before choosing how it arrives, can you explain your available delivery speeds?",
+          "expected_category": "DELIVERY",
+          "label_status": "provisional",
+          "top_category": "DELIVERY",
+          "score": 0.3804374880709046
+        },
+        {
+          "case_id": "feedback-01",
+          "slice": "plain",
+          "text": "How do I submit a complaint about your service?",
+          "expected_category": "FEEDBACK",
+          "label_status": "provisional",
+          "top_category": "FEEDBACK",
+          "score": 0.9102958063371979
+        },
+        {
+          "case_id": "feedback-02",
+          "slice": "plain",
+          "text": "I want to leave positive feedback about your helpful staff.",
+          "expected_category": "FEEDBACK",
+          "label_status": "provisional",
+          "top_category": "FEEDBACK",
+          "score": 0.987785106425442
+        },
+        {
+          "case_id": "feedback-03",
+          "slice": "typo",
+          "text": "i wana file a complant about ur servce",
+          "expected_category": "FEEDBACK",
+          "label_status": "provisional",
+          "top_category": "FEEDBACK",
+          "score": 0.6756333996491033
+        },
+        {
+          "case_id": "feedback-04",
+          "slice": "typo",
+          "text": "where can i leav a reveiw of this shop",
+          "expected_category": "FEEDBACK",
+          "label_status": "provisional",
+          "top_category": "ORDER",
+          "score": 0.4551369449937408
+        },
+        {
+          "case_id": "feedback-05",
+          "slice": "indirect",
+          "text": "Your colleague was exceptionally helpful and I want that praise recorded.",
+          "expected_category": "FEEDBACK",
+          "label_status": "provisional",
+          "top_category": "FEEDBACK",
+          "score": 0.262679700046754
+        },
+        {
+          "case_id": "feedback-06",
+          "slice": "indirect",
+          "text": "The way your staff treated me was unacceptable; where can I report my experience?",
+          "expected_category": "FEEDBACK",
+          "label_status": "provisional",
+          "top_category": "ACCOUNT",
+          "score": 0.2638692000467856
+        },
+        {
+          "case_id": "invoice-01",
+          "slice": "plain",
+          "text": "Can I download a PDF invoice for my purchase?",
+          "expected_category": "INVOICE",
+          "label_status": "provisional",
+          "top_category": "INVOICE",
+          "score": 0.6705786072181014
+        },
+        {
+          "case_id": "invoice-02",
+          "slice": "plain",
+          "text": "The invoice is missing from my confirmation email.",
+          "expected_category": "INVOICE",
+          "label_status": "provisional",
+          "top_category": "INVOICE",
+          "score": 0.8479127765702948
+        },
+        {
+          "case_id": "invoice-03",
+          "slice": "typo",
+          "text": "pls send my invioce again",
+          "expected_category": "INVOICE",
+          "label_status": "provisional",
+          "top_category": "FEEDBACK",
+          "score": 0.365232831616103
+        },
+        {
+          "case_id": "invoice-04",
+          "slice": "typo",
+          "text": "where is the invoce for last weeks purchse",
+          "expected_category": "INVOICE",
+          "label_status": "provisional",
+          "top_category": "ACCOUNT",
+          "score": 0.16531440179032866
+        },
+        {
+          "case_id": "invoice-05",
+          "slice": "indirect",
+          "text": "My accountant needs the itemized billing document for this purchase.",
+          "expected_category": "INVOICE",
+          "label_status": "provisional",
+          "top_category": "ACCOUNT",
+          "score": 0.26432241932069567
+        },
+        {
+          "case_id": "invoice-06",
+          "slice": "indirect",
+          "text": "I need the document showing what you billed me so I can submit my expenses.",
+          "expected_category": "INVOICE",
+          "label_status": "provisional",
+          "top_category": "ACCOUNT",
+          "score": 0.2101496263654207
+        },
+        {
+          "case_id": "order-01",
+          "slice": "plain",
+          "text": "Please remove one item from my existing order.",
+          "expected_category": "ORDER",
+          "label_status": "provisional",
+          "top_category": "ORDER",
+          "score": 0.7119446512830406
+        },
+        {
+          "case_id": "order-02",
+          "slice": "plain",
+          "text": "How can I see the status of an order I already placed?",
+          "expected_category": "ORDER",
+          "label_status": "provisional",
+          "top_category": "ORDER",
+          "score": 0.5991729396480114
+        },
+        {
+          "case_id": "order-03",
+          "slice": "typo",
+          "text": "wanna cancle my ordar before it ships",
+          "expected_category": "ORDER",
+          "label_status": "provisional",
+          "top_category": "ACCOUNT",
+          "score": 0.4130804159944484
+        },
+        {
+          "case_id": "order-04",
+          "slice": "typo",
+          "text": "can i add an itme to my oder",
+          "expected_category": "ORDER",
+          "label_status": "provisional",
+          "top_category": "ACCOUNT",
+          "score": 0.26708199384361436
+        },
+        {
+          "case_id": "order-05",
+          "slice": "indirect",
+          "text": "I bought two of the same item by mistake; can you amend the purchase to just one?",
+          "expected_category": "ORDER",
+          "label_status": "provisional",
+          "top_category": "ORDER",
+          "score": 0.3379181849654398
+        },
+        {
+          "case_id": "order-06",
+          "slice": "indirect",
+          "text": "I placed a purchase this morning and now need to track its progress.",
+          "expected_category": "ORDER",
+          "label_status": "provisional",
+          "top_category": "ORDER",
+          "score": 0.41499584186432803
+        },
+        {
+          "case_id": "payment-01",
+          "slice": "plain",
+          "text": "Can I pay using a debit card?",
+          "expected_category": "PAYMENT",
+          "label_status": "provisional",
+          "top_category": "ACCOUNT",
+          "score": 0.23954764263539663
+        },
+        {
+          "case_id": "payment-02",
+          "slice": "plain",
+          "text": "My card was rejected when I tried to complete checkout.",
+          "expected_category": "PAYMENT",
+          "label_status": "provisional",
+          "top_category": "ACCOUNT",
+          "score": 0.20609862423823747
+        },
+        {
+          "case_id": "payment-03",
+          "slice": "typo",
+          "text": "paymnt keeps failng at chekout",
+          "expected_category": "PAYMENT",
+          "label_status": "provisional",
+          "top_category": "ACCOUNT",
+          "score": 0.1934837386878014
+        },
+        {
+          "case_id": "payment-04",
+          "slice": "typo",
+          "text": "do u acept bank tranfers as paymnt",
+          "expected_category": "PAYMENT",
+          "label_status": "provisional",
+          "top_category": "ACCOUNT",
+          "score": 0.23142369509351107
+        },
+        {
+          "case_id": "payment-05",
+          "slice": "indirect",
+          "text": "I have tried three times to pay for the basket, but the transaction will not go through.",
+          "expected_category": "PAYMENT",
+          "label_status": "provisional",
+          "top_category": "ACCOUNT",
+          "score": 0.19056017247086243
+        },
+        {
+          "case_id": "payment-06",
+          "slice": "indirect",
+          "text": "The same purchase appears twice on my bank statement; please investigate the duplicate charge.",
+          "expected_category": "PAYMENT",
+          "label_status": "provisional",
+          "top_category": "ACCOUNT",
+          "score": 0.4266663522876564
+        },
+        {
+          "case_id": "refund-01",
+          "slice": "plain",
+          "text": "Where can I check the progress of my refund?",
+          "expected_category": "REFUND",
+          "label_status": "provisional",
+          "top_category": "REFUND",
+          "score": 0.8422240716531707
+        },
+        {
+          "case_id": "refund-02",
+          "slice": "plain",
+          "text": "Am I eligible for a refund on a damaged purchase?",
+          "expected_category": "REFUND",
+          "label_status": "provisional",
+          "top_category": "REFUND",
+          "score": 0.780267195131012
+        },
+        {
+          "case_id": "refund-03",
+          "slice": "typo",
+          "text": "my refnd hasnt arived yet",
+          "expected_category": "REFUND",
+          "label_status": "provisional",
+          "top_category": "ACCOUNT",
+          "score": 0.4722459406544719
+        },
+        {
+          "case_id": "refund-04",
+          "slice": "typo",
+          "text": "how do i requst my mony back",
+          "expected_category": "REFUND",
+          "label_status": "provisional",
+          "top_category": "REFUND",
+          "score": 0.3288856431179968
+        },
+        {
+          "case_id": "refund-05",
+          "slice": "indirect",
+          "text": "You approved returning my money last week, but nothing has reached my bank.",
+          "expected_category": "REFUND",
+          "label_status": "provisional",
+          "top_category": "REFUND",
+          "score": 0.6492150502506411
+        },
+        {
+          "case_id": "refund-06",
+          "slice": "indirect",
+          "text": "The product arrived broken and I would like the amount I paid returned.",
+          "expected_category": "REFUND",
+          "label_status": "provisional",
+          "top_category": "REFUND",
+          "score": 0.18189135271786383
+        },
+        {
+          "case_id": "shipping-01",
+          "slice": "plain",
+          "text": "Can I edit the postal code in my shipping address?",
+          "expected_category": "SHIPPING",
+          "label_status": "provisional",
+          "top_category": "SHIPPING",
+          "score": 0.9747788137418503
+        },
+        {
+          "case_id": "shipping-02",
+          "slice": "plain",
+          "text": "How do I add a second shipping address to my profile?",
+          "expected_category": "SHIPPING",
+          "label_status": "provisional",
+          "top_category": "SHIPPING",
+          "score": 0.7266391864396273
+        },
+        {
+          "case_id": "shipping-03",
+          "slice": "typo",
+          "text": "need to corect my shiping adress",
+          "expected_category": "SHIPPING",
+          "label_status": "provisional",
+          "top_category": "ACCOUNT",
+          "score": 0.3056861793241858
+        },
+        {
+          "case_id": "shipping-04",
+          "slice": "typo",
+          "text": "wrong zip in delivry adress pls fix",
+          "expected_category": "SHIPPING",
+          "label_status": "provisional",
+          "top_category": "REFUND",
+          "score": 0.2300711703336779
+        },
+        {
+          "case_id": "shipping-05",
+          "slice": "indirect",
+          "text": "I moved house; where do I replace the address used for my parcels?",
+          "expected_category": "SHIPPING",
+          "label_status": "provisional",
+          "top_category": "SHIPPING",
+          "score": 0.9495972259750909
+        },
+        {
+          "case_id": "shipping-06",
+          "slice": "indirect",
+          "text": "The destination has apartment 12 instead of 21; can you correct that address?",
+          "expected_category": "SHIPPING",
+          "label_status": "provisional",
+          "top_category": "SHIPPING",
+          "score": 0.7588280734297832
+        },
+        {
+          "case_id": "subscription-01",
+          "slice": "plain",
+          "text": "Please remove me from your marketing newsletter.",
+          "expected_category": "SUBSCRIPTION",
+          "label_status": "provisional",
+          "top_category": "SUBSCRIPTION",
+          "score": 0.9003384838829225
+        },
+        {
+          "case_id": "subscription-02",
+          "slice": "plain",
+          "text": "Where do I sign up for your email newsletter?",
+          "expected_category": "SUBSCRIPTION",
+          "label_status": "provisional",
+          "top_category": "SUBSCRIPTION",
+          "score": 0.5745424379525537
+        },
+        {
+          "case_id": "subscription-03",
+          "slice": "typo",
+          "text": "unsubscrbe me frm ur newslter",
+          "expected_category": "SUBSCRIPTION",
+          "label_status": "provisional",
+          "top_category": "FEEDBACK",
+          "score": 0.3685093181383033
+        },
+        {
+          "case_id": "subscription-04",
+          "slice": "typo",
+          "text": "i wana subcribe to the newsleter",
+          "expected_category": "SUBSCRIPTION",
+          "label_status": "provisional",
+          "top_category": "ACCOUNT",
+          "score": 0.27682059138676357
+        },
+        {
+          "case_id": "subscription-05",
+          "slice": "indirect",
+          "text": "I would like your store announcements to arrive in my inbox regularly.",
+          "expected_category": "SUBSCRIPTION",
+          "label_status": "provisional",
+          "top_category": "DELIVERY",
+          "score": 0.4150444647415365
+        },
+        {
+          "case_id": "subscription-06",
+          "slice": "indirect",
+          "text": "I no longer want the promotional emails your company keeps sending.",
+          "expected_category": "SUBSCRIPTION",
+          "label_status": "provisional",
+          "top_category": "FEEDBACK",
+          "score": 0.28079749962526857
+        },
+        {
+          "case_id": "general_knowledge-01",
+          "slice": "general_knowledge",
+          "text": "Why does ice float on water?",
+          "expected_category": "UNSUPPORTED",
+          "label_status": "provisional",
+          "top_category": "ACCOUNT",
+          "score": 0.42146112459260454
+        },
+        {
+          "case_id": "general_knowledge-02",
+          "slice": "general_knowledge",
+          "text": "Explain how a rainbow forms.",
+          "expected_category": "UNSUPPORTED",
+          "label_status": "provisional",
+          "top_category": "DELIVERY",
+          "score": 0.2599587740974193
+        },
+        {
+          "case_id": "general_knowledge-03",
+          "slice": "general_knowledge",
+          "text": "Who invented the telescope?",
+          "expected_category": "UNSUPPORTED",
+          "label_status": "provisional",
+          "top_category": "CANCEL",
+          "score": 0.6851673617314802
+        },
+        {
+          "case_id": "general_knowledge-04",
+          "slice": "general_knowledge",
+          "text": "How many sides does a hexagon have?",
+          "expected_category": "UNSUPPORTED",
+          "label_status": "provisional",
+          "top_category": "ACCOUNT",
+          "score": 0.20600345318547766
+        },
+        {
+          "case_id": "general_knowledge-05",
+          "slice": "general_knowledge",
+          "text": "What causes the seasons?",
+          "expected_category": "UNSUPPORTED",
+          "label_status": "provisional",
+          "top_category": "CANCEL",
+          "score": 0.32235077416915664
+        },
+        {
+          "case_id": "general_knowledge-06",
+          "slice": "general_knowledge",
+          "text": "Describe the life cycle of a butterfly.",
+          "expected_category": "UNSUPPORTED",
+          "label_status": "provisional",
+          "top_category": "ACCOUNT",
+          "score": 0.6068390376502906
+        },
+        {
+          "case_id": "general_knowledge-07",
+          "slice": "general_knowledge",
+          "text": "How do volcanoes erupt?",
+          "expected_category": "UNSUPPORTED",
+          "label_status": "provisional",
+          "top_category": "ORDER",
+          "score": 0.1695287394568927
+        },
+        {
+          "case_id": "general_knowledge-08",
+          "slice": "general_knowledge",
+          "text": "What is the difference between a comet and an asteroid?",
+          "expected_category": "UNSUPPORTED",
+          "label_status": "provisional",
+          "top_category": "CONTACT",
+          "score": 0.3103118827247951
+        },
+        {
+          "case_id": "keyword_trap-01",
+          "slice": "keyword_trap",
+          "text": "Write a limerick about an unpaid invoice.",
+          "expected_category": "UNSUPPORTED",
+          "label_status": "provisional",
+          "top_category": "FEEDBACK",
+          "score": 0.43028494925849736
+        },
+        {
+          "case_id": "keyword_trap-02",
+          "slice": "keyword_trap",
+          "text": "Explain subscription pricing in an economics lecture.",
+          "expected_category": "UNSUPPORTED",
+          "label_status": "provisional",
+          "top_category": "SUBSCRIPTION",
+          "score": 0.21419856276479957
+        },
+        {
+          "case_id": "keyword_trap-03",
+          "slice": "keyword_trap",
+          "text": "Translate the phrase shipping address into Italian.",
+          "expected_category": "UNSUPPORTED",
+          "label_status": "provisional",
+          "top_category": "SHIPPING",
+          "score": 0.9998953109167695
+        },
+        {
+          "case_id": "keyword_trap-04",
+          "slice": "keyword_trap",
+          "text": "Make a crossword clue whose answer is refund.",
+          "expected_category": "UNSUPPORTED",
+          "label_status": "provisional",
+          "top_category": "REFUND",
+          "score": 0.7473072029249708
+        },
+        {
+          "case_id": "keyword_trap-05",
+          "slice": "keyword_trap",
+          "text": "Write a fantasy tale about a cancelled royal order.",
+          "expected_category": "UNSUPPORTED",
+          "label_status": "provisional",
+          "top_category": "ORDER",
+          "score": 0.595662668669215
+        },
+        {
+          "case_id": "keyword_trap-06",
+          "slice": "keyword_trap",
+          "text": "Create a poem about a delivery robot falling in love.",
+          "expected_category": "UNSUPPORTED",
+          "label_status": "provisional",
+          "top_category": "DELIVERY",
+          "score": 0.26325281341180956
+        },
+        {
+          "case_id": "keyword_trap-07",
+          "slice": "keyword_trap",
+          "text": "Explain the history of credit card payment networks.",
+          "expected_category": "UNSUPPORTED",
+          "label_status": "provisional",
+          "top_category": "PAYMENT",
+          "score": 0.954820400975008
+        },
+        {
+          "case_id": "keyword_trap-08",
+          "slice": "keyword_trap",
+          "text": "Invent dialogue for a fictional customer support agent.",
+          "expected_category": "UNSUPPORTED",
+          "label_status": "provisional",
+          "top_category": "CONTACT",
+          "score": 0.9932546198663766
+        },
+        {
+          "case_id": "other_task-01",
+          "slice": "other_task",
+          "text": "Debug this Python loop: for x in range(4) print(x).",
+          "expected_category": "UNSUPPORTED",
+          "label_status": "provisional",
+          "top_category": "REFUND",
+          "score": 0.5197364594177853
+        },
+        {
+          "case_id": "other_task-02",
+          "slice": "other_task",
+          "text": "Summarize a scientific paper about solar panels.",
+          "expected_category": "UNSUPPORTED",
+          "label_status": "provisional",
+          "top_category": "FEEDBACK",
+          "score": 0.4871150035830775
+        },
+        {
+          "case_id": "other_task-03",
+          "slice": "other_task",
+          "text": "Plan a three day sightseeing trip to Rome.",
+          "expected_category": "UNSUPPORTED",
+          "label_status": "provisional",
+          "top_category": "ACCOUNT",
+          "score": 0.2275741856180735
+        },
+        {
+          "case_id": "other_task-04",
+          "slice": "other_task",
+          "text": "Generate ten names for a fictional spaceship.",
+          "expected_category": "UNSUPPORTED",
+          "label_status": "provisional",
+          "top_category": "ACCOUNT",
+          "score": 0.19779467023349107
+        },
+        {
+          "case_id": "other_task-05",
+          "slice": "other_task",
+          "text": "Teach me to play a C major chord.",
+          "expected_category": "UNSUPPORTED",
+          "label_status": "provisional",
+          "top_category": "ACCOUNT",
+          "score": 0.1631001333726712
+        },
+        {
+          "case_id": "other_task-06",
+          "slice": "other_task",
+          "text": "Convert 45 degrees Celsius into Fahrenheit.",
+          "expected_category": "UNSUPPORTED",
+          "label_status": "provisional",
+          "top_category": "ACCOUNT",
+          "score": 0.25580410043553864
+        },
+        {
+          "case_id": "other_task-07",
+          "slice": "other_task",
+          "text": "Suggest exercises for learning French verbs.",
+          "expected_category": "UNSUPPORTED",
+          "label_status": "provisional",
+          "top_category": "FEEDBACK",
+          "score": 0.43292010382494145
+        },
+        {
+          "case_id": "other_task-08",
+          "slice": "other_task",
+          "text": "Write a cover letter for an imaginary librarian.",
+          "expected_category": "UNSUPPORTED",
+          "label_status": "provisional",
+          "top_category": "FEEDBACK",
+          "score": 0.5958077391698264
+        },
+        {
+          "case_id": "ambiguous-01",
+          "slice": "ambiguous",
+          "text": "It does not work.",
+          "expected_category": "REVIEW",
+          "label_status": "provisional",
+          "top_category": "ACCOUNT",
+          "score": 0.25921473333694556
+        },
+        {
+          "case_id": "ambiguous-02",
+          "slice": "ambiguous",
+          "text": "Please fix the problem from yesterday.",
+          "expected_category": "REVIEW",
+          "label_status": "provisional",
+          "top_category": "INVOICE",
+          "score": 0.33507208953096
+        },
+        {
+          "case_id": "ambiguous-03",
+          "slice": "ambiguous",
+          "text": "I need help with that thing.",
+          "expected_category": "REVIEW",
+          "label_status": "provisional",
+          "top_category": "CONTACT",
+          "score": 0.23380103342212002
+        },
+        {
+          "case_id": "ambiguous-04",
+          "slice": "ambiguous",
+          "text": "Something is wrong with what I bought.",
+          "expected_category": "REVIEW",
+          "label_status": "provisional",
+          "top_category": "CONTACT",
+          "score": 0.2269841555726103
+        },
+        {
+          "case_id": "ambiguous-05",
+          "slice": "ambiguous",
+          "text": "I want my invoice and I also want to cancel my order.",
+          "expected_category": "REVIEW",
+          "label_status": "provisional",
+          "top_category": "INVOICE",
+          "score": 0.2987182402706255
+        },
+        {
+          "case_id": "ambiguous-06",
+          "slice": "ambiguous",
+          "text": "Change my account email and refund my last purchase.",
+          "expected_category": "REVIEW",
+          "label_status": "provisional",
+          "top_category": "ACCOUNT",
+          "score": 0.7429377111131443
+        },
+        {
+          "case_id": "ambiguous-07",
+          "slice": "ambiguous",
+          "text": "Stop the newsletter and update the shipping address.",
+          "expected_category": "REVIEW",
+          "label_status": "provisional",
+          "top_category": "SHIPPING",
+          "score": 0.951135166921066
+        },
+        {
+          "case_id": "ambiguous-08",
+          "slice": "ambiguous",
+          "text": "I cannot log in and my checkout payment was rejected.",
+          "expected_category": "REVIEW",
+          "label_status": "provisional",
+          "top_category": "PAYMENT",
+          "score": 0.5789032659256437
+        }
+      ],
+      "challenge_cases": [
+        {
+          "case_id": "sel-account-1",
+          "split": "selection",
+          "text": "I forgot my password and need to get back into my account.",
+          "expected_category": "ACCOUNT",
+          "top_category": "ACCOUNT",
+          "score": 0.8805115782334332
+        },
+        {
+          "case_id": "sel-account-2",
+          "split": "selection",
+          "text": "Please help me close my customer account.",
+          "expected_category": "ACCOUNT",
+          "top_category": "ACCOUNT",
+          "score": 0.8556652266150608
+        },
+        {
+          "case_id": "audit-account-1",
+          "split": "audit",
+          "text": "How do I change the email address linked to my account?",
+          "expected_category": "ACCOUNT",
+          "top_category": "ACCOUNT",
+          "score": 0.5975429583502578
+        },
+        {
+          "case_id": "sel-cancel-1",
+          "split": "selection",
+          "text": "Is there a cancellation fee if I cancel an order?",
+          "expected_category": "CANCEL",
+          "top_category": "ORDER",
+          "score": 0.38707507097975336
+        },
+        {
+          "case_id": "sel-cancel-2",
+          "split": "selection",
+          "text": "How much will I be charged for cancelling?",
+          "expected_category": "CANCEL",
+          "top_category": "REFUND",
+          "score": 0.17042491732482842
+        },
+        {
+          "case_id": "audit-cancel-1",
+          "split": "audit",
+          "text": "Where can I check your cancellation fees?",
+          "expected_category": "CANCEL",
+          "top_category": "CANCEL",
+          "score": 0.6470111650763848
+        },
+        {
+          "case_id": "sel-contact-1",
+          "split": "selection",
+          "text": "I would like to speak with a human customer service agent.",
+          "expected_category": "CONTACT",
+          "top_category": "CONTACT",
+          "score": 0.9963718017222457
+        },
+        {
+          "case_id": "sel-contact-2",
+          "split": "selection",
+          "text": "What is the phone number for customer support?",
+          "expected_category": "CONTACT",
+          "top_category": "CONTACT",
+          "score": 0.8180051765876659
+        },
+        {
+          "case_id": "audit-contact-1",
+          "split": "audit",
+          "text": "Can you connect me to a real person on your support team?",
+          "expected_category": "CONTACT",
+          "top_category": "CONTACT",
+          "score": 0.5953157976002805
+        },
+        {
+          "case_id": "sel-delivery-1",
+          "split": "selection",
+          "text": "What delivery options do you offer?",
+          "expected_category": "DELIVERY",
+          "top_category": "DELIVERY",
+          "score": 0.8572451983373666
+        },
+        {
+          "case_id": "sel-delivery-2",
+          "split": "selection",
+          "text": "How long does standard delivery take?",
+          "expected_category": "DELIVERY",
+          "top_category": "DELIVERY",
+          "score": 0.44698964068842506
+        },
+        {
+          "case_id": "audit-delivery-1",
+          "split": "audit",
+          "text": "Do you provide next day delivery?",
+          "expected_category": "DELIVERY",
+          "top_category": "DELIVERY",
+          "score": 0.5490592863700983
+        },
+        {
+          "case_id": "sel-feedback-1",
+          "split": "selection",
+          "text": "I want to complain about the service I received.",
+          "expected_category": "FEEDBACK",
+          "top_category": "ACCOUNT",
+          "score": 0.23469555248532004
+        },
+        {
+          "case_id": "sel-feedback-2",
+          "split": "selection",
+          "text": "Where can I leave a review of your service?",
+          "expected_category": "FEEDBACK",
+          "top_category": "FEEDBACK",
+          "score": 0.8048555024092569
+        },
+        {
+          "case_id": "audit-feedback-1",
+          "split": "audit",
+          "text": "I would like to give feedback about my shopping experience.",
+          "expected_category": "FEEDBACK",
+          "top_category": "FEEDBACK",
+          "score": 0.5224134066635364
+        },
+        {
+          "case_id": "sel-invoice-1",
+          "split": "selection",
+          "text": "Where can I download my invoice?",
+          "expected_category": "INVOICE",
+          "top_category": "INVOICE",
+          "score": 0.8670204597248344
+        },
+        {
+          "case_id": "sel-invoice-2",
+          "split": "selection",
+          "text": "Could you email me the invoice for my order?",
+          "expected_category": "INVOICE",
+          "top_category": "INVOICE",
+          "score": 0.5076234598678709
+        },
+        {
+          "case_id": "audit-invoice-1",
+          "split": "audit",
+          "text": "I need a copy of an invoice from last month.",
+          "expected_category": "INVOICE",
+          "top_category": "INVOICE",
+          "score": 0.6530531730918414
+        },
+        {
+          "case_id": "sel-order-1",
+          "split": "selection",
+          "text": "How do I track the order I placed yesterday?",
+          "expected_category": "ORDER",
+          "top_category": "ORDER",
+          "score": 0.4989571195967171
+        },
+        {
+          "case_id": "sel-order-2",
+          "split": "selection",
+          "text": "I want to change an item in my order.",
+          "expected_category": "ORDER",
+          "top_category": "ORDER",
+          "score": 0.717391975864216
+        },
+        {
+          "case_id": "audit-order-1",
+          "split": "audit",
+          "text": "Please cancel my order before it is shipped.",
+          "expected_category": "ORDER",
+          "top_category": "ORDER",
+          "score": 0.5760526649271444
+        },
+        {
+          "case_id": "sel-payment-1",
+          "split": "selection",
+          "text": "My credit card payment was declined.",
+          "expected_category": "PAYMENT",
+          "top_category": "PAYMENT",
+          "score": 0.6589638254948602
+        },
+        {
+          "case_id": "sel-payment-2",
+          "split": "selection",
+          "text": "Which payment methods are available at checkout?",
+          "expected_category": "PAYMENT",
+          "top_category": "PAYMENT",
+          "score": 0.8998914488023471
+        },
+        {
+          "case_id": "audit-payment-1",
+          "split": "audit",
+          "text": "The checkout page will not accept my payment.",
+          "expected_category": "PAYMENT",
+          "top_category": "PAYMENT",
+          "score": 0.8780358011908187
+        },
+        {
+          "case_id": "sel-refund-1",
+          "split": "selection",
+          "text": "How can I request a refund for my purchase?",
+          "expected_category": "REFUND",
+          "top_category": "REFUND",
+          "score": 0.8549952497776763
+        },
+        {
+          "case_id": "sel-refund-2",
+          "split": "selection",
+          "text": "I am still waiting for my refund to arrive.",
+          "expected_category": "REFUND",
+          "top_category": "REFUND",
+          "score": 0.5231608346342703
+        },
+        {
+          "case_id": "audit-refund-1",
+          "split": "audit",
+          "text": "What are the rules for getting a refund?",
+          "expected_category": "REFUND",
+          "top_category": "REFUND",
+          "score": 0.6211220024002231
+        },
+        {
+          "case_id": "sel-shipping-1",
+          "split": "selection",
+          "text": "I need to change my shipping address.",
+          "expected_category": "SHIPPING",
+          "top_category": "SHIPPING",
+          "score": 0.9941213921738058
+        },
+        {
+          "case_id": "sel-shipping-2",
+          "split": "selection",
+          "text": "How do I save a new address for shipping?",
+          "expected_category": "SHIPPING",
+          "top_category": "SHIPPING",
+          "score": 0.8963789524847199
+        },
+        {
+          "case_id": "audit-shipping-1",
+          "split": "audit",
+          "text": "My delivery address has a wrong postal code. How can I correct it?",
+          "expected_category": "SHIPPING",
+          "top_category": "SHIPPING",
+          "score": 0.9361035058549505
+        },
+        {
+          "case_id": "sel-subscription-2",
+          "split": "selection",
+          "text": "I would like to receive your newsletter by email.",
+          "expected_category": "SUBSCRIPTION",
+          "top_category": "SUBSCRIPTION",
+          "score": 0.8098671244097105
+        },
+        {
+          "case_id": "audit-subscription-1",
+          "split": "audit",
+          "text": "Please stop sending me your newsletter.",
+          "expected_category": "SUBSCRIPTION",
+          "top_category": "SUBSCRIPTION",
+          "score": 0.7895354444765369
+        },
+        {
+          "case_id": "sel-outside-1",
+          "split": "selection",
+          "text": "Write a short story about a dragon.",
+          "expected_category": "UNSUPPORTED",
+          "top_category": "FEEDBACK",
+          "score": 0.7709551218759164
+        },
+        {
+          "case_id": "sel-outside-2",
+          "split": "selection",
+          "text": "Explain how photosynthesis works.",
+          "expected_category": "UNSUPPORTED",
+          "top_category": "DELIVERY",
+          "score": 0.2599587740974193
+        },
+        {
+          "case_id": "sel-outside-3",
+          "split": "selection",
+          "text": "What is the capital of Australia?",
+          "expected_category": "UNSUPPORTED",
+          "top_category": "ACCOUNT",
+          "score": 0.20610890829472456
+        },
+        {
+          "case_id": "sel-outside-4",
+          "split": "selection",
+          "text": "Calculate the area of a circle with radius five.",
+          "expected_category": "UNSUPPORTED",
+          "top_category": "ACCOUNT",
+          "score": 0.4855844842201059
+        },
+        {
+          "case_id": "sel-outside-5",
+          "split": "selection",
+          "text": "Translate good morning into French.",
+          "expected_category": "UNSUPPORTED",
+          "top_category": "ACCOUNT",
+          "score": 0.25580410043553864
+        },
+        {
+          "case_id": "sel-outside-6",
+          "split": "selection",
+          "text": "Give me a recipe for vegetable soup.",
+          "expected_category": "UNSUPPORTED",
+          "top_category": "ACCOUNT",
+          "score": 0.18618372476397008
+        },
+        {
+          "case_id": "sel-outside-7",
+          "split": "selection",
+          "text": "Write a love song containing the word refund.",
+          "expected_category": "UNSUPPORTED",
+          "top_category": "REFUND",
+          "score": 0.5354820055555143
+        },
+        {
+          "case_id": "sel-outside-8",
+          "split": "selection",
+          "text": "In a fantasy novel a knight must deliver a letter to the moon.",
+          "expected_category": "UNSUPPORTED",
+          "top_category": "ACCOUNT",
+          "score": 0.2594480033797484
+        },
+        {
+          "case_id": "sel-outside-9",
+          "split": "selection",
+          "text": "Explain the accounting meaning of invoice in a textbook.",
+          "expected_category": "UNSUPPORTED",
+          "top_category": "INVOICE",
+          "score": 0.6791753960317877
+        },
+        {
+          "case_id": "sel-outside-10",
+          "split": "selection",
+          "text": "Write Python code that sorts a list of numbers.",
+          "expected_category": "UNSUPPORTED",
+          "top_category": "ACCOUNT",
+          "score": 0.449484879066598
+        },
+        {
+          "case_id": "sel-outside-11",
+          "split": "selection",
+          "text": "What should I pack for a hiking trip?",
+          "expected_category": "UNSUPPORTED",
+          "top_category": "ACCOUNT",
+          "score": 0.19021403068342568
+        },
+        {
+          "case_id": "sel-outside-12",
+          "split": "selection",
+          "text": "Tell me a joke about passwords.",
+          "expected_category": "UNSUPPORTED",
+          "top_category": "ACCOUNT",
+          "score": 0.26302179519166724
+        },
+        {
+          "case_id": "audit-outside-1",
+          "split": "audit",
+          "text": "Compose a sonnet about an ocean.",
+          "expected_category": "UNSUPPORTED",
+          "top_category": "FEEDBACK",
+          "score": 0.2838749443078716
+        },
+        {
+          "case_id": "audit-outside-2",
+          "split": "audit",
+          "text": "How do black holes form?",
+          "expected_category": "UNSUPPORTED",
+          "top_category": "ORDER",
+          "score": 0.1695287394568927
+        },
+        {
+          "case_id": "audit-outside-3",
+          "split": "audit",
+          "text": "What is the largest planet in the solar system?",
+          "expected_category": "UNSUPPORTED",
+          "top_category": "CANCEL",
+          "score": 0.17758368150071402
+        },
+        {
+          "case_id": "audit-outside-4",
+          "split": "audit",
+          "text": "Solve the equation three x plus two equals eleven.",
+          "expected_category": "UNSUPPORTED",
+          "top_category": "ACCOUNT",
+          "score": 0.24290912554598318
+        },
+        {
+          "case_id": "audit-outside-5",
+          "split": "audit",
+          "text": "Translate thank you into Spanish.",
+          "expected_category": "UNSUPPORTED",
+          "top_category": "CONTACT",
+          "score": 0.17690120524802236
+        },
+        {
+          "case_id": "audit-outside-6",
+          "split": "audit",
+          "text": "Suggest a recipe for banana bread.",
+          "expected_category": "UNSUPPORTED",
+          "top_category": "FEEDBACK",
+          "score": 0.43292010382494145
+        },
+        {
+          "case_id": "audit-outside-7",
+          "split": "audit",
+          "text": "Write a screenplay where the villain steals a password.",
+          "expected_category": "UNSUPPORTED",
+          "top_category": "ACCOUNT",
+          "score": 0.4908615482536968
+        },
+        {
+          "case_id": "audit-outside-8",
+          "split": "audit",
+          "text": "Describe how shipping changed during the industrial revolution.",
+          "expected_category": "UNSUPPORTED",
+          "top_category": "SHIPPING",
+          "score": 0.44653088066305874
+        },
+        {
+          "case_id": "audit-outside-9",
+          "split": "audit",
+          "text": "Generate a fictional invoice for a story about a wizard.",
+          "expected_category": "UNSUPPORTED",
+          "top_category": "INVOICE",
+          "score": 0.6918618003381339
+        },
+        {
+          "case_id": "audit-outside-10",
+          "split": "audit",
+          "text": "Write a JavaScript function to reverse a string.",
+          "expected_category": "UNSUPPORTED",
+          "top_category": "FEEDBACK",
+          "score": 0.5731878310397066
+        },
+        {
+          "case_id": "audit-outside-11",
+          "split": "audit",
+          "text": "Give me ideas for a birthday party.",
+          "expected_category": "UNSUPPORTED",
+          "top_category": "ACCOUNT",
+          "score": 0.18618372476397008
+        },
+        {
+          "case_id": "audit-outside-12",
+          "split": "audit",
+          "text": "Explain the word subscription to an English language learner.",
+          "expected_category": "UNSUPPORTED",
+          "top_category": "SUBSCRIPTION",
+          "score": 0.2736917356572168
+        },
+        {
+          "case_id": "regression-invoice",
+          "split": "regression",
+          "text": "Please send me an invoice for my last payment.\u201d",
+          "expected_category": "INVOICE",
+          "top_category": "INVOICE",
+          "score": 0.34677494585764534
+        },
+        {
+          "case_id": "regression-payment",
+          "split": "regression",
+          "text": "I was charged twice for my subscription",
+          "expected_category": "PAYMENT",
+          "top_category": "ACCOUNT",
+          "score": 0.26012119864650735
+        },
+        {
+          "case_id": "regression-poem",
+          "split": "regression",
+          "text": "Write a poem about the moon",
+          "expected_category": "UNSUPPORTED",
+          "top_category": "FEEDBACK",
+          "score": 0.3467500292176965
+        }
+      ],
+      "latency": {
+        "requests": 20,
+        "median_ms": 0.6911434998073673,
+        "p95_ms": 1.1731268994935817,
+        "batch_size": 1,
+        "includes": "local feature extraction/encoding and category predict_proba; no HTTP or scope head"
+      }
+    },
+    "semantic": {
+      "validation": {
+        "accuracy": 0.9961559582646897,
+        "macro_f1": 0.9963414467836235,
+        "per_class": {
+          "ACCOUNT": {
+            "precision": 0.9987531172069826,
+            "recall": 0.996268656716418,
+            "f1-score": 0.9975093399750934,
+            "support": 804.0
+          },
+          "CANCEL": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1-score": 1.0,
+            "support": 141.0
+          },
+          "CONTACT": {
+            "precision": 0.9932432432432432,
+            "recall": 0.9966101694915255,
+            "f1-score": 0.9949238578680203,
+            "support": 295.0
+          },
+          "DELIVERY": {
+            "precision": 0.9919678714859438,
+            "recall": 1.0,
+            "f1-score": 0.9959677419354839,
+            "support": 247.0
+          },
+          "FEEDBACK": {
+            "precision": 0.9801980198019802,
+            "recall": 0.9966442953020134,
+            "f1-score": 0.9883527454242929,
+            "support": 298.0
+          },
+          "INVOICE": {
+            "precision": 1.0,
+            "recall": 0.9925925925925926,
+            "f1-score": 0.9962825278810409,
+            "support": 270.0
+          },
+          "ORDER": {
+            "precision": 0.9978165938864629,
+            "recall": 0.9934782608695653,
+            "f1-score": 0.9956427015250545,
+            "support": 460.0
+          },
+          "PAYMENT": {
+            "precision": 0.9966329966329966,
+            "recall": 0.9932885906040269,
+            "f1-score": 0.9949579831932773,
+            "support": 298.0
+          },
+          "REFUND": {
+            "precision": 0.9974093264248705,
+            "recall": 0.9948320413436692,
+            "f1-score": 0.9961190168175937,
+            "support": 387.0
+          },
+          "SHIPPING": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1-score": 1.0,
+            "support": 293.0
+          },
+          "SUBSCRIPTION": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1-score": 1.0,
+            "support": 149.0
+          },
+          "accuracy": 0.9961559582646897,
+          "macro avg": {
+            "precision": 0.9960019244256799,
+            "recall": 0.9967013279018009,
+            "f1-score": 0.9963414467836235,
+            "support": 3642.0
+          },
+          "weighted avg": {
+            "precision": 0.9961858903514607,
+            "recall": 0.9961559582646897,
+            "f1-score": 0.9961616313934533,
+            "support": 3642.0
+          }
+        },
+        "confusion_matrix_labels": [
+          "ACCOUNT",
+          "CANCEL",
+          "CONTACT",
+          "DELIVERY",
+          "FEEDBACK",
+          "INVOICE",
+          "ORDER",
+          "PAYMENT",
+          "REFUND",
+          "SHIPPING",
+          "SUBSCRIPTION"
+        ],
+        "confusion_matrix_rows_true_columns_predicted": [
+          [
+            801,
+            0,
+            0,
+            0,
+            2,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            141,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            294,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            247,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            0,
+            297,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            1,
+            268,
+            1,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            1,
+            1,
+            0,
+            457,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            296,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            1,
+            385,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            293,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            149
+          ]
+        ]
+      },
+      "forced_supported_probe_metrics": {
+        "threshold": null,
+        "supported_rows": 66,
+        "unsupported_rows": 24,
+        "selected_supported_rows": 66,
+        "supported_coverage": 1.0,
+        "selected_supported_accuracy": 0.8484848484848485,
+        "selected_supported_errors": 10,
+        "withheld_supported_rows": 0,
+        "withheld_correct_supported_rows": 0,
+        "unsupported_rejected_rows": 0,
+        "unsupported_rejection": 0.0,
+        "unsupported_suggestions": 24,
+        "ambiguous_rows": 8,
+        "ambiguous_withheld_rows": 0,
+        "ambiguous_withheld_fraction": 0.0
+      },
+      "fixed_070_probe_diagnostic": {
+        "threshold": 0.7,
+        "supported_rows": 66,
+        "unsupported_rows": 24,
+        "selected_supported_rows": 41,
+        "supported_coverage": 0.6212121212121212,
+        "selected_supported_accuracy": 0.926829268292683,
+        "selected_supported_errors": 3,
+        "withheld_supported_rows": 25,
+        "withheld_correct_supported_rows": 18,
+        "unsupported_rejected_rows": 18,
+        "unsupported_rejection": 0.75,
+        "unsupported_suggestions": 6,
+        "ambiguous_rows": 8,
+        "ambiguous_withheld_rows": 7,
+        "ambiguous_withheld_fraction": 0.875
+      },
+      "policies": {
+        "category_only": {
+          "selection": {
+            "candidates": [
+              {
+                "threshold": 0.5,
+                "supported_rows": 21,
+                "unsupported_rows": 12,
+                "selected_supported_rows": 21,
+                "supported_coverage": 1.0,
+                "selected_supported_accuracy": 1.0,
+                "selected_supported_errors": 0,
+                "withheld_supported_rows": 0,
+                "withheld_correct_supported_rows": 0,
+                "unsupported_rejected_rows": 6,
+                "unsupported_rejection": 0.5,
+                "unsupported_suggestions": 6,
+                "ambiguous_rows": 0,
+                "ambiguous_withheld_rows": 0,
+                "ambiguous_withheld_fraction": null
+              },
+              {
+                "threshold": 0.6,
+                "supported_rows": 21,
+                "unsupported_rows": 12,
+                "selected_supported_rows": 21,
+                "supported_coverage": 1.0,
+                "selected_supported_accuracy": 1.0,
+                "selected_supported_errors": 0,
+                "withheld_supported_rows": 0,
+                "withheld_correct_supported_rows": 0,
+                "unsupported_rejected_rows": 8,
+                "unsupported_rejection": 0.6666666666666666,
+                "unsupported_suggestions": 4,
+                "ambiguous_rows": 0,
+                "ambiguous_withheld_rows": 0,
+                "ambiguous_withheld_fraction": null
+              },
+              {
+                "threshold": 0.7,
+                "supported_rows": 21,
+                "unsupported_rows": 12,
+                "selected_supported_rows": 20,
+                "supported_coverage": 0.9523809523809523,
+                "selected_supported_accuracy": 1.0,
+                "selected_supported_errors": 0,
+                "withheld_supported_rows": 1,
+                "withheld_correct_supported_rows": 1,
+                "unsupported_rejected_rows": 9,
+                "unsupported_rejection": 0.75,
+                "unsupported_suggestions": 3,
+                "ambiguous_rows": 0,
+                "ambiguous_withheld_rows": 0,
+                "ambiguous_withheld_fraction": null
+              },
+              {
+                "threshold": 0.8,
+                "supported_rows": 21,
+                "unsupported_rows": 12,
+                "selected_supported_rows": 18,
+                "supported_coverage": 0.8571428571428571,
+                "selected_supported_accuracy": 1.0,
+                "selected_supported_errors": 0,
+                "withheld_supported_rows": 3,
+                "withheld_correct_supported_rows": 3,
+                "unsupported_rejected_rows": 9,
+                "unsupported_rejection": 0.75,
+                "unsupported_suggestions": 3,
+                "ambiguous_rows": 0,
+                "ambiguous_withheld_rows": 0,
+                "ambiguous_withheld_fraction": null
+              },
+              {
+                "threshold": 0.85,
+                "supported_rows": 21,
+                "unsupported_rows": 12,
+                "selected_supported_rows": 16,
+                "supported_coverage": 0.7619047619047619,
+                "selected_supported_accuracy": 1.0,
+                "selected_supported_errors": 0,
+                "withheld_supported_rows": 5,
+                "withheld_correct_supported_rows": 5,
+                "unsupported_rejected_rows": 9,
+                "unsupported_rejection": 0.75,
+                "unsupported_suggestions": 3,
+                "ambiguous_rows": 0,
+                "ambiguous_withheld_rows": 0,
+                "ambiguous_withheld_fraction": null
+              },
+              {
+                "threshold": 0.9,
+                "supported_rows": 21,
+                "unsupported_rows": 12,
+                "selected_supported_rows": 15,
+                "supported_coverage": 0.7142857142857143,
+                "selected_supported_accuracy": 1.0,
+                "selected_supported_errors": 0,
+                "withheld_supported_rows": 6,
+                "withheld_correct_supported_rows": 6,
+                "unsupported_rejected_rows": 11,
+                "unsupported_rejection": 0.9166666666666666,
+                "unsupported_suggestions": 1,
+                "ambiguous_rows": 0,
+                "ambiguous_withheld_rows": 0,
+                "ambiguous_withheld_fraction": null
+              },
+              {
+                "threshold": 0.95,
+                "supported_rows": 21,
+                "unsupported_rows": 12,
+                "selected_supported_rows": 13,
+                "supported_coverage": 0.6190476190476191,
+                "selected_supported_accuracy": 1.0,
+                "selected_supported_errors": 0,
+                "withheld_supported_rows": 8,
+                "withheld_correct_supported_rows": 8,
+                "unsupported_rejected_rows": 11,
+                "unsupported_rejection": 0.9166666666666666,
+                "unsupported_suggestions": 1,
+                "ambiguous_rows": 0,
+                "ambiguous_withheld_rows": 0,
+                "ambiguous_withheld_fraction": null
+              },
+              {
+                "threshold": 0.98,
+                "supported_rows": 21,
+                "unsupported_rows": 12,
+                "selected_supported_rows": 9,
+                "supported_coverage": 0.42857142857142855,
+                "selected_supported_accuracy": 1.0,
+                "selected_supported_errors": 0,
+                "withheld_supported_rows": 12,
+                "withheld_correct_supported_rows": 12,
+                "unsupported_rejected_rows": 12,
+                "unsupported_rejection": 1.0,
+                "unsupported_suggestions": 0,
+                "ambiguous_rows": 0,
+                "ambiguous_withheld_rows": 0,
+                "ambiguous_withheld_fraction": null
+              },
+              {
+                "threshold": 0.99,
+                "supported_rows": 21,
+                "unsupported_rows": 12,
+                "selected_supported_rows": 3,
+                "supported_coverage": 0.14285714285714285,
+                "selected_supported_accuracy": 1.0,
+                "selected_supported_errors": 0,
+                "withheld_supported_rows": 18,
+                "withheld_correct_supported_rows": 18,
+                "unsupported_rejected_rows": 12,
+                "unsupported_rejection": 1.0,
+                "unsupported_suggestions": 0,
+                "ambiguous_rows": 0,
+                "ambiguous_withheld_rows": 0,
+                "ambiguous_withheld_fraction": null
+              }
+            ],
+            "selected_threshold": 0.9
+          },
+          "previously_inspected_audit": {
+            "policy_selected": true,
+            "metrics": {
+              "threshold": 0.9,
+              "supported_rows": 11,
+              "unsupported_rows": 12,
+              "selected_supported_rows": 9,
+              "supported_coverage": 0.8181818181818182,
+              "selected_supported_accuracy": 1.0,
+              "selected_supported_errors": 0,
+              "withheld_supported_rows": 2,
+              "withheld_correct_supported_rows": 2,
+              "unsupported_rejected_rows": 11,
+              "unsupported_rejection": 0.9166666666666666,
+              "unsupported_suggestions": 1,
+              "ambiguous_rows": 0,
+              "ambiguous_withheld_rows": 0,
+              "ambiguous_withheld_fraction": null
+            },
+            "by_slice": {}
+          },
+          "broader_development_probes": {
+            "policy_selected": true,
+            "metrics": {
+              "threshold": 0.9,
+              "supported_rows": 66,
+              "unsupported_rows": 24,
+              "selected_supported_rows": 25,
+              "supported_coverage": 0.3787878787878788,
+              "selected_supported_accuracy": 0.96,
+              "selected_supported_errors": 1,
+              "withheld_supported_rows": 41,
+              "withheld_correct_supported_rows": 32,
+              "unsupported_rejected_rows": 21,
+              "unsupported_rejection": 0.875,
+              "unsupported_suggestions": 3,
+              "ambiguous_rows": 8,
+              "ambiguous_withheld_rows": 8,
+              "ambiguous_withheld_fraction": 1.0
+            },
+            "by_slice": {
+              "ambiguous": {
+                "threshold": 0.9,
+                "supported_rows": 0,
+                "unsupported_rows": 0,
+                "selected_supported_rows": 0,
+                "supported_coverage": null,
+                "selected_supported_accuracy": null,
+                "selected_supported_errors": 0,
+                "withheld_supported_rows": 0,
+                "withheld_correct_supported_rows": 0,
+                "unsupported_rejected_rows": 0,
+                "unsupported_rejection": null,
+                "unsupported_suggestions": 0,
+                "ambiguous_rows": 8,
+                "ambiguous_withheld_rows": 8,
+                "ambiguous_withheld_fraction": 1.0
+              },
+              "general_knowledge": {
+                "threshold": 0.9,
+                "supported_rows": 0,
+                "unsupported_rows": 8,
+                "selected_supported_rows": 0,
+                "supported_coverage": null,
+                "selected_supported_accuracy": null,
+                "selected_supported_errors": 0,
+                "withheld_supported_rows": 0,
+                "withheld_correct_supported_rows": 0,
+                "unsupported_rejected_rows": 8,
+                "unsupported_rejection": 1.0,
+                "unsupported_suggestions": 0,
+                "ambiguous_rows": 0,
+                "ambiguous_withheld_rows": 0,
+                "ambiguous_withheld_fraction": null
+              },
+              "indirect": {
+                "threshold": 0.9,
+                "supported_rows": 22,
+                "unsupported_rows": 0,
+                "selected_supported_rows": 7,
+                "supported_coverage": 0.3181818181818182,
+                "selected_supported_accuracy": 0.8571428571428571,
+                "selected_supported_errors": 1,
+                "withheld_supported_rows": 15,
+                "withheld_correct_supported_rows": 12,
+                "unsupported_rejected_rows": 0,
+                "unsupported_rejection": null,
+                "unsupported_suggestions": 0,
+                "ambiguous_rows": 0,
+                "ambiguous_withheld_rows": 0,
+                "ambiguous_withheld_fraction": null
+              },
+              "keyword_trap": {
+                "threshold": 0.9,
+                "supported_rows": 0,
+                "unsupported_rows": 8,
+                "selected_supported_rows": 0,
+                "supported_coverage": null,
+                "selected_supported_accuracy": null,
+                "selected_supported_errors": 0,
+                "withheld_supported_rows": 0,
+                "withheld_correct_supported_rows": 0,
+                "unsupported_rejected_rows": 5,
+                "unsupported_rejection": 0.625,
+                "unsupported_suggestions": 3,
+                "ambiguous_rows": 0,
+                "ambiguous_withheld_rows": 0,
+                "ambiguous_withheld_fraction": null
+              },
+              "other_task": {
+                "threshold": 0.9,
+                "supported_rows": 0,
+                "unsupported_rows": 8,
+                "selected_supported_rows": 0,
+                "supported_coverage": null,
+                "selected_supported_accuracy": null,
+                "selected_supported_errors": 0,
+                "withheld_supported_rows": 0,
+                "withheld_correct_supported_rows": 0,
+                "unsupported_rejected_rows": 8,
+                "unsupported_rejection": 1.0,
+                "unsupported_suggestions": 0,
+                "ambiguous_rows": 0,
+                "ambiguous_withheld_rows": 0,
+                "ambiguous_withheld_fraction": null
+              },
+              "plain": {
+                "threshold": 0.9,
+                "supported_rows": 22,
+                "unsupported_rows": 0,
+                "selected_supported_rows": 14,
+                "supported_coverage": 0.6363636363636364,
+                "selected_supported_accuracy": 1.0,
+                "selected_supported_errors": 0,
+                "withheld_supported_rows": 8,
+                "withheld_correct_supported_rows": 8,
+                "unsupported_rejected_rows": 0,
+                "unsupported_rejection": null,
+                "unsupported_suggestions": 0,
+                "ambiguous_rows": 0,
+                "ambiguous_withheld_rows": 0,
+                "ambiguous_withheld_fraction": null
+              },
+              "typo": {
+                "threshold": 0.9,
+                "supported_rows": 22,
+                "unsupported_rows": 0,
+                "selected_supported_rows": 4,
+                "supported_coverage": 0.18181818181818182,
+                "selected_supported_accuracy": 1.0,
+                "selected_supported_errors": 0,
+                "withheld_supported_rows": 18,
+                "withheld_correct_supported_rows": 12,
+                "unsupported_rejected_rows": 0,
+                "unsupported_rejection": null,
+                "unsupported_suggestions": 0,
+                "ambiguous_rows": 0,
+                "ambiguous_withheld_rows": 0,
+                "ambiguous_withheld_fraction": null
+              }
+            }
+          }
+        },
+        "with_scope": {
+          "selection": {
+            "candidates": [
+              {
+                "threshold": 0.5,
+                "supported_rows": 21,
+                "unsupported_rows": 12,
+                "selected_supported_rows": 21,
+                "supported_coverage": 1.0,
+                "selected_supported_accuracy": 1.0,
+                "selected_supported_errors": 0,
+                "withheld_supported_rows": 0,
+                "withheld_correct_supported_rows": 0,
+                "unsupported_rejected_rows": 12,
+                "unsupported_rejection": 1.0,
+                "unsupported_suggestions": 0,
+                "ambiguous_rows": 0,
+                "ambiguous_withheld_rows": 0,
+                "ambiguous_withheld_fraction": null
+              },
+              {
+                "threshold": 0.6,
+                "supported_rows": 21,
+                "unsupported_rows": 12,
+                "selected_supported_rows": 21,
+                "supported_coverage": 1.0,
+                "selected_supported_accuracy": 1.0,
+                "selected_supported_errors": 0,
+                "withheld_supported_rows": 0,
+                "withheld_correct_supported_rows": 0,
+                "unsupported_rejected_rows": 12,
+                "unsupported_rejection": 1.0,
+                "unsupported_suggestions": 0,
+                "ambiguous_rows": 0,
+                "ambiguous_withheld_rows": 0,
+                "ambiguous_withheld_fraction": null
+              },
+              {
+                "threshold": 0.7,
+                "supported_rows": 21,
+                "unsupported_rows": 12,
+                "selected_supported_rows": 20,
+                "supported_coverage": 0.9523809523809523,
+                "selected_supported_accuracy": 1.0,
+                "selected_supported_errors": 0,
+                "withheld_supported_rows": 1,
+                "withheld_correct_supported_rows": 1,
+                "unsupported_rejected_rows": 12,
+                "unsupported_rejection": 1.0,
+                "unsupported_suggestions": 0,
+                "ambiguous_rows": 0,
+                "ambiguous_withheld_rows": 0,
+                "ambiguous_withheld_fraction": null
+              },
+              {
+                "threshold": 0.8,
+                "supported_rows": 21,
+                "unsupported_rows": 12,
+                "selected_supported_rows": 18,
+                "supported_coverage": 0.8571428571428571,
+                "selected_supported_accuracy": 1.0,
+                "selected_supported_errors": 0,
+                "withheld_supported_rows": 3,
+                "withheld_correct_supported_rows": 3,
+                "unsupported_rejected_rows": 12,
+                "unsupported_rejection": 1.0,
+                "unsupported_suggestions": 0,
+                "ambiguous_rows": 0,
+                "ambiguous_withheld_rows": 0,
+                "ambiguous_withheld_fraction": null
+              },
+              {
+                "threshold": 0.85,
+                "supported_rows": 21,
+                "unsupported_rows": 12,
+                "selected_supported_rows": 16,
+                "supported_coverage": 0.7619047619047619,
+                "selected_supported_accuracy": 1.0,
+                "selected_supported_errors": 0,
+                "withheld_supported_rows": 5,
+                "withheld_correct_supported_rows": 5,
+                "unsupported_rejected_rows": 12,
+                "unsupported_rejection": 1.0,
+                "unsupported_suggestions": 0,
+                "ambiguous_rows": 0,
+                "ambiguous_withheld_rows": 0,
+                "ambiguous_withheld_fraction": null
+              },
+              {
+                "threshold": 0.9,
+                "supported_rows": 21,
+                "unsupported_rows": 12,
+                "selected_supported_rows": 15,
+                "supported_coverage": 0.7142857142857143,
+                "selected_supported_accuracy": 1.0,
+                "selected_supported_errors": 0,
+                "withheld_supported_rows": 6,
+                "withheld_correct_supported_rows": 6,
+                "unsupported_rejected_rows": 12,
+                "unsupported_rejection": 1.0,
+                "unsupported_suggestions": 0,
+                "ambiguous_rows": 0,
+                "ambiguous_withheld_rows": 0,
+                "ambiguous_withheld_fraction": null
+              },
+              {
+                "threshold": 0.95,
+                "supported_rows": 21,
+                "unsupported_rows": 12,
+                "selected_supported_rows": 13,
+                "supported_coverage": 0.6190476190476191,
+                "selected_supported_accuracy": 1.0,
+                "selected_supported_errors": 0,
+                "withheld_supported_rows": 8,
+                "withheld_correct_supported_rows": 8,
+                "unsupported_rejected_rows": 12,
+                "unsupported_rejection": 1.0,
+                "unsupported_suggestions": 0,
+                "ambiguous_rows": 0,
+                "ambiguous_withheld_rows": 0,
+                "ambiguous_withheld_fraction": null
+              },
+              {
+                "threshold": 0.98,
+                "supported_rows": 21,
+                "unsupported_rows": 12,
+                "selected_supported_rows": 9,
+                "supported_coverage": 0.42857142857142855,
+                "selected_supported_accuracy": 1.0,
+                "selected_supported_errors": 0,
+                "withheld_supported_rows": 12,
+                "withheld_correct_supported_rows": 12,
+                "unsupported_rejected_rows": 12,
+                "unsupported_rejection": 1.0,
+                "unsupported_suggestions": 0,
+                "ambiguous_rows": 0,
+                "ambiguous_withheld_rows": 0,
+                "ambiguous_withheld_fraction": null
+              },
+              {
+                "threshold": 0.99,
+                "supported_rows": 21,
+                "unsupported_rows": 12,
+                "selected_supported_rows": 3,
+                "supported_coverage": 0.14285714285714285,
+                "selected_supported_accuracy": 1.0,
+                "selected_supported_errors": 0,
+                "withheld_supported_rows": 18,
+                "withheld_correct_supported_rows": 18,
+                "unsupported_rejected_rows": 12,
+                "unsupported_rejection": 1.0,
+                "unsupported_suggestions": 0,
+                "ambiguous_rows": 0,
+                "ambiguous_withheld_rows": 0,
+                "ambiguous_withheld_fraction": null
+              }
+            ],
+            "selected_threshold": 0.5
+          },
+          "previously_inspected_audit": {
+            "policy_selected": true,
+            "metrics": {
+              "threshold": 0.5,
+              "supported_rows": 11,
+              "unsupported_rows": 12,
+              "selected_supported_rows": 11,
+              "supported_coverage": 1.0,
+              "selected_supported_accuracy": 1.0,
+              "selected_supported_errors": 0,
+              "withheld_supported_rows": 0,
+              "withheld_correct_supported_rows": 0,
+              "unsupported_rejected_rows": 12,
+              "unsupported_rejection": 1.0,
+              "unsupported_suggestions": 0,
+              "ambiguous_rows": 0,
+              "ambiguous_withheld_rows": 0,
+              "ambiguous_withheld_fraction": null
+            },
+            "by_slice": {}
+          },
+          "broader_development_probes": {
+            "policy_selected": true,
+            "metrics": {
+              "threshold": 0.5,
+              "supported_rows": 66,
+              "unsupported_rows": 24,
+              "selected_supported_rows": 52,
+              "supported_coverage": 0.7878787878787878,
+              "selected_supported_accuracy": 0.9423076923076923,
+              "selected_supported_errors": 3,
+              "withheld_supported_rows": 14,
+              "withheld_correct_supported_rows": 7,
+              "unsupported_rejected_rows": 24,
+              "unsupported_rejection": 1.0,
+              "unsupported_suggestions": 0,
+              "ambiguous_rows": 8,
+              "ambiguous_withheld_rows": 3,
+              "ambiguous_withheld_fraction": 0.375
+            },
+            "by_slice": {
+              "ambiguous": {
+                "threshold": 0.5,
+                "supported_rows": 0,
+                "unsupported_rows": 0,
+                "selected_supported_rows": 0,
+                "supported_coverage": null,
+                "selected_supported_accuracy": null,
+                "selected_supported_errors": 0,
+                "withheld_supported_rows": 0,
+                "withheld_correct_supported_rows": 0,
+                "unsupported_rejected_rows": 0,
+                "unsupported_rejection": null,
+                "unsupported_suggestions": 0,
+                "ambiguous_rows": 8,
+                "ambiguous_withheld_rows": 3,
+                "ambiguous_withheld_fraction": 0.375
+              },
+              "general_knowledge": {
+                "threshold": 0.5,
+                "supported_rows": 0,
+                "unsupported_rows": 8,
+                "selected_supported_rows": 0,
+                "supported_coverage": null,
+                "selected_supported_accuracy": null,
+                "selected_supported_errors": 0,
+                "withheld_supported_rows": 0,
+                "withheld_correct_supported_rows": 0,
+                "unsupported_rejected_rows": 8,
+                "unsupported_rejection": 1.0,
+                "unsupported_suggestions": 0,
+                "ambiguous_rows": 0,
+                "ambiguous_withheld_rows": 0,
+                "ambiguous_withheld_fraction": null
+              },
+              "indirect": {
+                "threshold": 0.5,
+                "supported_rows": 22,
+                "unsupported_rows": 0,
+                "selected_supported_rows": 16,
+                "supported_coverage": 0.7272727272727273,
+                "selected_supported_accuracy": 0.9375,
+                "selected_supported_errors": 1,
+                "withheld_supported_rows": 6,
+                "withheld_correct_supported_rows": 3,
+                "unsupported_rejected_rows": 0,
+                "unsupported_rejection": null,
+                "unsupported_suggestions": 0,
+                "ambiguous_rows": 0,
+                "ambiguous_withheld_rows": 0,
+                "ambiguous_withheld_fraction": null
+              },
+              "keyword_trap": {
+                "threshold": 0.5,
+                "supported_rows": 0,
+                "unsupported_rows": 8,
+                "selected_supported_rows": 0,
+                "supported_coverage": null,
+                "selected_supported_accuracy": null,
+                "selected_supported_errors": 0,
+                "withheld_supported_rows": 0,
+                "withheld_correct_supported_rows": 0,
+                "unsupported_rejected_rows": 8,
+                "unsupported_rejection": 1.0,
+                "unsupported_suggestions": 0,
+                "ambiguous_rows": 0,
+                "ambiguous_withheld_rows": 0,
+                "ambiguous_withheld_fraction": null
+              },
+              "other_task": {
+                "threshold": 0.5,
+                "supported_rows": 0,
+                "unsupported_rows": 8,
+                "selected_supported_rows": 0,
+                "supported_coverage": null,
+                "selected_supported_accuracy": null,
+                "selected_supported_errors": 0,
+                "withheld_supported_rows": 0,
+                "withheld_correct_supported_rows": 0,
+                "unsupported_rejected_rows": 8,
+                "unsupported_rejection": 1.0,
+                "unsupported_suggestions": 0,
+                "ambiguous_rows": 0,
+                "ambiguous_withheld_rows": 0,
+                "ambiguous_withheld_fraction": null
+              },
+              "plain": {
+                "threshold": 0.5,
+                "supported_rows": 22,
+                "unsupported_rows": 0,
+                "selected_supported_rows": 22,
+                "supported_coverage": 1.0,
+                "selected_supported_accuracy": 1.0,
+                "selected_supported_errors": 0,
+                "withheld_supported_rows": 0,
+                "withheld_correct_supported_rows": 0,
+                "unsupported_rejected_rows": 0,
+                "unsupported_rejection": null,
+                "unsupported_suggestions": 0,
+                "ambiguous_rows": 0,
+                "ambiguous_withheld_rows": 0,
+                "ambiguous_withheld_fraction": null
+              },
+              "typo": {
+                "threshold": 0.5,
+                "supported_rows": 22,
+                "unsupported_rows": 0,
+                "selected_supported_rows": 14,
+                "supported_coverage": 0.6363636363636364,
+                "selected_supported_accuracy": 0.8571428571428571,
+                "selected_supported_errors": 2,
+                "withheld_supported_rows": 8,
+                "withheld_correct_supported_rows": 4,
+                "unsupported_rejected_rows": 0,
+                "unsupported_rejection": null,
+                "unsupported_suggestions": 0,
+                "ambiguous_rows": 0,
+                "ambiguous_withheld_rows": 0,
+                "ambiguous_withheld_fraction": null
+              }
+            }
+          }
+        }
+      },
+      "probe_cases": [
+        {
+          "case_id": "account-01",
+          "slice": "plain",
+          "text": "I need to update the name on my customer profile.",
+          "expected_category": "ACCOUNT",
+          "label_status": "provisional",
+          "top_category": "ACCOUNT",
+          "score": 0.8395512707553154,
+          "scope_score": 0.9727604360871664
+        },
+        {
+          "case_id": "account-02",
+          "slice": "plain",
+          "text": "Where do I reset the password for my customer account?",
+          "expected_category": "ACCOUNT",
+          "label_status": "provisional",
+          "top_category": "ACCOUNT",
+          "score": 0.9870662037437525,
+          "scope_score": 0.9659010370350235
+        },
+        {
+          "case_id": "account-03",
+          "slice": "typo",
+          "text": "cant loggin to my acount pls help",
+          "expected_category": "ACCOUNT",
+          "label_status": "provisional",
+          "top_category": "ACCOUNT",
+          "score": 0.9571706571907805,
+          "scope_score": 0.9981310275407507
+        },
+        {
+          "case_id": "account-04",
+          "slice": "typo",
+          "text": "need to chnage my acount passwrod",
+          "expected_category": "ACCOUNT",
+          "label_status": "provisional",
+          "top_category": "ACCOUNT",
+          "score": 0.9711728562693016,
+          "scope_score": 0.9967091934363574
+        },
+        {
+          "case_id": "account-05",
+          "slice": "indirect",
+          "text": "The email I registered with is no longer mine; where can I replace it?",
+          "expected_category": "ACCOUNT",
+          "label_status": "provisional",
+          "top_category": "ACCOUNT",
+          "score": 0.8636895508135971,
+          "scope_score": 0.9867168953493637
+        },
+        {
+          "case_id": "account-06",
+          "slice": "indirect",
+          "text": "I signed up here before but have forgotten the credentials to get back in.",
+          "expected_category": "ACCOUNT",
+          "label_status": "provisional",
+          "top_category": "ACCOUNT",
+          "score": 0.9833122399797084,
+          "scope_score": 0.998631337822147
+        },
+        {
+          "case_id": "cancel-01",
+          "slice": "plain",
+          "text": "What penalties apply when an order is cancelled?",
+          "expected_category": "CANCEL",
+          "label_status": "provisional",
+          "top_category": "CANCEL",
+          "score": 0.7063876742868093,
+          "scope_score": 0.933989475216606
+        },
+        {
+          "case_id": "cancel-02",
+          "slice": "plain",
+          "text": "Is cancelling a purchase free of charge?",
+          "expected_category": "CANCEL",
+          "label_status": "provisional",
+          "top_category": "CANCEL",
+          "score": 0.5958031638672783,
+          "scope_score": 0.9798931258534908
+        },
+        {
+          "case_id": "cancel-03",
+          "slice": "typo",
+          "text": "how much is the cancelation fee?",
+          "expected_category": "CANCEL",
+          "label_status": "provisional",
+          "top_category": "CANCEL",
+          "score": 0.9633602732767546,
+          "scope_score": 0.9336906254812327
+        },
+        {
+          "case_id": "cancel-04",
+          "slice": "typo",
+          "text": "will i pay a penelty for cancling?",
+          "expected_category": "CANCEL",
+          "label_status": "provisional",
+          "top_category": "REFUND",
+          "score": 0.7130198444404827,
+          "scope_score": 0.996621110069905
+        },
+        {
+          "case_id": "cancel-05",
+          "slice": "indirect",
+          "text": "Before I call off my purchase, I need to know whether doing so costs anything.",
+          "expected_category": "CANCEL",
+          "label_status": "provisional",
+          "top_category": "DELIVERY",
+          "score": 0.2804613296977565,
+          "scope_score": 0.9930014172828112
+        },
+        {
+          "case_id": "cancel-06",
+          "slice": "indirect",
+          "text": "Would withdrawing my purchase leave me owing a fee?",
+          "expected_category": "CANCEL",
+          "label_status": "provisional",
+          "top_category": "CANCEL",
+          "score": 0.799899302735823,
+          "scope_score": 0.9880318351753795
+        },
+        {
+          "case_id": "contact-01",
+          "slice": "plain",
+          "text": "Please provide your customer service email address.",
+          "expected_category": "CONTACT",
+          "label_status": "provisional",
+          "top_category": "CONTACT",
+          "score": 0.6704514824422292,
+          "scope_score": 0.9852261668874424
+        },
+        {
+          "case_id": "contact-02",
+          "slice": "plain",
+          "text": "How can I reach your support department by telephone?",
+          "expected_category": "CONTACT",
+          "label_status": "provisional",
+          "top_category": "CONTACT",
+          "score": 0.9464194524419769,
+          "scope_score": 0.9992698329404178
+        },
+        {
+          "case_id": "contact-03",
+          "slice": "typo",
+          "text": "need to speek to a suport agnet",
+          "expected_category": "CONTACT",
+          "label_status": "provisional",
+          "top_category": "CONTACT",
+          "score": 0.47560890512502485,
+          "scope_score": 0.997303551644111
+        },
+        {
+          "case_id": "contact-04",
+          "slice": "typo",
+          "text": "whats ur custmer servce number",
+          "expected_category": "CONTACT",
+          "label_status": "provisional",
+          "top_category": "CONTACT",
+          "score": 0.4763639583308624,
+          "scope_score": 0.9941636553117078
+        },
+        {
+          "case_id": "contact-05",
+          "slice": "indirect",
+          "text": "I would rather discuss this with someone who works for your company.",
+          "expected_category": "CONTACT",
+          "label_status": "provisional",
+          "top_category": "FEEDBACK",
+          "score": 0.9014644613478036,
+          "scope_score": 0.9828642192401658
+        },
+        {
+          "case_id": "contact-06",
+          "slice": "indirect",
+          "text": "Can a member of your customer care team take over this conversation?",
+          "expected_category": "CONTACT",
+          "label_status": "provisional",
+          "top_category": "CONTACT",
+          "score": 0.9515700246399168,
+          "scope_score": 0.7743624182369152
+        },
+        {
+          "case_id": "delivery-01",
+          "slice": "plain",
+          "text": "Is weekend delivery available?",
+          "expected_category": "DELIVERY",
+          "label_status": "provisional",
+          "top_category": "DELIVERY",
+          "score": 0.9635565812315269,
+          "scope_score": 0.8757211956562374
+        },
+        {
+          "case_id": "delivery-02",
+          "slice": "plain",
+          "text": "What is the estimated delivery time for the express option?",
+          "expected_category": "DELIVERY",
+          "label_status": "provisional",
+          "top_category": "DELIVERY",
+          "score": 0.9855907711785993,
+          "scope_score": 0.9743159207661946
+        },
+        {
+          "case_id": "delivery-03",
+          "slice": "typo",
+          "text": "do u ofer same day delivry",
+          "expected_category": "DELIVERY",
+          "label_status": "provisional",
+          "top_category": "ORDER",
+          "score": 0.27237331851499164,
+          "scope_score": 0.6917730439808274
+        },
+        {
+          "case_id": "delivery-04",
+          "slice": "typo",
+          "text": "how long dose standard delivry take",
+          "expected_category": "DELIVERY",
+          "label_status": "provisional",
+          "top_category": "DELIVERY",
+          "score": 0.5197216219124962,
+          "scope_score": 0.9882193913116902
+        },
+        {
+          "case_id": "delivery-05",
+          "slice": "indirect",
+          "text": "I need something to arrive tomorrow; is there a service level that can do that?",
+          "expected_category": "DELIVERY",
+          "label_status": "provisional",
+          "top_category": "DELIVERY",
+          "score": 0.9037011304944468,
+          "scope_score": 0.9896452356211992
+        },
+        {
+          "case_id": "delivery-06",
+          "slice": "indirect",
+          "text": "Before choosing how it arrives, can you explain your available delivery speeds?",
+          "expected_category": "DELIVERY",
+          "label_status": "provisional",
+          "top_category": "DELIVERY",
+          "score": 0.9967481300679081,
+          "scope_score": 0.7481065463308965
+        },
+        {
+          "case_id": "feedback-01",
+          "slice": "plain",
+          "text": "How do I submit a complaint about your service?",
+          "expected_category": "FEEDBACK",
+          "label_status": "provisional",
+          "top_category": "FEEDBACK",
+          "score": 0.9806521628675073,
+          "scope_score": 0.9953179595515774
+        },
+        {
+          "case_id": "feedback-02",
+          "slice": "plain",
+          "text": "I want to leave positive feedback about your helpful staff.",
+          "expected_category": "FEEDBACK",
+          "label_status": "provisional",
+          "top_category": "FEEDBACK",
+          "score": 0.9765571347264601,
+          "scope_score": 0.9521250113421309
+        },
+        {
+          "case_id": "feedback-03",
+          "slice": "typo",
+          "text": "i wana file a complant about ur servce",
+          "expected_category": "FEEDBACK",
+          "label_status": "provisional",
+          "top_category": "FEEDBACK",
+          "score": 0.7450967131714601,
+          "scope_score": 0.8795690895930284
+        },
+        {
+          "case_id": "feedback-04",
+          "slice": "typo",
+          "text": "where can i leav a reveiw of this shop",
+          "expected_category": "FEEDBACK",
+          "label_status": "provisional",
+          "top_category": "ORDER",
+          "score": 0.7242756213704472,
+          "scope_score": 0.9934624743408229
+        },
+        {
+          "case_id": "feedback-05",
+          "slice": "indirect",
+          "text": "Your colleague was exceptionally helpful and I want that praise recorded.",
+          "expected_category": "FEEDBACK",
+          "label_status": "provisional",
+          "top_category": "FEEDBACK",
+          "score": 0.6556421024307513,
+          "scope_score": 0.7067618083585632
+        },
+        {
+          "case_id": "feedback-06",
+          "slice": "indirect",
+          "text": "The way your staff treated me was unacceptable; where can I report my experience?",
+          "expected_category": "FEEDBACK",
+          "label_status": "provisional",
+          "top_category": "FEEDBACK",
+          "score": 0.8798439699138279,
+          "scope_score": 0.9878478293894473
+        },
+        {
+          "case_id": "invoice-01",
+          "slice": "plain",
+          "text": "Can I download a PDF invoice for my purchase?",
+          "expected_category": "INVOICE",
+          "label_status": "provisional",
+          "top_category": "INVOICE",
+          "score": 0.9126207831679368,
+          "scope_score": 0.9695471961649991
+        },
+        {
+          "case_id": "invoice-02",
+          "slice": "plain",
+          "text": "The invoice is missing from my confirmation email.",
+          "expected_category": "INVOICE",
+          "label_status": "provisional",
+          "top_category": "INVOICE",
+          "score": 0.9176696973384014,
+          "scope_score": 0.9957230829780812
+        },
+        {
+          "case_id": "invoice-03",
+          "slice": "typo",
+          "text": "pls send my invioce again",
+          "expected_category": "INVOICE",
+          "label_status": "provisional",
+          "top_category": "FEEDBACK",
+          "score": 0.37038385843764215,
+          "scope_score": 0.9625477455713219
+        },
+        {
+          "case_id": "invoice-04",
+          "slice": "typo",
+          "text": "where is the invoce for last weeks purchse",
+          "expected_category": "INVOICE",
+          "label_status": "provisional",
+          "top_category": "DELIVERY",
+          "score": 0.2621504002136241,
+          "scope_score": 0.9053628025397279
+        },
+        {
+          "case_id": "invoice-05",
+          "slice": "indirect",
+          "text": "My accountant needs the itemized billing document for this purchase.",
+          "expected_category": "INVOICE",
+          "label_status": "provisional",
+          "top_category": "INVOICE",
+          "score": 0.8594391034342586,
+          "scope_score": 0.9883853148691717
+        },
+        {
+          "case_id": "invoice-06",
+          "slice": "indirect",
+          "text": "I need the document showing what you billed me so I can submit my expenses.",
+          "expected_category": "INVOICE",
+          "label_status": "provisional",
+          "top_category": "INVOICE",
+          "score": 0.8111307873783445,
+          "scope_score": 0.9973490359026657
+        },
+        {
+          "case_id": "order-01",
+          "slice": "plain",
+          "text": "Please remove one item from my existing order.",
+          "expected_category": "ORDER",
+          "label_status": "provisional",
+          "top_category": "ORDER",
+          "score": 0.9605076999228055,
+          "scope_score": 0.9991328918247668
+        },
+        {
+          "case_id": "order-02",
+          "slice": "plain",
+          "text": "How can I see the status of an order I already placed?",
+          "expected_category": "ORDER",
+          "label_status": "provisional",
+          "top_category": "ORDER",
+          "score": 0.6494142941753879,
+          "scope_score": 0.9992452160768905
+        },
+        {
+          "case_id": "order-03",
+          "slice": "typo",
+          "text": "wanna cancle my ordar before it ships",
+          "expected_category": "ORDER",
+          "label_status": "provisional",
+          "top_category": "ORDER",
+          "score": 0.3621347727388976,
+          "scope_score": 0.9729760099037624
+        },
+        {
+          "case_id": "order-04",
+          "slice": "typo",
+          "text": "can i add an itme to my oder",
+          "expected_category": "ORDER",
+          "label_status": "provisional",
+          "top_category": "FEEDBACK",
+          "score": 0.44261199738956913,
+          "scope_score": 0.9356575084598989
+        },
+        {
+          "case_id": "order-05",
+          "slice": "indirect",
+          "text": "I bought two of the same item by mistake; can you amend the purchase to just one?",
+          "expected_category": "ORDER",
+          "label_status": "provisional",
+          "top_category": "ORDER",
+          "score": 0.6154701531093117,
+          "scope_score": 0.9957915086919014
+        },
+        {
+          "case_id": "order-06",
+          "slice": "indirect",
+          "text": "I placed a purchase this morning and now need to track its progress.",
+          "expected_category": "ORDER",
+          "label_status": "provisional",
+          "top_category": "ORDER",
+          "score": 0.4385522777966348,
+          "scope_score": 0.9946014316047038
+        },
+        {
+          "case_id": "payment-01",
+          "slice": "plain",
+          "text": "Can I pay using a debit card?",
+          "expected_category": "PAYMENT",
+          "label_status": "provisional",
+          "top_category": "PAYMENT",
+          "score": 0.6900391376257153,
+          "scope_score": 0.9650412671612302
+        },
+        {
+          "case_id": "payment-02",
+          "slice": "plain",
+          "text": "My card was rejected when I tried to complete checkout.",
+          "expected_category": "PAYMENT",
+          "label_status": "provisional",
+          "top_category": "PAYMENT",
+          "score": 0.5341978455836615,
+          "scope_score": 0.9929859405168066
+        },
+        {
+          "case_id": "payment-03",
+          "slice": "typo",
+          "text": "paymnt keeps failng at chekout",
+          "expected_category": "PAYMENT",
+          "label_status": "provisional",
+          "top_category": "PAYMENT",
+          "score": 0.785090321883762,
+          "scope_score": 0.9229577068244933
+        },
+        {
+          "case_id": "payment-04",
+          "slice": "typo",
+          "text": "do u acept bank tranfers as paymnt",
+          "expected_category": "PAYMENT",
+          "label_status": "provisional",
+          "top_category": "PAYMENT",
+          "score": 0.7330454016563032,
+          "scope_score": 0.9845006636066218
+        },
+        {
+          "case_id": "payment-05",
+          "slice": "indirect",
+          "text": "I have tried three times to pay for the basket, but the transaction will not go through.",
+          "expected_category": "PAYMENT",
+          "label_status": "provisional",
+          "top_category": "PAYMENT",
+          "score": 0.4114425970076998,
+          "scope_score": 0.9946782755606671
+        },
+        {
+          "case_id": "payment-06",
+          "slice": "indirect",
+          "text": "The same purchase appears twice on my bank statement; please investigate the duplicate charge.",
+          "expected_category": "PAYMENT",
+          "label_status": "provisional",
+          "top_category": "ACCOUNT",
+          "score": 0.23252597272623582,
+          "scope_score": 0.9349807270103415
+        },
+        {
+          "case_id": "refund-01",
+          "slice": "plain",
+          "text": "Where can I check the progress of my refund?",
+          "expected_category": "REFUND",
+          "label_status": "provisional",
+          "top_category": "REFUND",
+          "score": 0.9888251127157288,
+          "scope_score": 0.9981085594252029
+        },
+        {
+          "case_id": "refund-02",
+          "slice": "plain",
+          "text": "Am I eligible for a refund on a damaged purchase?",
+          "expected_category": "REFUND",
+          "label_status": "provisional",
+          "top_category": "REFUND",
+          "score": 0.9784727293094264,
+          "scope_score": 0.9924459760399764
+        },
+        {
+          "case_id": "refund-03",
+          "slice": "typo",
+          "text": "my refnd hasnt arived yet",
+          "expected_category": "REFUND",
+          "label_status": "provisional",
+          "top_category": "REFUND",
+          "score": 0.7139359448102481,
+          "scope_score": 0.9977330644892151
+        },
+        {
+          "case_id": "refund-04",
+          "slice": "typo",
+          "text": "how do i requst my mony back",
+          "expected_category": "REFUND",
+          "label_status": "provisional",
+          "top_category": "REFUND",
+          "score": 0.920733850116626,
+          "scope_score": 0.9985664225137583
+        },
+        {
+          "case_id": "refund-05",
+          "slice": "indirect",
+          "text": "You approved returning my money last week, but nothing has reached my bank.",
+          "expected_category": "REFUND",
+          "label_status": "provisional",
+          "top_category": "REFUND",
+          "score": 0.6526327033436213,
+          "scope_score": 0.9981442694538784
+        },
+        {
+          "case_id": "refund-06",
+          "slice": "indirect",
+          "text": "The product arrived broken and I would like the amount I paid returned.",
+          "expected_category": "REFUND",
+          "label_status": "provisional",
+          "top_category": "REFUND",
+          "score": 0.3963624776804198,
+          "scope_score": 0.5943601355026304
+        },
+        {
+          "case_id": "shipping-01",
+          "slice": "plain",
+          "text": "Can I edit the postal code in my shipping address?",
+          "expected_category": "SHIPPING",
+          "label_status": "provisional",
+          "top_category": "SHIPPING",
+          "score": 0.9768812723001485,
+          "scope_score": 0.9710628860026179
+        },
+        {
+          "case_id": "shipping-02",
+          "slice": "plain",
+          "text": "How do I add a second shipping address to my profile?",
+          "expected_category": "SHIPPING",
+          "label_status": "provisional",
+          "top_category": "SHIPPING",
+          "score": 0.9735499053018332,
+          "scope_score": 0.9830877981106456
+        },
+        {
+          "case_id": "shipping-03",
+          "slice": "typo",
+          "text": "need to corect my shiping adress",
+          "expected_category": "SHIPPING",
+          "label_status": "provisional",
+          "top_category": "SHIPPING",
+          "score": 0.8917656555839785,
+          "scope_score": 0.9987337356382683
+        },
+        {
+          "case_id": "shipping-04",
+          "slice": "typo",
+          "text": "wrong zip in delivry adress pls fix",
+          "expected_category": "SHIPPING",
+          "label_status": "provisional",
+          "top_category": "SHIPPING",
+          "score": 0.7163261119521103,
+          "scope_score": 0.983658728868148
+        },
+        {
+          "case_id": "shipping-05",
+          "slice": "indirect",
+          "text": "I moved house; where do I replace the address used for my parcels?",
+          "expected_category": "SHIPPING",
+          "label_status": "provisional",
+          "top_category": "SHIPPING",
+          "score": 0.981881803498538,
+          "scope_score": 0.9701812624643835
+        },
+        {
+          "case_id": "shipping-06",
+          "slice": "indirect",
+          "text": "The destination has apartment 12 instead of 21; can you correct that address?",
+          "expected_category": "SHIPPING",
+          "label_status": "provisional",
+          "top_category": "SHIPPING",
+          "score": 0.9568867560962112,
+          "scope_score": 0.9443597098672766
+        },
+        {
+          "case_id": "subscription-01",
+          "slice": "plain",
+          "text": "Please remove me from your marketing newsletter.",
+          "expected_category": "SUBSCRIPTION",
+          "label_status": "provisional",
+          "top_category": "SUBSCRIPTION",
+          "score": 0.7829622261617591,
+          "scope_score": 0.8867334083006342
+        },
+        {
+          "case_id": "subscription-02",
+          "slice": "plain",
+          "text": "Where do I sign up for your email newsletter?",
+          "expected_category": "SUBSCRIPTION",
+          "label_status": "provisional",
+          "top_category": "SUBSCRIPTION",
+          "score": 0.9526964615591914,
+          "scope_score": 0.9193039774863382
+        },
+        {
+          "case_id": "subscription-03",
+          "slice": "typo",
+          "text": "unsubscrbe me frm ur newslter",
+          "expected_category": "SUBSCRIPTION",
+          "label_status": "provisional",
+          "top_category": "SUBSCRIPTION",
+          "score": 0.5682620614731383,
+          "scope_score": 0.9178938717179226
+        },
+        {
+          "case_id": "subscription-04",
+          "slice": "typo",
+          "text": "i wana subcribe to the newsleter",
+          "expected_category": "SUBSCRIPTION",
+          "label_status": "provisional",
+          "top_category": "SUBSCRIPTION",
+          "score": 0.6425140870240278,
+          "scope_score": 0.2964610035070463
+        },
+        {
+          "case_id": "subscription-05",
+          "slice": "indirect",
+          "text": "I would like your store announcements to arrive in my inbox regularly.",
+          "expected_category": "SUBSCRIPTION",
+          "label_status": "provisional",
+          "top_category": "DELIVERY",
+          "score": 0.34323356100597285,
+          "scope_score": 0.8165672245213548
+        },
+        {
+          "case_id": "subscription-06",
+          "slice": "indirect",
+          "text": "I no longer want the promotional emails your company keeps sending.",
+          "expected_category": "SUBSCRIPTION",
+          "label_status": "provisional",
+          "top_category": "SUBSCRIPTION",
+          "score": 0.5592796691087798,
+          "scope_score": 0.9826803852347816
+        },
+        {
+          "case_id": "general_knowledge-01",
+          "slice": "general_knowledge",
+          "text": "Why does ice float on water?",
+          "expected_category": "UNSUPPORTED",
+          "label_status": "provisional",
+          "top_category": "ACCOUNT",
+          "score": 0.7196362721246334,
+          "scope_score": 0.008839451292338874
+        },
+        {
+          "case_id": "general_knowledge-02",
+          "slice": "general_knowledge",
+          "text": "Explain how a rainbow forms.",
+          "expected_category": "UNSUPPORTED",
+          "label_status": "provisional",
+          "top_category": "ACCOUNT",
+          "score": 0.5973547077079514,
+          "scope_score": 0.00795689392251675
+        },
+        {
+          "case_id": "general_knowledge-03",
+          "slice": "general_knowledge",
+          "text": "Who invented the telescope?",
+          "expected_category": "UNSUPPORTED",
+          "label_status": "provisional",
+          "top_category": "ORDER",
+          "score": 0.44593307863410464,
+          "scope_score": 0.06596486416118497
+        },
+        {
+          "case_id": "general_knowledge-04",
+          "slice": "general_knowledge",
+          "text": "How many sides does a hexagon have?",
+          "expected_category": "UNSUPPORTED",
+          "label_status": "provisional",
+          "top_category": "ACCOUNT",
+          "score": 0.30414620089653777,
+          "scope_score": 0.028942909547261975
+        },
+        {
+          "case_id": "general_knowledge-05",
+          "slice": "general_knowledge",
+          "text": "What causes the seasons?",
+          "expected_category": "UNSUPPORTED",
+          "label_status": "provisional",
+          "top_category": "ACCOUNT",
+          "score": 0.3096626856852605,
+          "scope_score": 0.008104943134515263
+        },
+        {
+          "case_id": "general_knowledge-06",
+          "slice": "general_knowledge",
+          "text": "Describe the life cycle of a butterfly.",
+          "expected_category": "UNSUPPORTED",
+          "label_status": "provisional",
+          "top_category": "ORDER",
+          "score": 0.31140228786893975,
+          "scope_score": 0.015124394958144993
+        },
+        {
+          "case_id": "general_knowledge-07",
+          "slice": "general_knowledge",
+          "text": "How do volcanoes erupt?",
+          "expected_category": "UNSUPPORTED",
+          "label_status": "provisional",
+          "top_category": "ACCOUNT",
+          "score": 0.34200332624830393,
+          "scope_score": 0.060388502810823086
+        },
+        {
+          "case_id": "general_knowledge-08",
+          "slice": "general_knowledge",
+          "text": "What is the difference between a comet and an asteroid?",
+          "expected_category": "UNSUPPORTED",
+          "label_status": "provisional",
+          "top_category": "DELIVERY",
+          "score": 0.2655121435705224,
+          "scope_score": 0.04585953672350118
+        },
+        {
+          "case_id": "keyword_trap-01",
+          "slice": "keyword_trap",
+          "text": "Write a limerick about an unpaid invoice.",
+          "expected_category": "UNSUPPORTED",
+          "label_status": "provisional",
+          "top_category": "INVOICE",
+          "score": 0.38341389647157165,
+          "scope_score": 0.01981473577426296
+        },
+        {
+          "case_id": "keyword_trap-02",
+          "slice": "keyword_trap",
+          "text": "Explain subscription pricing in an economics lecture.",
+          "expected_category": "UNSUPPORTED",
+          "label_status": "provisional",
+          "top_category": "ORDER",
+          "score": 0.42251275446479314,
+          "scope_score": 0.05703524214127009
+        },
+        {
+          "case_id": "keyword_trap-03",
+          "slice": "keyword_trap",
+          "text": "Translate the phrase shipping address into Italian.",
+          "expected_category": "UNSUPPORTED",
+          "label_status": "provisional",
+          "top_category": "SHIPPING",
+          "score": 0.6850661986714898,
+          "scope_score": 0.011884187668996904
+        },
+        {
+          "case_id": "keyword_trap-04",
+          "slice": "keyword_trap",
+          "text": "Make a crossword clue whose answer is refund.",
+          "expected_category": "UNSUPPORTED",
+          "label_status": "provisional",
+          "top_category": "REFUND",
+          "score": 0.7677856565735206,
+          "scope_score": 0.06869893304765595
+        },
+        {
+          "case_id": "keyword_trap-05",
+          "slice": "keyword_trap",
+          "text": "Write a fantasy tale about a cancelled royal order.",
+          "expected_category": "UNSUPPORTED",
+          "label_status": "provisional",
+          "top_category": "ORDER",
+          "score": 0.9275803357204514,
+          "scope_score": 0.022381536616725706
+        },
+        {
+          "case_id": "keyword_trap-06",
+          "slice": "keyword_trap",
+          "text": "Create a poem about a delivery robot falling in love.",
+          "expected_category": "UNSUPPORTED",
+          "label_status": "provisional",
+          "top_category": "DELIVERY",
+          "score": 0.40373809311081443,
+          "scope_score": 0.002732099987121428
+        },
+        {
+          "case_id": "keyword_trap-07",
+          "slice": "keyword_trap",
+          "text": "Explain the history of credit card payment networks.",
+          "expected_category": "UNSUPPORTED",
+          "label_status": "provisional",
+          "top_category": "PAYMENT",
+          "score": 0.9149093168515663,
+          "scope_score": 0.18957195046058117
+        },
+        {
+          "case_id": "keyword_trap-08",
+          "slice": "keyword_trap",
+          "text": "Invent dialogue for a fictional customer support agent.",
+          "expected_category": "UNSUPPORTED",
+          "label_status": "provisional",
+          "top_category": "CONTACT",
+          "score": 0.9487699793739028,
+          "scope_score": 0.00479272382894258
+        },
+        {
+          "case_id": "other_task-01",
+          "slice": "other_task",
+          "text": "Debug this Python loop: for x in range(4) print(x).",
+          "expected_category": "UNSUPPORTED",
+          "label_status": "provisional",
+          "top_category": "ACCOUNT",
+          "score": 0.3919816022418285,
+          "scope_score": 0.034233409983380314
+        },
+        {
+          "case_id": "other_task-02",
+          "slice": "other_task",
+          "text": "Summarize a scientific paper about solar panels.",
+          "expected_category": "UNSUPPORTED",
+          "label_status": "provisional",
+          "top_category": "FEEDBACK",
+          "score": 0.8220151554238907,
+          "scope_score": 0.042361329165261474
+        },
+        {
+          "case_id": "other_task-03",
+          "slice": "other_task",
+          "text": "Plan a three day sightseeing trip to Rome.",
+          "expected_category": "UNSUPPORTED",
+          "label_status": "provisional",
+          "top_category": "DELIVERY",
+          "score": 0.5031027085009695,
+          "scope_score": 0.03526775004086813
+        },
+        {
+          "case_id": "other_task-04",
+          "slice": "other_task",
+          "text": "Generate ten names for a fictional spaceship.",
+          "expected_category": "UNSUPPORTED",
+          "label_status": "provisional",
+          "top_category": "ORDER",
+          "score": 0.28680674712540816,
+          "scope_score": 0.0006292415351765168
+        },
+        {
+          "case_id": "other_task-05",
+          "slice": "other_task",
+          "text": "Teach me to play a C major chord.",
+          "expected_category": "UNSUPPORTED",
+          "label_status": "provisional",
+          "top_category": "ORDER",
+          "score": 0.3133917958187669,
+          "scope_score": 0.01737468283497312
+        },
+        {
+          "case_id": "other_task-06",
+          "slice": "other_task",
+          "text": "Convert 45 degrees Celsius into Fahrenheit.",
+          "expected_category": "UNSUPPORTED",
+          "label_status": "provisional",
+          "top_category": "ACCOUNT",
+          "score": 0.3914624271615691,
+          "scope_score": 0.09943316410762149
+        },
+        {
+          "case_id": "other_task-07",
+          "slice": "other_task",
+          "text": "Suggest exercises for learning French verbs.",
+          "expected_category": "UNSUPPORTED",
+          "label_status": "provisional",
+          "top_category": "ORDER",
+          "score": 0.4188334597715701,
+          "scope_score": 0.01826296980603015
+        },
+        {
+          "case_id": "other_task-08",
+          "slice": "other_task",
+          "text": "Write a cover letter for an imaginary librarian.",
+          "expected_category": "UNSUPPORTED",
+          "label_status": "provisional",
+          "top_category": "ORDER",
+          "score": 0.25974430519583885,
+          "scope_score": 0.005368475844950815
+        },
+        {
+          "case_id": "ambiguous-01",
+          "slice": "ambiguous",
+          "text": "It does not work.",
+          "expected_category": "REVIEW",
+          "label_status": "provisional",
+          "top_category": "ACCOUNT",
+          "score": 0.5202613650208499,
+          "scope_score": 0.9810477052273444
+        },
+        {
+          "case_id": "ambiguous-02",
+          "slice": "ambiguous",
+          "text": "Please fix the problem from yesterday.",
+          "expected_category": "REVIEW",
+          "label_status": "provisional",
+          "top_category": "ACCOUNT",
+          "score": 0.2350512210346971,
+          "scope_score": 0.9882540223636719
+        },
+        {
+          "case_id": "ambiguous-03",
+          "slice": "ambiguous",
+          "text": "I need help with that thing.",
+          "expected_category": "REVIEW",
+          "label_status": "provisional",
+          "top_category": "ORDER",
+          "score": 0.4251134131309831,
+          "scope_score": 0.5078674714428284
+        },
+        {
+          "case_id": "ambiguous-04",
+          "slice": "ambiguous",
+          "text": "Something is wrong with what I bought.",
+          "expected_category": "REVIEW",
+          "label_status": "provisional",
+          "top_category": "ORDER",
+          "score": 0.6106908960824815,
+          "scope_score": 0.9957387005885261
+        },
+        {
+          "case_id": "ambiguous-05",
+          "slice": "ambiguous",
+          "text": "I want my invoice and I also want to cancel my order.",
+          "expected_category": "REVIEW",
+          "label_status": "provisional",
+          "top_category": "INVOICE",
+          "score": 0.47353711049009745,
+          "scope_score": 0.9949283477802598
+        },
+        {
+          "case_id": "ambiguous-06",
+          "slice": "ambiguous",
+          "text": "Change my account email and refund my last purchase.",
+          "expected_category": "REVIEW",
+          "label_status": "provisional",
+          "top_category": "ACCOUNT",
+          "score": 0.66223132928369,
+          "scope_score": 0.9956074887213159
+        },
+        {
+          "case_id": "ambiguous-07",
+          "slice": "ambiguous",
+          "text": "Stop the newsletter and update the shipping address.",
+          "expected_category": "REVIEW",
+          "label_status": "provisional",
+          "top_category": "SUBSCRIPTION",
+          "score": 0.5739214553933869,
+          "scope_score": 0.9901658595889868
+        },
+        {
+          "case_id": "ambiguous-08",
+          "slice": "ambiguous",
+          "text": "I cannot log in and my checkout payment was rejected.",
+          "expected_category": "REVIEW",
+          "label_status": "provisional",
+          "top_category": "PAYMENT",
+          "score": 0.7661373608766482,
+          "scope_score": 0.9970742459280889
+        }
+      ],
+      "challenge_cases": [
+        {
+          "case_id": "sel-account-1",
+          "split": "selection",
+          "text": "I forgot my password and need to get back into my account.",
+          "expected_category": "ACCOUNT",
+          "top_category": "ACCOUNT",
+          "score": 0.9931649349709492,
+          "scope_score": 0.9818198591737297
+        },
+        {
+          "case_id": "sel-account-2",
+          "split": "selection",
+          "text": "Please help me close my customer account.",
+          "expected_category": "ACCOUNT",
+          "top_category": "ACCOUNT",
+          "score": 0.8397550246476,
+          "scope_score": 0.9990941854451592
+        },
+        {
+          "case_id": "audit-account-1",
+          "split": "audit",
+          "text": "How do I change the email address linked to my account?",
+          "expected_category": "ACCOUNT",
+          "top_category": "ACCOUNT",
+          "score": 0.9023463542500616,
+          "scope_score": 0.9761036098819579
+        },
+        {
+          "case_id": "sel-cancel-1",
+          "split": "selection",
+          "text": "Is there a cancellation fee if I cancel an order?",
+          "expected_category": "CANCEL",
+          "top_category": "CANCEL",
+          "score": 0.7583071800542006,
+          "scope_score": 0.9559936133162595
+        },
+        {
+          "case_id": "sel-cancel-2",
+          "split": "selection",
+          "text": "How much will I be charged for cancelling?",
+          "expected_category": "CANCEL",
+          "top_category": "CANCEL",
+          "score": 0.9698695315130973,
+          "scope_score": 0.916415179565691
+        },
+        {
+          "case_id": "audit-cancel-1",
+          "split": "audit",
+          "text": "Where can I check your cancellation fees?",
+          "expected_category": "CANCEL",
+          "top_category": "CANCEL",
+          "score": 0.9336965867986615,
+          "scope_score": 0.9971894934342065
+        },
+        {
+          "case_id": "sel-contact-1",
+          "split": "selection",
+          "text": "I would like to speak with a human customer service agent.",
+          "expected_category": "CONTACT",
+          "top_category": "CONTACT",
+          "score": 0.9862400120828363,
+          "scope_score": 0.9920063121694944
+        },
+        {
+          "case_id": "sel-contact-2",
+          "split": "selection",
+          "text": "What is the phone number for customer support?",
+          "expected_category": "CONTACT",
+          "top_category": "CONTACT",
+          "score": 0.98495337901601,
+          "scope_score": 0.9941521418215229
+        },
+        {
+          "case_id": "audit-contact-1",
+          "split": "audit",
+          "text": "Can you connect me to a real person on your support team?",
+          "expected_category": "CONTACT",
+          "top_category": "CONTACT",
+          "score": 0.9637823037078417,
+          "scope_score": 0.9980751696532785
+        },
+        {
+          "case_id": "sel-delivery-1",
+          "split": "selection",
+          "text": "What delivery options do you offer?",
+          "expected_category": "DELIVERY",
+          "top_category": "DELIVERY",
+          "score": 0.9463513008395339,
+          "scope_score": 0.9094472776295616
+        },
+        {
+          "case_id": "sel-delivery-2",
+          "split": "selection",
+          "text": "How long does standard delivery take?",
+          "expected_category": "DELIVERY",
+          "top_category": "DELIVERY",
+          "score": 0.9961067665177878,
+          "scope_score": 0.9594688646721574
+        },
+        {
+          "case_id": "audit-delivery-1",
+          "split": "audit",
+          "text": "Do you provide next day delivery?",
+          "expected_category": "DELIVERY",
+          "top_category": "DELIVERY",
+          "score": 0.9556831190041374,
+          "scope_score": 0.9922776281905357
+        },
+        {
+          "case_id": "sel-feedback-1",
+          "split": "selection",
+          "text": "I want to complain about the service I received.",
+          "expected_category": "FEEDBACK",
+          "top_category": "FEEDBACK",
+          "score": 0.9155517022143248,
+          "scope_score": 0.9993058470298938
+        },
+        {
+          "case_id": "sel-feedback-2",
+          "split": "selection",
+          "text": "Where can I leave a review of your service?",
+          "expected_category": "FEEDBACK",
+          "top_category": "FEEDBACK",
+          "score": 0.9825506619797391,
+          "scope_score": 0.9991603039462299
+        },
+        {
+          "case_id": "audit-feedback-1",
+          "split": "audit",
+          "text": "I would like to give feedback about my shopping experience.",
+          "expected_category": "FEEDBACK",
+          "top_category": "FEEDBACK",
+          "score": 0.5209435668161002,
+          "scope_score": 0.9522288450679269
+        },
+        {
+          "case_id": "sel-invoice-1",
+          "split": "selection",
+          "text": "Where can I download my invoice?",
+          "expected_category": "INVOICE",
+          "top_category": "INVOICE",
+          "score": 0.9881799608833278,
+          "scope_score": 0.9733179408246085
+        },
+        {
+          "case_id": "sel-invoice-2",
+          "split": "selection",
+          "text": "Could you email me the invoice for my order?",
+          "expected_category": "INVOICE",
+          "top_category": "INVOICE",
+          "score": 0.8049348325661277,
+          "scope_score": 0.9986655543880925
+        },
+        {
+          "case_id": "audit-invoice-1",
+          "split": "audit",
+          "text": "I need a copy of an invoice from last month.",
+          "expected_category": "INVOICE",
+          "top_category": "INVOICE",
+          "score": 0.9885248808265943,
+          "scope_score": 0.9420941225567105
+        },
+        {
+          "case_id": "sel-order-1",
+          "split": "selection",
+          "text": "How do I track the order I placed yesterday?",
+          "expected_category": "ORDER",
+          "top_category": "ORDER",
+          "score": 0.6589999622696645,
+          "scope_score": 0.999046790552719
+        },
+        {
+          "case_id": "sel-order-2",
+          "split": "selection",
+          "text": "I want to change an item in my order.",
+          "expected_category": "ORDER",
+          "top_category": "ORDER",
+          "score": 0.965498194496996,
+          "scope_score": 0.9987984726171883
+        },
+        {
+          "case_id": "audit-order-1",
+          "split": "audit",
+          "text": "Please cancel my order before it is shipped.",
+          "expected_category": "ORDER",
+          "top_category": "ORDER",
+          "score": 0.7135452078696428,
+          "scope_score": 0.958110339574533
+        },
+        {
+          "case_id": "sel-payment-1",
+          "split": "selection",
+          "text": "My credit card payment was declined.",
+          "expected_category": "PAYMENT",
+          "top_category": "PAYMENT",
+          "score": 0.7953206418771653,
+          "scope_score": 0.9297542110545115
+        },
+        {
+          "case_id": "sel-payment-2",
+          "split": "selection",
+          "text": "Which payment methods are available at checkout?",
+          "expected_category": "PAYMENT",
+          "top_category": "PAYMENT",
+          "score": 0.9803604993282107,
+          "scope_score": 0.8151165787304211
+        },
+        {
+          "case_id": "audit-payment-1",
+          "split": "audit",
+          "text": "The checkout page will not accept my payment.",
+          "expected_category": "PAYMENT",
+          "top_category": "PAYMENT",
+          "score": 0.9476261501052878,
+          "scope_score": 0.9965123898242916
+        },
+        {
+          "case_id": "sel-refund-1",
+          "split": "selection",
+          "text": "How can I request a refund for my purchase?",
+          "expected_category": "REFUND",
+          "top_category": "REFUND",
+          "score": 0.8999887013006627,
+          "scope_score": 0.9978556499535784
+        },
+        {
+          "case_id": "sel-refund-2",
+          "split": "selection",
+          "text": "I am still waiting for my refund to arrive.",
+          "expected_category": "REFUND",
+          "top_category": "REFUND",
+          "score": 0.9536416658221603,
+          "scope_score": 0.9928232584850776
+        },
+        {
+          "case_id": "audit-refund-1",
+          "split": "audit",
+          "text": "What are the rules for getting a refund?",
+          "expected_category": "REFUND",
+          "top_category": "REFUND",
+          "score": 0.984637700894606,
+          "scope_score": 0.9718228846312226
+        },
+        {
+          "case_id": "sel-shipping-1",
+          "split": "selection",
+          "text": "I need to change my shipping address.",
+          "expected_category": "SHIPPING",
+          "top_category": "SHIPPING",
+          "score": 0.9933191380484607,
+          "scope_score": 0.9947590833277382
+        },
+        {
+          "case_id": "sel-shipping-2",
+          "split": "selection",
+          "text": "How do I save a new address for shipping?",
+          "expected_category": "SHIPPING",
+          "top_category": "SHIPPING",
+          "score": 0.9877922853537822,
+          "scope_score": 0.9637976094727566
+        },
+        {
+          "case_id": "audit-shipping-1",
+          "split": "audit",
+          "text": "My delivery address has a wrong postal code. How can I correct it?",
+          "expected_category": "SHIPPING",
+          "top_category": "SHIPPING",
+          "score": 0.9840823022345048,
+          "scope_score": 0.9424837569236212
+        },
+        {
+          "case_id": "sel-subscription-2",
+          "split": "selection",
+          "text": "I would like to receive your newsletter by email.",
+          "expected_category": "SUBSCRIPTION",
+          "top_category": "SUBSCRIPTION",
+          "score": 0.9742543681312865,
+          "scope_score": 0.9825671068881895
+        },
+        {
+          "case_id": "audit-subscription-1",
+          "split": "audit",
+          "text": "Please stop sending me your newsletter.",
+          "expected_category": "SUBSCRIPTION",
+          "top_category": "SUBSCRIPTION",
+          "score": 0.9686581128318837,
+          "scope_score": 0.8537587462563497
+        },
+        {
+          "case_id": "sel-outside-1",
+          "split": "selection",
+          "text": "Write a short story about a dragon.",
+          "expected_category": "UNSUPPORTED",
+          "top_category": "ORDER",
+          "score": 0.3389839509490828,
+          "scope_score": 0.006291307504147858
+        },
+        {
+          "case_id": "sel-outside-2",
+          "split": "selection",
+          "text": "Explain how photosynthesis works.",
+          "expected_category": "UNSUPPORTED",
+          "top_category": "ORDER",
+          "score": 0.32518613761782506,
+          "scope_score": 0.014224384406488322
+        },
+        {
+          "case_id": "sel-outside-3",
+          "split": "selection",
+          "text": "What is the capital of Australia?",
+          "expected_category": "UNSUPPORTED",
+          "top_category": "ACCOUNT",
+          "score": 0.5770707538694969,
+          "scope_score": 0.06252431915584966
+        },
+        {
+          "case_id": "sel-outside-4",
+          "split": "selection",
+          "text": "Calculate the area of a circle with radius five.",
+          "expected_category": "UNSUPPORTED",
+          "top_category": "ACCOUNT",
+          "score": 0.47036912399939534,
+          "scope_score": 0.031147427321084997
+        },
+        {
+          "case_id": "sel-outside-5",
+          "split": "selection",
+          "text": "Translate good morning into French.",
+          "expected_category": "UNSUPPORTED",
+          "top_category": "ORDER",
+          "score": 0.5474995510173557,
+          "scope_score": 0.0034891578123932288
+        },
+        {
+          "case_id": "sel-outside-6",
+          "split": "selection",
+          "text": "Give me a recipe for vegetable soup.",
+          "expected_category": "UNSUPPORTED",
+          "top_category": "ORDER",
+          "score": 0.4065986304908668,
+          "scope_score": 0.038414367925515225
+        },
+        {
+          "case_id": "sel-outside-7",
+          "split": "selection",
+          "text": "Write a love song containing the word refund.",
+          "expected_category": "UNSUPPORTED",
+          "top_category": "REFUND",
+          "score": 0.699003408693008,
+          "scope_score": 0.13606565820994143
+        },
+        {
+          "case_id": "sel-outside-8",
+          "split": "selection",
+          "text": "In a fantasy novel a knight must deliver a letter to the moon.",
+          "expected_category": "UNSUPPORTED",
+          "top_category": "DELIVERY",
+          "score": 0.38105806890766125,
+          "scope_score": 0.010314946998949637
+        },
+        {
+          "case_id": "sel-outside-9",
+          "split": "selection",
+          "text": "Explain the accounting meaning of invoice in a textbook.",
+          "expected_category": "UNSUPPORTED",
+          "top_category": "INVOICE",
+          "score": 0.8923448409218111,
+          "scope_score": 0.015802866595673204
+        },
+        {
+          "case_id": "sel-outside-10",
+          "split": "selection",
+          "text": "Write Python code that sorts a list of numbers.",
+          "expected_category": "UNSUPPORTED",
+          "top_category": "ORDER",
+          "score": 0.8779649473099708,
+          "scope_score": 0.03847287020566803
+        },
+        {
+          "case_id": "sel-outside-11",
+          "split": "selection",
+          "text": "What should I pack for a hiking trip?",
+          "expected_category": "UNSUPPORTED",
+          "top_category": "ACCOUNT",
+          "score": 0.37515443440115226,
+          "scope_score": 0.03270420235490634
+        },
+        {
+          "case_id": "sel-outside-12",
+          "split": "selection",
+          "text": "Tell me a joke about passwords.",
+          "expected_category": "UNSUPPORTED",
+          "top_category": "ACCOUNT",
+          "score": 0.9765591114174762,
+          "scope_score": 0.01644505621933723
+        },
+        {
+          "case_id": "audit-outside-1",
+          "split": "audit",
+          "text": "Compose a sonnet about an ocean.",
+          "expected_category": "UNSUPPORTED",
+          "top_category": "ORDER",
+          "score": 0.4374628226088343,
+          "scope_score": 0.005519943743464539
+        },
+        {
+          "case_id": "audit-outside-2",
+          "split": "audit",
+          "text": "How do black holes form?",
+          "expected_category": "UNSUPPORTED",
+          "top_category": "ACCOUNT",
+          "score": 0.44598380117729236,
+          "scope_score": 0.24300520027549077
+        },
+        {
+          "case_id": "audit-outside-3",
+          "split": "audit",
+          "text": "What is the largest planet in the solar system?",
+          "expected_category": "UNSUPPORTED",
+          "top_category": "FEEDBACK",
+          "score": 0.36031242715618866,
+          "scope_score": 0.0996341717204644
+        },
+        {
+          "case_id": "audit-outside-4",
+          "split": "audit",
+          "text": "Solve the equation three x plus two equals eleven.",
+          "expected_category": "UNSUPPORTED",
+          "top_category": "ORDER",
+          "score": 0.5792924482646433,
+          "scope_score": 0.13980923617265972
+        },
+        {
+          "case_id": "audit-outside-5",
+          "split": "audit",
+          "text": "Translate thank you into Spanish.",
+          "expected_category": "UNSUPPORTED",
+          "top_category": "ORDER",
+          "score": 0.28665462246092427,
+          "scope_score": 0.007114135682836253
+        },
+        {
+          "case_id": "audit-outside-6",
+          "split": "audit",
+          "text": "Suggest a recipe for banana bread.",
+          "expected_category": "UNSUPPORTED",
+          "top_category": "ORDER",
+          "score": 0.365337735655311,
+          "scope_score": 0.012921291561544423
+        },
+        {
+          "case_id": "audit-outside-7",
+          "split": "audit",
+          "text": "Write a screenplay where the villain steals a password.",
+          "expected_category": "UNSUPPORTED",
+          "top_category": "ACCOUNT",
+          "score": 0.9389445499339885,
+          "scope_score": 0.0031724725428342593
+        },
+        {
+          "case_id": "audit-outside-8",
+          "split": "audit",
+          "text": "Describe how shipping changed during the industrial revolution.",
+          "expected_category": "UNSUPPORTED",
+          "top_category": "DELIVERY",
+          "score": 0.8248475389379533,
+          "scope_score": 0.03407237398378937
+        },
+        {
+          "case_id": "audit-outside-9",
+          "split": "audit",
+          "text": "Generate a fictional invoice for a story about a wizard.",
+          "expected_category": "UNSUPPORTED",
+          "top_category": "INVOICE",
+          "score": 0.5970027887072066,
+          "scope_score": 0.0033416991772826643
+        },
+        {
+          "case_id": "audit-outside-10",
+          "split": "audit",
+          "text": "Write a JavaScript function to reverse a string.",
+          "expected_category": "UNSUPPORTED",
+          "top_category": "ACCOUNT",
+          "score": 0.2703948704559951,
+          "scope_score": 0.01998646053843911
+        },
+        {
+          "case_id": "audit-outside-11",
+          "split": "audit",
+          "text": "Give me ideas for a birthday party.",
+          "expected_category": "UNSUPPORTED",
+          "top_category": "ORDER",
+          "score": 0.6915113661871344,
+          "scope_score": 0.002913303858766092
+        },
+        {
+          "case_id": "audit-outside-12",
+          "split": "audit",
+          "text": "Explain the word subscription to an English language learner.",
+          "expected_category": "UNSUPPORTED",
+          "top_category": "SUBSCRIPTION",
+          "score": 0.28455419721952113,
+          "scope_score": 0.0009778410811021043
+        },
+        {
+          "case_id": "regression-invoice",
+          "split": "regression",
+          "text": "Please send me an invoice for my last payment.\u201d",
+          "expected_category": "INVOICE",
+          "top_category": "INVOICE",
+          "score": 0.7879564268708543,
+          "scope_score": 0.9910676351330535
+        },
+        {
+          "case_id": "regression-payment",
+          "split": "regression",
+          "text": "I was charged twice for my subscription",
+          "expected_category": "PAYMENT",
+          "top_category": "ACCOUNT",
+          "score": 0.3274791564857133,
+          "scope_score": 0.9900498563613087
+        },
+        {
+          "case_id": "regression-poem",
+          "split": "regression",
+          "text": "Write a poem about the moon",
+          "expected_category": "UNSUPPORTED",
+          "top_category": "FEEDBACK",
+          "score": 0.5468584394178483,
+          "scope_score": 0.004545514708243936
+        }
+      ],
+      "latency": {
+        "requests": 20,
+        "median_ms": 13.011354500122252,
+        "p95_ms": 15.787584200370475,
+        "batch_size": 1,
+        "includes": "local feature extraction/encoding and category predict_proba; no HTTP or scope head"
+      }
+    }
+  },
+  "limitations": [
+    "Previously inspected authored development data with provisional labels, not independent evaluation.",
+    "Negative examples target known failure families; semantic/template overlap can inflate scope results.",
+    "Threshold selection excludes audit/regression/probe rows and exact training duplicates; the existing audit is previously inspected.",
+    "No eligible cutoff means no policy selected; do not lower criteria after inspecting results.",
+    "A fixed 0.70 comparison is diagnostic only; model scores are not calibrated or matched risk.",
+    "Frozen pretrained embeddings do not establish task understanding, scope reliability, or multi-intent handling.",
+    "Inputs beyond 256 wordpieces are truncated; token truncation counts are not measured.",
+    "Pretraining overlap with downstream data has not been independently audited.",
+    "CPU timing is a small sequential warm local measurement, not HTTP/load/concurrency performance."
+  ]
+}

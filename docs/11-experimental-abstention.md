@@ -2,6 +2,10 @@
 
 The classifier can now withhold its category suggestion and display **No reliable suggestion** when an optional score rule is installed. This is a selective-prediction prototype, not a trained detector of unsupported requests. Passing the rule does not establish reliability. Every request still requires human review.
 
+## Later overlap finding (October 20, 2026)
+
+The semantic experiment's train-overlap check found that selection case `sel-subscription-1` ("How do I subscribe to your newsletter?") exactly matches a normalized training ticket. The original historical experiment below did not check challenge/train overlap. Its selection was therefore partly contaminated; it should not be treated as clean evidence for the cutoff. The audit had no normalized exact training match, but remains a small authored development set. The new semantic comparison excludes that selection case before scoring, leaving 21 supported and 12 unrelated selection requests. Historical reports and the optional live policy are preserved unchanged. Future independently reviewed collections must be screened for exact and template-family overlap before selection.
+
 ## What changed
 
 The trained classifier and its original scores are unchanged. When the model's maximum uncalibrated probability is below the installed threshold, the prediction returns decision=abstain and suggested_category=null. The underlying model_top_category is retained in the JSON for diagnostics, but is not presented as the recommended category.

@@ -22,6 +22,8 @@ The [character-feature experiment](docs/13-character-feature-experiment.md) comp
 
 The [scope-detector experiment](docs/14-scope-detector-experiment.md) adds a separate binary support-scope gate offline. Combined with the word-category cutoff, unrelated false suggestions fall from 4/24 to 1/24 while supported coverage remains 14/66 on existing provisional probes. Negative training examples reflect known failure families, so these are development findings, not independent audit results.
 
+The [frozen semantic-embedding experiment](docs/15-semantic-embedding-experiment.md) improves indirect wording on provisional probes: 18/22 correct versus 10/22 for word features. With a separately selected cutoff and semantic scope gate, it accepts 52/66 valid probes (49 correct) and rejects 24/24 unrelated probes, but accepts 5/8 ambiguous requests. It remains offline, and the guide discloses a training duplicate discovered in the older cutoff-selection collection.
+
 ## Run the complete demo
 
 From the repository root, with Python 3.11–3.13 in a virtual environment:
