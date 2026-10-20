@@ -1,0 +1,99 @@
+case_id,slice,text,expected_category,label_status
+account-01,plain,I need to update the name on my customer profile.,ACCOUNT,provisional
+account-02,plain,Where do I reset the password for my customer account?,ACCOUNT,provisional
+account-03,typo,cant loggin to my acount pls help,ACCOUNT,provisional
+account-04,typo,need to chnage my acount passwrod,ACCOUNT,provisional
+account-05,indirect,The email I registered with is no longer mine; where can I replace it?,ACCOUNT,provisional
+account-06,indirect,I signed up here before but have forgotten the credentials to get back in.,ACCOUNT,provisional
+cancel-01,plain,What penalties apply when an order is cancelled?,CANCEL,provisional
+cancel-02,plain,Is cancelling a purchase free of charge?,CANCEL,provisional
+cancel-03,typo,how much is the cancelation fee?,CANCEL,provisional
+cancel-04,typo,will i pay a penelty for cancling?,CANCEL,provisional
+cancel-05,indirect,"Before I call off my purchase, I need to know whether doing so costs anything.",CANCEL,provisional
+cancel-06,indirect,Would withdrawing my purchase leave me owing a fee?,CANCEL,provisional
+contact-01,plain,Please provide your customer service email address.,CONTACT,provisional
+contact-02,plain,How can I reach your support department by telephone?,CONTACT,provisional
+contact-03,typo,need to speek to a suport agnet,CONTACT,provisional
+contact-04,typo,whats ur custmer servce number,CONTACT,provisional
+contact-05,indirect,I would rather discuss this with someone who works for your company.,CONTACT,provisional
+contact-06,indirect,Can a member of your customer care team take over this conversation?,CONTACT,provisional
+delivery-01,plain,Is weekend delivery available?,DELIVERY,provisional
+delivery-02,plain,What is the estimated delivery time for the express option?,DELIVERY,provisional
+delivery-03,typo,do u ofer same day delivry,DELIVERY,provisional
+delivery-04,typo,how long dose standard delivry take,DELIVERY,provisional
+delivery-05,indirect,I need something to arrive tomorrow; is there a service level that can do that?,DELIVERY,provisional
+delivery-06,indirect,"Before choosing how it arrives, can you explain your available delivery speeds?",DELIVERY,provisional
+feedback-01,plain,How do I submit a complaint about your service?,FEEDBACK,provisional
+feedback-02,plain,I want to leave positive feedback about your helpful staff.,FEEDBACK,provisional
+feedback-03,typo,i wana file a complant about ur servce,FEEDBACK,provisional
+feedback-04,typo,where can i leav a reveiw of this shop,FEEDBACK,provisional
+feedback-05,indirect,Your colleague was exceptionally helpful and I want that praise recorded.,FEEDBACK,provisional
+feedback-06,indirect,The way your staff treated me was unacceptable; where can I report my experience?,FEEDBACK,provisional
+invoice-01,plain,Can I download a PDF invoice for my purchase?,INVOICE,provisional
+invoice-02,plain,The invoice is missing from my confirmation email.,INVOICE,provisional
+invoice-03,typo,pls send my invioce again,INVOICE,provisional
+invoice-04,typo,where is the invoce for last weeks purchse,INVOICE,provisional
+invoice-05,indirect,My accountant needs the itemized billing document for this purchase.,INVOICE,provisional
+invoice-06,indirect,I need the document showing what you billed me so I can submit my expenses.,INVOICE,provisional
+order-01,plain,Please remove one item from my existing order.,ORDER,provisional
+order-02,plain,How can I see the status of an order I already placed?,ORDER,provisional
+order-03,typo,wanna cancle my ordar before it ships,ORDER,provisional
+order-04,typo,can i add an itme to my oder,ORDER,provisional
+order-05,indirect,I bought two of the same item by mistake; can you amend the purchase to just one?,ORDER,provisional
+order-06,indirect,I placed a purchase this morning and now need to track its progress.,ORDER,provisional
+payment-01,plain,Can I pay using a debit card?,PAYMENT,provisional
+payment-02,plain,My card was rejected when I tried to complete checkout.,PAYMENT,provisional
+payment-03,typo,paymnt keeps failng at chekout,PAYMENT,provisional
+payment-04,typo,do u acept bank tranfers as paymnt,PAYMENT,provisional
+payment-05,indirect,"I have tried three times to pay for the basket, but the transaction will not go through.",PAYMENT,provisional
+payment-06,indirect,The same purchase appears twice on my bank statement; please investigate the duplicate charge.,PAYMENT,provisional
+refund-01,plain,Where can I check the progress of my refund?,REFUND,provisional
+refund-02,plain,Am I eligible for a refund on a damaged purchase?,REFUND,provisional
+refund-03,typo,my refnd hasnt arived yet,REFUND,provisional
+refund-04,typo,how do i requst my mony back,REFUND,provisional
+refund-05,indirect,"You approved returning my money last week, but nothing has reached my bank.",REFUND,provisional
+refund-06,indirect,The product arrived broken and I would like the amount I paid returned.,REFUND,provisional
+shipping-01,plain,Can I edit the postal code in my shipping address?,SHIPPING,provisional
+shipping-02,plain,How do I add a second shipping address to my profile?,SHIPPING,provisional
+shipping-03,typo,need to corect my shiping adress,SHIPPING,provisional
+shipping-04,typo,wrong zip in delivry adress pls fix,SHIPPING,provisional
+shipping-05,indirect,I moved house; where do I replace the address used for my parcels?,SHIPPING,provisional
+shipping-06,indirect,The destination has apartment 12 instead of 21; can you correct that address?,SHIPPING,provisional
+subscription-01,plain,Please remove me from your marketing newsletter.,SUBSCRIPTION,provisional
+subscription-02,plain,Where do I sign up for your email newsletter?,SUBSCRIPTION,provisional
+subscription-03,typo,unsubscrbe me frm ur newslter,SUBSCRIPTION,provisional
+subscription-04,typo,i wana subcribe to the newsleter,SUBSCRIPTION,provisional
+subscription-05,indirect,I would like your store announcements to arrive in my inbox regularly.,SUBSCRIPTION,provisional
+subscription-06,indirect,I no longer want the promotional emails your company keeps sending.,SUBSCRIPTION,provisional
+general_knowledge-01,general_knowledge,Why does ice float on water?,UNSUPPORTED,provisional
+general_knowledge-02,general_knowledge,Explain how a rainbow forms.,UNSUPPORTED,provisional
+general_knowledge-03,general_knowledge,Who invented the telescope?,UNSUPPORTED,provisional
+general_knowledge-04,general_knowledge,How many sides does a hexagon have?,UNSUPPORTED,provisional
+general_knowledge-05,general_knowledge,What causes the seasons?,UNSUPPORTED,provisional
+general_knowledge-06,general_knowledge,Describe the life cycle of a butterfly.,UNSUPPORTED,provisional
+general_knowledge-07,general_knowledge,How do volcanoes erupt?,UNSUPPORTED,provisional
+general_knowledge-08,general_knowledge,What is the difference between a comet and an asteroid?,UNSUPPORTED,provisional
+keyword_trap-01,keyword_trap,Write a limerick about an unpaid invoice.,UNSUPPORTED,provisional
+keyword_trap-02,keyword_trap,Explain subscription pricing in an economics lecture.,UNSUPPORTED,provisional
+keyword_trap-03,keyword_trap,Translate the phrase shipping address into Italian.,UNSUPPORTED,provisional
+keyword_trap-04,keyword_trap,Make a crossword clue whose answer is refund.,UNSUPPORTED,provisional
+keyword_trap-05,keyword_trap,Write a fantasy tale about a cancelled royal order.,UNSUPPORTED,provisional
+keyword_trap-06,keyword_trap,Create a poem about a delivery robot falling in love.,UNSUPPORTED,provisional
+keyword_trap-07,keyword_trap,Explain the history of credit card payment networks.,UNSUPPORTED,provisional
+keyword_trap-08,keyword_trap,Invent dialogue for a fictional customer support agent.,UNSUPPORTED,provisional
+other_task-01,other_task,Debug this Python loop: for x in range(4) print(x).,UNSUPPORTED,provisional
+other_task-02,other_task,Summarize a scientific paper about solar panels.,UNSUPPORTED,provisional
+other_task-03,other_task,Plan a three day sightseeing trip to Rome.,UNSUPPORTED,provisional
+other_task-04,other_task,Generate ten names for a fictional spaceship.,UNSUPPORTED,provisional
+other_task-05,other_task,Teach me to play a C major chord.,UNSUPPORTED,provisional
+other_task-06,other_task,Convert 45 degrees Celsius into Fahrenheit.,UNSUPPORTED,provisional
+other_task-07,other_task,Suggest exercises for learning French verbs.,UNSUPPORTED,provisional
+other_task-08,other_task,Write a cover letter for an imaginary librarian.,UNSUPPORTED,provisional
+ambiguous-01,ambiguous,It does not work.,REVIEW,provisional
+ambiguous-02,ambiguous,Please fix the problem from yesterday.,REVIEW,provisional
+ambiguous-03,ambiguous,I need help with that thing.,REVIEW,provisional
+ambiguous-04,ambiguous,Something is wrong with what I bought.,REVIEW,provisional
+ambiguous-05,ambiguous,I want my invoice and I also want to cancel my order.,REVIEW,provisional
+ambiguous-06,ambiguous,Change my account email and refund my last purchase.,REVIEW,provisional
+ambiguous-07,ambiguous,Stop the newsletter and update the shipping address.,REVIEW,provisional
+ambiguous-08,ambiguous,I cannot log in and my checkout payment was rejected.,REVIEW,provisional

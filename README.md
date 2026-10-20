@@ -16,6 +16,8 @@ The [calibration experiment](docs/08-calibration-experiment.md) improved develop
 
 The [abstention experiment](docs/11-experimental-abstention.md) adds an opt-in “No reliable suggestion” outcome. On its small authored audit set it withheld all 12 unrelated requests, but also withheld 8 of 11 valid support requests. It is a score-based baseline, not a general unsupported-request detector.
 
+The [broader robustness diagnostics](docs/12-robustness-diagnostics.md) add 98 provisional stress probes, per-category and writing-style reports, and a label-review protocol. At the frozen 0.70 cutoff, only 14/66 valid probes receive a suggestion and 4/24 unrelated tasks still pass. These diagnostic findings motivate further model work; they are not independent accuracy estimates.
+
 ## Run the complete demo
 
 From the repository root, with Python 3.11–3.13 in a virtual environment:
