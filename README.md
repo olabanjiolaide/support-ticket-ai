@@ -18,6 +18,8 @@ The [abstention experiment](docs/11-experimental-abstention.md) adds an opt-in â
 
 The [broader robustness diagnostics](docs/12-robustness-diagnostics.md) add 98 provisional stress probes, per-category and writing-style reports, and a label-review protocol. At the frozen 0.70 cutoff, only 14/66 valid probes receive a suggestion and 4/24 unrelated tasks still pass. These diagnostic findings motivate further model work; they are not independent accuracy estimates.
 
+The [character-feature experiment](docs/13-character-feature-experiment.md) compares a fixed spelling-tolerant candidate with the word baseline. Correct categories on provisional supported probes rose from 34/66 to 45/66 before abstention, but coverage and unrelated-task failures remain unresolved. This is an offline experiment; the live model is unchanged.
+
 ## Run the complete demo
 
 From the repository root, with Python 3.11â€“3.13 in a virtual environment:
