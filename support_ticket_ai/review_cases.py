@@ -105,9 +105,12 @@ def review_session(cases: list[dict], progress: dict, output: Path, limit: int,
     added = 0
     print_fn('No model is loaded. Label the request yourself; skip if uncertain.')
     print_fn('1 = one clear intent; 2 = multiple intents; 3 = insufficient context; 4 = unsupported')
+    print_fn('Use 4 for a clearly unrelated task; s leaves a case unanswered for later.')
     print_fn('Categories: ' + ', '.join(sorted(CATEGORIES)))
     print_fn('CANCEL = cancellation-fee questions; actual order cancellation = ORDER.')
     print_fn('SUBSCRIPTION = newsletter preferences; SHIPPING = destination addresses.')
+    print_fn('Label requested outcomes, not every topic mentioned; the word and alone does not add an intent.')
+    print_fn('When account access is the task, an agent preference does not add CONTACT; put that preference in the note.')
     try:
         for case in cases:
             if case['case_id'] in completed or added >= limit:

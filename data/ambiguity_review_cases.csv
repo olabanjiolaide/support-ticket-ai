@@ -1,0 +1,73 @@
+case_id,family_id,text
+ambiguity-f7aac0eb2d,scenario-04,Check the progress of my order and explain how to request a refund on a different purchase.
+ambiguity-2f929f10ba,scenario-01,Please update the phone number on my profile; the old number is no longer in use.
+ambiguity-ad7393bee8,scenario-09,What extra charge applies if I cancel after the purchase is confirmed?
+ambiguity-b0a079b7c0,scenario-01,My old number is gone and that is stopping me signing in. How can I regain access?
+ambiguity-ff9fb1e9b1,scenario-13,"The invoice total is correct, but my bank statement shows the payment twice."
+ambiguity-b3d03dbbf4,scenario-05,It failed at the last step again.
+ambiguity-87d4d8109a,scenario-01,It is still using the old one. Can you replace it?
+ambiguity-0326be1e9a,scenario-13,Investigate the duplicate payment and send me the invoice for that purchase.
+ambiguity-321a1d5045,scenario-05,The checkout transaction fails after I enter my card security code.
+ambiguity-f623297d43,scenario-15,Explain the refund rules and update the apartment number in my delivery address.
+ambiguity-d602330967,scenario-16,Do not resend the invoice; just fix the address where future parcels will go.
+ambiguity-b376fe7aec,scenario-14,Can a staff member help me reset the password for my customer login?
+ambiguity-1165fa41a6,scenario-03,Change the parcel destination and explain whether cancelling the purchase would cost me anything.
+ambiguity-f92cae0dac,scenario-14,Recover my account access and separately check the status of a refund on an earlier return.
+ambiguity-c8c59ee5b7,scenario-02,The invoice should include both the product prices and the tax breakdown.
+ambiguity-18c0e36e16,scenario-06,"The return was accepted, but my bank account has not received the refund yet."
+ambiguity-d473446275,scenario-18,I need to change the email address used to sign into my customer account.
+ambiguity-3fb9b69bfb,scenario-09,"Cancel that thing, or leave it as it is; I have not decided."
+ambiguity-74b0c7cc5b,scenario-06,Check my refund progress and update the contact email on my customer profile.
+ambiguity-d965eecb1c,scenario-14,"Help me with my account, but I cannot explain what I need changed."
+ambiguity-0cb6b5b15f,scenario-17,Draft dialogue in which an actor compliments an imaginary support agent.
+ambiguity-acaad22c7c,scenario-12,Amend the item quantity in my order and stop my promotional newsletter.
+ambiguity-f6b7fdbadf,scenario-12,Compare the grammar of the words order and ordered for a language worksheet.
+ambiguity-b42eef1fc3,scenario-15,The package was damaged when it arrived; I want my money back rather than a replacement.
+ambiguity-2c8c4d19a4,scenario-08,Stop the promotional newsletter and correct the postal code in my saved destination address.
+ambiguity-dc0be16a96,scenario-10,Invent a telephone conversation between two imaginary shop employees.
+ambiguity-7beda57be2,scenario-15,Write a fictional debate about refund rules for a theatre workshop.
+ambiguity-80a91a859e,scenario-03,I typed the street correctly but omitted the building number from my shipping address.
+ambiguity-8ab803bc61,scenario-05,Help me complete the payment and unsubscribe me from the store newsletter.
+ambiguity-e6ad4ae484,scenario-08,Please stop the weekly store-update emails from reaching my inbox.
+ambiguity-b0195c5531,scenario-11,Can purchases be delivered on Saturday evenings?
+ambiguity-9b692f00a5,scenario-02,Could you send that invoice and remove me from future promotional mailings?
+ambiguity-2e1071ffa5,scenario-13,The numbers do not match. Can you look into it?
+ambiguity-2fbd4dfdca,scenario-07,That was unacceptable. Do something about it.
+ambiguity-904f2f3ee7,scenario-03,I need my parcel sent to the address of the hotel where I am staying.
+ambiguity-a69bf99682,scenario-07,I am unhappy about the service and want to submit feedback about it.
+ambiguity-935a74ac23,scenario-06,Create fictional return-and-refund records for a database programming lesson.
+ambiguity-2a07e5d79a,scenario-02,Write an example tax invoice for an imaginary bicycle shop in a classroom activity.
+ambiguity-14c0fdd208,scenario-11,Is the faster one available?
+ambiguity-c21ac7328a,scenario-04,Write a scene in which a fictional warehouse worker explains order statuses.
+ambiguity-d1aa37b222,scenario-17,"The agent resolved my problem well, and I would like to send positive service feedback."
+ambiguity-7c1590972b,scenario-12,I need to change both the colour and the size of an item in my existing order.
+ambiguity-97a36ccb2e,scenario-07,I wish to complain about how long the help-desk employee kept me waiting.
+ambiguity-459692e27c,scenario-06,I returned the faulty headphones and want to know when the reimbursement will arrive.
+ambiguity-dee146759e,scenario-07,Record my complaint and also send the invoice for my purchase.
+ambiguity-316f51293c,scenario-04,I want to know whether my existing order has moved beyond processing.
+ambiguity-c6f8fb011c,scenario-02,I need to retrieve the tax invoice for the purchase I made earlier this week.
+ambiguity-6a2213641c,scenario-10,I want to speak with a staff member by telephone rather than keep using chat.
+ambiguity-3ed8873ca4,scenario-14,My login password no longer works and I would prefer an agent to help me recover access.
+ambiguity-b655cda6df,scenario-13,"A second debit appeared for the same purchase, although I only paid once."
+ambiguity-2a5118fd5c,scenario-11,"Before placing an order, I need to compare standard delivery with express delivery."
+ambiguity-2cc8f6c2b5,scenario-15,Please explain the refund eligibility rules for a product that arrived damaged.
+ambiguity-3df7621217,scenario-05,Both my debit card and my credit card fail when I try to pay for this basket.
+ambiguity-d59b37d1e0,scenario-18,"I am asking about my login email, rather than the address where parcels are sent."
+ambiguity-ab41dfee1c,scenario-18,Change the address on my account.
+ambiguity-fe9ccee18d,scenario-16,I need both the invoice resent and my saved shipping destination corrected.
+ambiguity-e3064e1366,scenario-12,I accidentally ordered three units and want the existing order reduced to two.
+ambiguity-bc6ce5b952,scenario-08,"I want the marketing newsletter switched off, but I am not asking to close my account."
+ambiguity-5662cfce65,scenario-10,Give me your support telephone number and tell me the available delivery options.
+ambiguity-38610f996d,scenario-04,The status was processing yesterday; what is the status of that order now?
+ambiguity-f6a85e5a62,scenario-16,Fix the same detail on that document.
+ambiguity-9f07566d55,scenario-03,Please send it to the other place we mentioned.
+ambiguity-ec8b8ecafb,scenario-18,Change my login email address and tell me what payment methods you accept.
+ambiguity-cf03bc6274,scenario-11,Tell me the weekend delivery options and help me change my account password.
+ambiguity-e9c2feb361,scenario-09,Tell me the cancellation penalty and provide the email address of your customer-care team.
+ambiguity-25ac8ecf6c,scenario-17,I want to leave a compliment about a helpful customer-care agent.
+ambiguity-e5e7b981a2,scenario-08,Translate the sentence about stopping a newsletter into Polish.
+ambiguity-d19357b589,scenario-16,"The invoice is available, but I only need you to correct my saved shipping destination."
+ambiguity-5b930b6325,scenario-17,Record my compliment and tell me how to subscribe to your store newsletter.
+ambiguity-ed5e9aeca0,scenario-01,Replace my customer phone number and email me a copy of my latest invoice.
+ambiguity-dc638ed620,scenario-10,Could you give me a direct telephone contact for your customer support team?
+ambiguity-3a6a37df12,scenario-09,"Before I decide whether to keep the purchase, I need to know the cancellation fee."
