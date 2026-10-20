@@ -35,7 +35,11 @@ The payment example deliberately includes the previously documented duplicate-ch
 - **Model score:** the original uncalibrated score, displayed to three decimal places. It is not a verified probability of correctness.
 - **Human review required:** the final routing decision remains with a person.
 
-The offline temperature-scaling experiment is not applied to these live scores. The interface uses the existing POST /predict contract.
+The offline temperature-scaling experiment is not applied to these live scores. API version 0.2.0 adds an optional abstention outcome to POST /predict.
+
+## Optional: No reliable suggestion
+
+The [experimental abstention guide](11-experimental-abstention.md) explains evaluating and installing a model-bound score policy. With it enabled, low-scoring requests display **No reliable suggestion**, with instructions to classify them manually. This does not prove a request is unsupported; some valid requests are also withheld. The policy is opt-in and is loaded when the server starts. Human review remains required for both decisions.
 
 ## Availability, privacy, and layout
 

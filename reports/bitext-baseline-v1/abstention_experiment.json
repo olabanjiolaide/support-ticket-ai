@@ -1,0 +1,731 @@
+{
+  "experiment": "authored_development_challenge_score_abstention",
+  "test_evaluated": false,
+  "model_retrained": false,
+  "model_sha256": "cccc36d4074548c23e15cf51e12acc740accfadbb19539d76986a4326f5dbd8e",
+  "training_versions": {
+    "python": "3.12.14",
+    "scikit-learn": "1.8.0",
+    "numpy": "2.3.5",
+    "scipy": "1.17.0",
+    "joblib": "1.5.3"
+  },
+  "challenge_sha256": "58920a4aecb51ad493aa5d51e101dd4b9847135eb188326c978f004520217442",
+  "partition_counts": {
+    "selection": 34,
+    "audit": 23,
+    "regression": 3
+  },
+  "criteria_declared_before_evaluation": {
+    "minimum_supported_coverage": 0.25,
+    "minimum_selected_supported_accuracy": 0.9,
+    "minimum_unsupported_rejection": 0.9
+  },
+  "selection_candidates": [
+    {
+      "threshold": 0.5,
+      "supported_rows": 22,
+      "unsupported_rows": 12,
+      "selected_supported_rows": 17,
+      "supported_coverage": 0.7727272727272727,
+      "selected_supported_accuracy": 1.0,
+      "selected_supported_errors": 0,
+      "withheld_supported_rows": 5,
+      "withheld_correct_supported_rows": 2,
+      "unsupported_rejected_rows": 9,
+      "unsupported_rejection": 0.75,
+      "unsupported_suggestions": 3
+    },
+    {
+      "threshold": 0.6,
+      "supported_rows": 22,
+      "unsupported_rows": 12,
+      "selected_supported_rows": 15,
+      "supported_coverage": 0.6818181818181818,
+      "selected_supported_accuracy": 1.0,
+      "selected_supported_errors": 0,
+      "withheld_supported_rows": 7,
+      "withheld_correct_supported_rows": 4,
+      "unsupported_rejected_rows": 10,
+      "unsupported_rejection": 0.8333333333333334,
+      "unsupported_suggestions": 2
+    },
+    {
+      "threshold": 0.7,
+      "supported_rows": 22,
+      "unsupported_rows": 12,
+      "selected_supported_rows": 14,
+      "supported_coverage": 0.6363636363636364,
+      "selected_supported_accuracy": 1.0,
+      "selected_supported_errors": 0,
+      "withheld_supported_rows": 8,
+      "withheld_correct_supported_rows": 5,
+      "unsupported_rejected_rows": 11,
+      "unsupported_rejection": 0.9166666666666666,
+      "unsupported_suggestions": 1
+    },
+    {
+      "threshold": 0.8,
+      "supported_rows": 22,
+      "unsupported_rows": 12,
+      "selected_supported_rows": 13,
+      "supported_coverage": 0.5909090909090909,
+      "selected_supported_accuracy": 1.0,
+      "selected_supported_errors": 0,
+      "withheld_supported_rows": 9,
+      "withheld_correct_supported_rows": 6,
+      "unsupported_rejected_rows": 12,
+      "unsupported_rejection": 1.0,
+      "unsupported_suggestions": 0
+    },
+    {
+      "threshold": 0.85,
+      "supported_rows": 22,
+      "unsupported_rows": 12,
+      "selected_supported_rows": 10,
+      "supported_coverage": 0.45454545454545453,
+      "selected_supported_accuracy": 1.0,
+      "selected_supported_errors": 0,
+      "withheld_supported_rows": 12,
+      "withheld_correct_supported_rows": 9,
+      "unsupported_rejected_rows": 12,
+      "unsupported_rejection": 1.0,
+      "unsupported_suggestions": 0
+    },
+    {
+      "threshold": 0.9,
+      "supported_rows": 22,
+      "unsupported_rows": 12,
+      "selected_supported_rows": 3,
+      "supported_coverage": 0.13636363636363635,
+      "selected_supported_accuracy": 1.0,
+      "selected_supported_errors": 0,
+      "withheld_supported_rows": 19,
+      "withheld_correct_supported_rows": 16,
+      "unsupported_rejected_rows": 12,
+      "unsupported_rejection": 1.0,
+      "unsupported_suggestions": 0
+    },
+    {
+      "threshold": 0.95,
+      "supported_rows": 22,
+      "unsupported_rows": 12,
+      "selected_supported_rows": 3,
+      "supported_coverage": 0.13636363636363635,
+      "selected_supported_accuracy": 1.0,
+      "selected_supported_errors": 0,
+      "withheld_supported_rows": 19,
+      "withheld_correct_supported_rows": 16,
+      "unsupported_rejected_rows": 12,
+      "unsupported_rejection": 1.0,
+      "unsupported_suggestions": 0
+    },
+    {
+      "threshold": 0.98,
+      "supported_rows": 22,
+      "unsupported_rows": 12,
+      "selected_supported_rows": 2,
+      "supported_coverage": 0.09090909090909091,
+      "selected_supported_accuracy": 1.0,
+      "selected_supported_errors": 0,
+      "withheld_supported_rows": 20,
+      "withheld_correct_supported_rows": 17,
+      "unsupported_rejected_rows": 12,
+      "unsupported_rejection": 1.0,
+      "unsupported_suggestions": 0
+    },
+    {
+      "threshold": 0.99,
+      "supported_rows": 22,
+      "unsupported_rows": 12,
+      "selected_supported_rows": 2,
+      "supported_coverage": 0.09090909090909091,
+      "selected_supported_accuracy": 1.0,
+      "selected_supported_errors": 0,
+      "withheld_supported_rows": 20,
+      "withheld_correct_supported_rows": 17,
+      "unsupported_rejected_rows": 12,
+      "unsupported_rejection": 1.0,
+      "unsupported_suggestions": 0
+    }
+  ],
+  "selected_threshold": 0.7,
+  "audit_forced_suggestion_baseline": {
+    "threshold": null,
+    "supported_rows": 11,
+    "unsupported_rows": 12,
+    "selected_supported_rows": 11,
+    "supported_coverage": 1.0,
+    "selected_supported_accuracy": 1.0,
+    "selected_supported_errors": 0,
+    "withheld_supported_rows": 0,
+    "withheld_correct_supported_rows": 0,
+    "unsupported_rejected_rows": 0,
+    "unsupported_rejection": 0.0,
+    "unsupported_suggestions": 12
+  },
+  "audit_selected_policy": {
+    "threshold": 0.7,
+    "supported_rows": 11,
+    "unsupported_rows": 12,
+    "selected_supported_rows": 3,
+    "supported_coverage": 0.2727272727272727,
+    "selected_supported_accuracy": 1.0,
+    "selected_supported_errors": 0,
+    "withheld_supported_rows": 8,
+    "withheld_correct_supported_rows": 8,
+    "unsupported_rejected_rows": 12,
+    "unsupported_rejection": 1.0,
+    "unsupported_suggestions": 0
+  },
+  "eligible_for_experimental_installation": true,
+  "cases": [
+    {
+      "case_id": "sel-account-1",
+      "split": "selection",
+      "text": "I forgot my password and need to get back into my account.",
+      "expected_category": "ACCOUNT",
+      "top_category": "ACCOUNT",
+      "score": 0.8805115782334332,
+      "candidate_decision": "suggestion"
+    },
+    {
+      "case_id": "sel-account-2",
+      "split": "selection",
+      "text": "Please help me close my customer account.",
+      "expected_category": "ACCOUNT",
+      "top_category": "ACCOUNT",
+      "score": 0.8556652266150608,
+      "candidate_decision": "suggestion"
+    },
+    {
+      "case_id": "audit-account-1",
+      "split": "audit",
+      "text": "How do I change the email address linked to my account?",
+      "expected_category": "ACCOUNT",
+      "top_category": "ACCOUNT",
+      "score": 0.5975429583502578,
+      "candidate_decision": "abstain"
+    },
+    {
+      "case_id": "sel-cancel-1",
+      "split": "selection",
+      "text": "Is there a cancellation fee if I cancel an order?",
+      "expected_category": "CANCEL",
+      "top_category": "ORDER",
+      "score": 0.38707507097975336,
+      "candidate_decision": "abstain"
+    },
+    {
+      "case_id": "sel-cancel-2",
+      "split": "selection",
+      "text": "How much will I be charged for cancelling?",
+      "expected_category": "CANCEL",
+      "top_category": "REFUND",
+      "score": 0.17042491732482842,
+      "candidate_decision": "abstain"
+    },
+    {
+      "case_id": "audit-cancel-1",
+      "split": "audit",
+      "text": "Where can I check your cancellation fees?",
+      "expected_category": "CANCEL",
+      "top_category": "CANCEL",
+      "score": 0.6470111650763848,
+      "candidate_decision": "abstain"
+    },
+    {
+      "case_id": "sel-contact-1",
+      "split": "selection",
+      "text": "I would like to speak with a human customer service agent.",
+      "expected_category": "CONTACT",
+      "top_category": "CONTACT",
+      "score": 0.9963718017222457,
+      "candidate_decision": "suggestion"
+    },
+    {
+      "case_id": "sel-contact-2",
+      "split": "selection",
+      "text": "What is the phone number for customer support?",
+      "expected_category": "CONTACT",
+      "top_category": "CONTACT",
+      "score": 0.8180051765876659,
+      "candidate_decision": "suggestion"
+    },
+    {
+      "case_id": "audit-contact-1",
+      "split": "audit",
+      "text": "Can you connect me to a real person on your support team?",
+      "expected_category": "CONTACT",
+      "top_category": "CONTACT",
+      "score": 0.5953157976002805,
+      "candidate_decision": "abstain"
+    },
+    {
+      "case_id": "sel-delivery-1",
+      "split": "selection",
+      "text": "What delivery options do you offer?",
+      "expected_category": "DELIVERY",
+      "top_category": "DELIVERY",
+      "score": 0.8572451983373666,
+      "candidate_decision": "suggestion"
+    },
+    {
+      "case_id": "sel-delivery-2",
+      "split": "selection",
+      "text": "How long does standard delivery take?",
+      "expected_category": "DELIVERY",
+      "top_category": "DELIVERY",
+      "score": 0.44698964068842506,
+      "candidate_decision": "abstain"
+    },
+    {
+      "case_id": "audit-delivery-1",
+      "split": "audit",
+      "text": "Do you provide next day delivery?",
+      "expected_category": "DELIVERY",
+      "top_category": "DELIVERY",
+      "score": 0.5490592863700983,
+      "candidate_decision": "abstain"
+    },
+    {
+      "case_id": "sel-feedback-1",
+      "split": "selection",
+      "text": "I want to complain about the service I received.",
+      "expected_category": "FEEDBACK",
+      "top_category": "ACCOUNT",
+      "score": 0.23469555248532004,
+      "candidate_decision": "abstain"
+    },
+    {
+      "case_id": "sel-feedback-2",
+      "split": "selection",
+      "text": "Where can I leave a review of your service?",
+      "expected_category": "FEEDBACK",
+      "top_category": "FEEDBACK",
+      "score": 0.8048555024092569,
+      "candidate_decision": "suggestion"
+    },
+    {
+      "case_id": "audit-feedback-1",
+      "split": "audit",
+      "text": "I would like to give feedback about my shopping experience.",
+      "expected_category": "FEEDBACK",
+      "top_category": "FEEDBACK",
+      "score": 0.5224134066635364,
+      "candidate_decision": "abstain"
+    },
+    {
+      "case_id": "sel-invoice-1",
+      "split": "selection",
+      "text": "Where can I download my invoice?",
+      "expected_category": "INVOICE",
+      "top_category": "INVOICE",
+      "score": 0.8670204597248344,
+      "candidate_decision": "suggestion"
+    },
+    {
+      "case_id": "sel-invoice-2",
+      "split": "selection",
+      "text": "Could you email me the invoice for my order?",
+      "expected_category": "INVOICE",
+      "top_category": "INVOICE",
+      "score": 0.5076234598678709,
+      "candidate_decision": "abstain"
+    },
+    {
+      "case_id": "audit-invoice-1",
+      "split": "audit",
+      "text": "I need a copy of an invoice from last month.",
+      "expected_category": "INVOICE",
+      "top_category": "INVOICE",
+      "score": 0.6530531730918414,
+      "candidate_decision": "abstain"
+    },
+    {
+      "case_id": "sel-order-1",
+      "split": "selection",
+      "text": "How do I track the order I placed yesterday?",
+      "expected_category": "ORDER",
+      "top_category": "ORDER",
+      "score": 0.4989571195967171,
+      "candidate_decision": "abstain"
+    },
+    {
+      "case_id": "sel-order-2",
+      "split": "selection",
+      "text": "I want to change an item in my order.",
+      "expected_category": "ORDER",
+      "top_category": "ORDER",
+      "score": 0.717391975864216,
+      "candidate_decision": "suggestion"
+    },
+    {
+      "case_id": "audit-order-1",
+      "split": "audit",
+      "text": "Please cancel my order before it is shipped.",
+      "expected_category": "ORDER",
+      "top_category": "ORDER",
+      "score": 0.5760526649271444,
+      "candidate_decision": "abstain"
+    },
+    {
+      "case_id": "sel-payment-1",
+      "split": "selection",
+      "text": "My credit card payment was declined.",
+      "expected_category": "PAYMENT",
+      "top_category": "PAYMENT",
+      "score": 0.6589638254948602,
+      "candidate_decision": "abstain"
+    },
+    {
+      "case_id": "sel-payment-2",
+      "split": "selection",
+      "text": "Which payment methods are available at checkout?",
+      "expected_category": "PAYMENT",
+      "top_category": "PAYMENT",
+      "score": 0.8998914488023471,
+      "candidate_decision": "suggestion"
+    },
+    {
+      "case_id": "audit-payment-1",
+      "split": "audit",
+      "text": "The checkout page will not accept my payment.",
+      "expected_category": "PAYMENT",
+      "top_category": "PAYMENT",
+      "score": 0.8780358011908187,
+      "candidate_decision": "suggestion"
+    },
+    {
+      "case_id": "sel-refund-1",
+      "split": "selection",
+      "text": "How can I request a refund for my purchase?",
+      "expected_category": "REFUND",
+      "top_category": "REFUND",
+      "score": 0.8549952497776763,
+      "candidate_decision": "suggestion"
+    },
+    {
+      "case_id": "sel-refund-2",
+      "split": "selection",
+      "text": "I am still waiting for my refund to arrive.",
+      "expected_category": "REFUND",
+      "top_category": "REFUND",
+      "score": 0.5231608346342703,
+      "candidate_decision": "abstain"
+    },
+    {
+      "case_id": "audit-refund-1",
+      "split": "audit",
+      "text": "What are the rules for getting a refund?",
+      "expected_category": "REFUND",
+      "top_category": "REFUND",
+      "score": 0.6211220024002231,
+      "candidate_decision": "abstain"
+    },
+    {
+      "case_id": "sel-shipping-1",
+      "split": "selection",
+      "text": "I need to change my shipping address.",
+      "expected_category": "SHIPPING",
+      "top_category": "SHIPPING",
+      "score": 0.9941213921738058,
+      "candidate_decision": "suggestion"
+    },
+    {
+      "case_id": "sel-shipping-2",
+      "split": "selection",
+      "text": "How do I save a new address for shipping?",
+      "expected_category": "SHIPPING",
+      "top_category": "SHIPPING",
+      "score": 0.8963789524847199,
+      "candidate_decision": "suggestion"
+    },
+    {
+      "case_id": "audit-shipping-1",
+      "split": "audit",
+      "text": "My delivery address has a wrong postal code. How can I correct it?",
+      "expected_category": "SHIPPING",
+      "top_category": "SHIPPING",
+      "score": 0.9361035058549505,
+      "candidate_decision": "suggestion"
+    },
+    {
+      "case_id": "sel-subscription-1",
+      "split": "selection",
+      "text": "How do I subscribe to your newsletter?",
+      "expected_category": "SUBSCRIPTION",
+      "top_category": "SUBSCRIPTION",
+      "score": 0.955698033421098,
+      "candidate_decision": "suggestion"
+    },
+    {
+      "case_id": "sel-subscription-2",
+      "split": "selection",
+      "text": "I would like to receive your newsletter by email.",
+      "expected_category": "SUBSCRIPTION",
+      "top_category": "SUBSCRIPTION",
+      "score": 0.8098671244097105,
+      "candidate_decision": "suggestion"
+    },
+    {
+      "case_id": "audit-subscription-1",
+      "split": "audit",
+      "text": "Please stop sending me your newsletter.",
+      "expected_category": "SUBSCRIPTION",
+      "top_category": "SUBSCRIPTION",
+      "score": 0.7895354444765369,
+      "candidate_decision": "suggestion"
+    },
+    {
+      "case_id": "sel-outside-1",
+      "split": "selection",
+      "text": "Write a short story about a dragon.",
+      "expected_category": "UNSUPPORTED",
+      "top_category": "FEEDBACK",
+      "score": 0.7709551218759164,
+      "candidate_decision": "suggestion"
+    },
+    {
+      "case_id": "sel-outside-2",
+      "split": "selection",
+      "text": "Explain how photosynthesis works.",
+      "expected_category": "UNSUPPORTED",
+      "top_category": "DELIVERY",
+      "score": 0.2599587740974193,
+      "candidate_decision": "abstain"
+    },
+    {
+      "case_id": "sel-outside-3",
+      "split": "selection",
+      "text": "What is the capital of Australia?",
+      "expected_category": "UNSUPPORTED",
+      "top_category": "ACCOUNT",
+      "score": 0.20610890829472456,
+      "candidate_decision": "abstain"
+    },
+    {
+      "case_id": "sel-outside-4",
+      "split": "selection",
+      "text": "Calculate the area of a circle with radius five.",
+      "expected_category": "UNSUPPORTED",
+      "top_category": "ACCOUNT",
+      "score": 0.4855844842201059,
+      "candidate_decision": "abstain"
+    },
+    {
+      "case_id": "sel-outside-5",
+      "split": "selection",
+      "text": "Translate good morning into French.",
+      "expected_category": "UNSUPPORTED",
+      "top_category": "ACCOUNT",
+      "score": 0.25580410043553864,
+      "candidate_decision": "abstain"
+    },
+    {
+      "case_id": "sel-outside-6",
+      "split": "selection",
+      "text": "Give me a recipe for vegetable soup.",
+      "expected_category": "UNSUPPORTED",
+      "top_category": "ACCOUNT",
+      "score": 0.18618372476397008,
+      "candidate_decision": "abstain"
+    },
+    {
+      "case_id": "sel-outside-7",
+      "split": "selection",
+      "text": "Write a love song containing the word refund.",
+      "expected_category": "UNSUPPORTED",
+      "top_category": "REFUND",
+      "score": 0.5354820055555143,
+      "candidate_decision": "abstain"
+    },
+    {
+      "case_id": "sel-outside-8",
+      "split": "selection",
+      "text": "In a fantasy novel a knight must deliver a letter to the moon.",
+      "expected_category": "UNSUPPORTED",
+      "top_category": "ACCOUNT",
+      "score": 0.2594480033797484,
+      "candidate_decision": "abstain"
+    },
+    {
+      "case_id": "sel-outside-9",
+      "split": "selection",
+      "text": "Explain the accounting meaning of invoice in a textbook.",
+      "expected_category": "UNSUPPORTED",
+      "top_category": "INVOICE",
+      "score": 0.6791753960317877,
+      "candidate_decision": "abstain"
+    },
+    {
+      "case_id": "sel-outside-10",
+      "split": "selection",
+      "text": "Write Python code that sorts a list of numbers.",
+      "expected_category": "UNSUPPORTED",
+      "top_category": "ACCOUNT",
+      "score": 0.449484879066598,
+      "candidate_decision": "abstain"
+    },
+    {
+      "case_id": "sel-outside-11",
+      "split": "selection",
+      "text": "What should I pack for a hiking trip?",
+      "expected_category": "UNSUPPORTED",
+      "top_category": "ACCOUNT",
+      "score": 0.19021403068342568,
+      "candidate_decision": "abstain"
+    },
+    {
+      "case_id": "sel-outside-12",
+      "split": "selection",
+      "text": "Tell me a joke about passwords.",
+      "expected_category": "UNSUPPORTED",
+      "top_category": "ACCOUNT",
+      "score": 0.26302179519166724,
+      "candidate_decision": "abstain"
+    },
+    {
+      "case_id": "audit-outside-1",
+      "split": "audit",
+      "text": "Compose a sonnet about an ocean.",
+      "expected_category": "UNSUPPORTED",
+      "top_category": "FEEDBACK",
+      "score": 0.2838749443078716,
+      "candidate_decision": "abstain"
+    },
+    {
+      "case_id": "audit-outside-2",
+      "split": "audit",
+      "text": "How do black holes form?",
+      "expected_category": "UNSUPPORTED",
+      "top_category": "ORDER",
+      "score": 0.1695287394568927,
+      "candidate_decision": "abstain"
+    },
+    {
+      "case_id": "audit-outside-3",
+      "split": "audit",
+      "text": "What is the largest planet in the solar system?",
+      "expected_category": "UNSUPPORTED",
+      "top_category": "CANCEL",
+      "score": 0.17758368150071402,
+      "candidate_decision": "abstain"
+    },
+    {
+      "case_id": "audit-outside-4",
+      "split": "audit",
+      "text": "Solve the equation three x plus two equals eleven.",
+      "expected_category": "UNSUPPORTED",
+      "top_category": "ACCOUNT",
+      "score": 0.24290912554598318,
+      "candidate_decision": "abstain"
+    },
+    {
+      "case_id": "audit-outside-5",
+      "split": "audit",
+      "text": "Translate thank you into Spanish.",
+      "expected_category": "UNSUPPORTED",
+      "top_category": "CONTACT",
+      "score": 0.17690120524802236,
+      "candidate_decision": "abstain"
+    },
+    {
+      "case_id": "audit-outside-6",
+      "split": "audit",
+      "text": "Suggest a recipe for banana bread.",
+      "expected_category": "UNSUPPORTED",
+      "top_category": "FEEDBACK",
+      "score": 0.43292010382494145,
+      "candidate_decision": "abstain"
+    },
+    {
+      "case_id": "audit-outside-7",
+      "split": "audit",
+      "text": "Write a screenplay where the villain steals a password.",
+      "expected_category": "UNSUPPORTED",
+      "top_category": "ACCOUNT",
+      "score": 0.4908615482536968,
+      "candidate_decision": "abstain"
+    },
+    {
+      "case_id": "audit-outside-8",
+      "split": "audit",
+      "text": "Describe how shipping changed during the industrial revolution.",
+      "expected_category": "UNSUPPORTED",
+      "top_category": "SHIPPING",
+      "score": 0.44653088066305874,
+      "candidate_decision": "abstain"
+    },
+    {
+      "case_id": "audit-outside-9",
+      "split": "audit",
+      "text": "Generate a fictional invoice for a story about a wizard.",
+      "expected_category": "UNSUPPORTED",
+      "top_category": "INVOICE",
+      "score": 0.6918618003381339,
+      "candidate_decision": "abstain"
+    },
+    {
+      "case_id": "audit-outside-10",
+      "split": "audit",
+      "text": "Write a JavaScript function to reverse a string.",
+      "expected_category": "UNSUPPORTED",
+      "top_category": "FEEDBACK",
+      "score": 0.5731878310397066,
+      "candidate_decision": "abstain"
+    },
+    {
+      "case_id": "audit-outside-11",
+      "split": "audit",
+      "text": "Give me ideas for a birthday party.",
+      "expected_category": "UNSUPPORTED",
+      "top_category": "ACCOUNT",
+      "score": 0.18618372476397008,
+      "candidate_decision": "abstain"
+    },
+    {
+      "case_id": "audit-outside-12",
+      "split": "audit",
+      "text": "Explain the word subscription to an English language learner.",
+      "expected_category": "UNSUPPORTED",
+      "top_category": "SUBSCRIPTION",
+      "score": 0.2736917356572168,
+      "candidate_decision": "abstain"
+    },
+    {
+      "case_id": "regression-invoice",
+      "split": "regression",
+      "text": "Please send me an invoice for my last payment.\u201d",
+      "expected_category": "INVOICE",
+      "top_category": "INVOICE",
+      "score": 0.34677494585764534,
+      "candidate_decision": "abstain"
+    },
+    {
+      "case_id": "regression-payment",
+      "split": "regression",
+      "text": "I was charged twice for my subscription",
+      "expected_category": "PAYMENT",
+      "top_category": "ACCOUNT",
+      "score": 0.26012119864650735,
+      "candidate_decision": "abstain"
+    },
+    {
+      "case_id": "regression-poem",
+      "split": "regression",
+      "text": "Write a poem about the moon",
+      "expected_category": "UNSUPPORTED",
+      "top_category": "FEEDBACK",
+      "score": 0.3467500292176965,
+      "candidate_decision": "abstain"
+    }
+  ],
+  "limitations": [
+    "Small author-written development set with nonindependent labels; not a representative benchmark.",
+    "Score-based abstention is not a trained unsupported-request detector.",
+    "Selection uses only selection rows; audit is checked without retuning; regression rows do not select thresholds.",
+    "Minimum empirical criteria are not statistical guarantees of reliability.",
+    "Every live request requires human review, including those passing the rule."
+  ]
+}

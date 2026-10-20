@@ -30,7 +30,10 @@ class PredictionRequest(BaseModel):
 
 
 class PredictionResponse(BaseModel):
-    suggested_category: str
+    suggested_category: str | None
+    model_top_category: str
+    decision: Literal["suggestion", "abstain"]
+    abstention_threshold: Annotated[float, Field(gt=0, le=1)] | None
     uncalibrated_probability: Annotated[float, Field(ge=0, le=1)]
     requires_human_review: Literal[True]
     review_reason: str
@@ -55,7 +58,7 @@ def create_app(model_dir: Path | None = None) -> FastAPI:
 
     application = FastAPI(
         title="Support Ticket AI",
-        version="0.1.0",
+        version="0.2.0",
         description="Category suggestions requiring human review; scores are not calibrated.",
         lifespan=lifespan,
     )

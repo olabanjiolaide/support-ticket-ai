@@ -160,9 +160,14 @@
         );
       }
       const result = await response.json();
+      const decision = result.decision ?? "suggestion";
+      const abstained = decision === "abstain";
       if (
-        typeof result.suggested_category !== "string" ||
-        !result.suggested_category ||
+        !["suggestion", "abstain"].includes(decision) ||
+        (abstained
+          ? result.suggested_category !== null
+          : typeof result.suggested_category !== "string" ||
+            !result.suggested_category) ||
         typeof result.uncalibrated_probability !== "number" ||
         !Number.isFinite(result.uncalibrated_probability) ||
         result.uncalibrated_probability < 0 ||
@@ -173,10 +178,21 @@
           "The server returned an unexpected response. Please try again.",
         );
       }
-      byId("category").textContent = result.suggested_category
-        .toLowerCase()
-        .replaceAll("_", " ")
-        .replace(/\b\w/g, (letter) => letter.toUpperCase());
+      byId("category").textContent = abstained
+        ? "No reliable suggestion"
+        : result.suggested_category
+            .toLowerCase()
+            .replaceAll("_", " ")
+            .replace(/\b\w/g, (letter) => letter.toUpperCase());
+      byId("result-kicker").textContent = abstained
+        ? "MANUAL CLASSIFICATION NEEDED"
+        : "SUGGESTED CATEGORY";
+      byId("result-subtitle").textContent = abstained
+        ? "The experimental score rule withheld a category."
+        : "A starting point for the right handoff.";
+      byId("review-description").textContent = abstained
+        ? "Read the request and choose a category manually."
+        : "Confirm the category before routing this request.";
       byId("score").textContent = result.uncalibrated_probability.toFixed(3);
       byId("json-response").textContent = JSON.stringify(result, null, 2);
       showState("success");

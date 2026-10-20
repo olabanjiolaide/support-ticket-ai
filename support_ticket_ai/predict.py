@@ -3,6 +3,7 @@
 import argparse
 import hashlib
 import json
+import math
 from pathlib import Path
 import sys
 
@@ -27,6 +28,20 @@ class TicketPredictor:
         path = model_dir / "model.joblib"
         if hashlib.sha256(path.read_bytes()).hexdigest() != self.metadata["model_sha256"]:
             raise ValueError("Model checksum mismatch.")
+        self.abstention_threshold = None
+        policy_path = model_dir / "abstention_policy.json"
+        if policy_path.exists():
+            policy = json.loads(policy_path.read_text(encoding="utf-8"))
+            if not isinstance(policy, dict):
+                raise ValueError("Invalid abstention policy.")
+            threshold = policy.get("threshold")
+            if (type(policy.get("policy_version")) is not int or policy["policy_version"] != 1 or
+                    policy.get("kind") != "experimental_max_probability" or
+                    policy.get("model_sha256") != self.metadata["model_sha256"] or
+                    policy.get("human_review_required") is not True or
+                    type(threshold) not in (int, float) or not math.isfinite(threshold) or not 0 < threshold <= 1):
+                raise ValueError("Invalid abstention policy or model fingerprint mismatch.")
+            self.abstention_threshold = float(threshold)
         self.model = joblib.load(path)
         if not isinstance(self.model, Pipeline) or not hasattr(self.model, "predict_proba"):
             raise ValueError("Bundle does not contain a probability-capable pipeline.")
@@ -38,11 +53,21 @@ class TicketPredictor:
             raise ValueError(f"Ticket text cannot exceed {MAX_TEXT_LENGTH} characters.")
         probabilities = self.model.predict_proba([text.strip()])[0]
         index = int(probabilities.argmax())
+        category = str(self.model.classes_[index])
+        score = float(probabilities[index])
+        abstain = self.abstention_threshold is not None and score < self.abstention_threshold
+        reason = ("The experimental score rule withheld the suggestion. Choose a category manually."
+                  if abstain else "The experimental score rule passed. Confirm the category manually."
+                  if self.abstention_threshold is not None else
+                  "Calibration and unsupported-request detection are not established.")
         return {
-            "suggested_category": str(self.model.classes_[index]),
-            "uncalibrated_probability": float(probabilities[index]),
+            "suggested_category": None if abstain else category,
+            "model_top_category": category,
+            "decision": "abstain" if abstain else "suggestion",
+            "abstention_threshold": self.abstention_threshold,
+            "uncalibrated_probability": score,
             "requires_human_review": True,
-            "review_reason": "Calibration and unsupported-request detection are not established.",
+            "review_reason": reason,
             "model_sha256": self.metadata["model_sha256"],
         }
 

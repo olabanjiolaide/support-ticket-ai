@@ -1,0 +1,61 @@
+case_id,split,text,expected_category
+sel-account-1,selection,I forgot my password and need to get back into my account.,ACCOUNT
+sel-account-2,selection,Please help me close my customer account.,ACCOUNT
+audit-account-1,audit,How do I change the email address linked to my account?,ACCOUNT
+sel-cancel-1,selection,Is there a cancellation fee if I cancel an order?,CANCEL
+sel-cancel-2,selection,How much will I be charged for cancelling?,CANCEL
+audit-cancel-1,audit,Where can I check your cancellation fees?,CANCEL
+sel-contact-1,selection,I would like to speak with a human customer service agent.,CONTACT
+sel-contact-2,selection,What is the phone number for customer support?,CONTACT
+audit-contact-1,audit,Can you connect me to a real person on your support team?,CONTACT
+sel-delivery-1,selection,What delivery options do you offer?,DELIVERY
+sel-delivery-2,selection,How long does standard delivery take?,DELIVERY
+audit-delivery-1,audit,Do you provide next day delivery?,DELIVERY
+sel-feedback-1,selection,I want to complain about the service I received.,FEEDBACK
+sel-feedback-2,selection,Where can I leave a review of your service?,FEEDBACK
+audit-feedback-1,audit,I would like to give feedback about my shopping experience.,FEEDBACK
+sel-invoice-1,selection,Where can I download my invoice?,INVOICE
+sel-invoice-2,selection,Could you email me the invoice for my order?,INVOICE
+audit-invoice-1,audit,I need a copy of an invoice from last month.,INVOICE
+sel-order-1,selection,How do I track the order I placed yesterday?,ORDER
+sel-order-2,selection,I want to change an item in my order.,ORDER
+audit-order-1,audit,Please cancel my order before it is shipped.,ORDER
+sel-payment-1,selection,My credit card payment was declined.,PAYMENT
+sel-payment-2,selection,Which payment methods are available at checkout?,PAYMENT
+audit-payment-1,audit,The checkout page will not accept my payment.,PAYMENT
+sel-refund-1,selection,How can I request a refund for my purchase?,REFUND
+sel-refund-2,selection,I am still waiting for my refund to arrive.,REFUND
+audit-refund-1,audit,What are the rules for getting a refund?,REFUND
+sel-shipping-1,selection,I need to change my shipping address.,SHIPPING
+sel-shipping-2,selection,How do I save a new address for shipping?,SHIPPING
+audit-shipping-1,audit,My delivery address has a wrong postal code. How can I correct it?,SHIPPING
+sel-subscription-1,selection,How do I subscribe to your newsletter?,SUBSCRIPTION
+sel-subscription-2,selection,I would like to receive your newsletter by email.,SUBSCRIPTION
+audit-subscription-1,audit,Please stop sending me your newsletter.,SUBSCRIPTION
+sel-outside-1,selection,Write a short story about a dragon.,UNSUPPORTED
+sel-outside-2,selection,Explain how photosynthesis works.,UNSUPPORTED
+sel-outside-3,selection,What is the capital of Australia?,UNSUPPORTED
+sel-outside-4,selection,Calculate the area of a circle with radius five.,UNSUPPORTED
+sel-outside-5,selection,Translate good morning into French.,UNSUPPORTED
+sel-outside-6,selection,Give me a recipe for vegetable soup.,UNSUPPORTED
+sel-outside-7,selection,Write a love song containing the word refund.,UNSUPPORTED
+sel-outside-8,selection,In a fantasy novel a knight must deliver a letter to the moon.,UNSUPPORTED
+sel-outside-9,selection,Explain the accounting meaning of invoice in a textbook.,UNSUPPORTED
+sel-outside-10,selection,Write Python code that sorts a list of numbers.,UNSUPPORTED
+sel-outside-11,selection,What should I pack for a hiking trip?,UNSUPPORTED
+sel-outside-12,selection,Tell me a joke about passwords.,UNSUPPORTED
+audit-outside-1,audit,Compose a sonnet about an ocean.,UNSUPPORTED
+audit-outside-2,audit,How do black holes form?,UNSUPPORTED
+audit-outside-3,audit,What is the largest planet in the solar system?,UNSUPPORTED
+audit-outside-4,audit,Solve the equation three x plus two equals eleven.,UNSUPPORTED
+audit-outside-5,audit,Translate thank you into Spanish.,UNSUPPORTED
+audit-outside-6,audit,Suggest a recipe for banana bread.,UNSUPPORTED
+audit-outside-7,audit,Write a screenplay where the villain steals a password.,UNSUPPORTED
+audit-outside-8,audit,Describe how shipping changed during the industrial revolution.,UNSUPPORTED
+audit-outside-9,audit,Generate a fictional invoice for a story about a wizard.,UNSUPPORTED
+audit-outside-10,audit,Write a JavaScript function to reverse a string.,UNSUPPORTED
+audit-outside-11,audit,Give me ideas for a birthday party.,UNSUPPORTED
+audit-outside-12,audit,Explain the word subscription to an English language learner.,UNSUPPORTED
+regression-invoice,regression,Please send me an invoice for my last payment.”,INVOICE
+regression-payment,regression,I was charged twice for my subscription,PAYMENT
+regression-poem,regression,Write a poem about the moon,UNSUPPORTED

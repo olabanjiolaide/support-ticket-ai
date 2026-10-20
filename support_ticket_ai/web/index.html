@@ -208,9 +208,9 @@
               <p>Finding the most likely category.</p>
             </div>
             <div id="result-success" hidden>
-              <p class="result-kicker">SUGGESTED CATEGORY</p>
+              <p class="result-kicker" id="result-kicker">SUGGESTED CATEGORY</p>
               <h2 id="category" class="category" tabindex="-1"></h2>
-              <p class="result-subtitle">
+              <p class="result-subtitle" id="result-subtitle">
                 A starting point for the right handoff.
               </p>
               <div class="review-box">
@@ -220,7 +220,9 @@
                 </svg>
                 <div>
                   <strong>Human review required</strong>
-                  <p>Confirm the category before routing this request.</p>
+                  <p id="review-description">
+                    Confirm the category before routing this request.
+                  </p>
                 </div>
               </div>
               <div class="score-block">

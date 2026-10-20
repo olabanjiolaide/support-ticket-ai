@@ -115,3 +115,15 @@ class ApiTests(unittest.TestCase):
                 self.assertEqual(client.get("/").status_code, 200)
                 self.assertEqual(client.get("/readyz").status_code, 503)
                 self.assertEqual(client.get("/assets/../api.py").status_code, 404)
+
+    def test_optional_policy_returns_abstention_with_nullable_category(self):
+        (self.root / "abstention_policy.json").write_text(json.dumps({
+            "policy_version": 1, "kind": "experimental_max_probability", "threshold": 1.0,
+            "model_sha256": self.model_sha, "human_review_required": True,
+        }))
+        with TestClient(create_app(self.root)) as client:
+            response = client.post("/predict", json={"text": "password reset"})
+            self.assertEqual(response.status_code, 200)
+            self.assertEqual(response.json()["decision"], "abstain")
+            self.assertIsNone(response.json()["suggested_category"])
+            self.assertTrue(response.json()["requires_human_review"])

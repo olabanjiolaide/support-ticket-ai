@@ -41,6 +41,8 @@ Send POST /predict with Content-Type application/json:
 {"text": "I cannot reset my password."}
 ```
 
+API version 0.2.0 adds `decision`, `model_top_category`, and `abstention_threshold`. With an [optional experimental abstention policy](11-experimental-abstention.md), `suggested_category` is null when `decision` is `abstain`; clients must handle that outcome. Without a policy, ordinary suggestions continue. The underlying classifier and the human-review requirement are unchanged.
+
 The response contains `suggested_category`, `uncalibrated_probability`, `requires_human_review`, `review_reason`, and `model_sha256`. The review flag is always true. The score is not an established correctness probability, and this API does not automatically route tickets.
 
 Text must be a string with 1–2,000 characters, including any surrounding whitespace; whitespace-only input is rejected. Unknown request fields are rejected. Validation errors omit input values, and predictions do not echo ticket text. Unexpected prediction failures produce a generic error response. The application logs failure types without logging ticket bodies.
