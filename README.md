@@ -26,6 +26,8 @@ The [frozen semantic-embedding experiment](docs/15-semantic-embedding-experiment
 
 The [human label-review pilot](docs/16-human-label-review.md) collects interpretations of 40 new, unscored requests, five at a time, without model suggestions. It supports one routing intent, multiple routing intents, insufficient context, and unsupported tasks. Human review and adjudication are still pending.
 
+The [reconciled pilot evaluation](docs/17-reviewed-pilot-evaluation.md) checks 40 assisted human-reviewed development labels using frozen cutoffs. The semantic-plus-scope policy routes 20/24 clear requests correctly and rejects 8/8 unrelated tasks, but still passes 3/4 multiple-intent and 2/4 unclear requests. Individual review records remain private; aggregate results show why ambiguity handling is still needed.
+
 ## Run the complete demo
 
 From the repository root, with Python 3.11–3.13 in a virtual environment:

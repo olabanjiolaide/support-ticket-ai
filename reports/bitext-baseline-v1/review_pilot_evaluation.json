@@ -1,0 +1,256 @@
+{
+  "experiment": "reconciled_pilot_frozen_policy_evaluation",
+  "evaluation_role": "assisted_reconciled_development_diagnostics_not_independent_audit",
+  "pilot_used_for_fitting": false,
+  "pilot_used_for_threshold_selection": false,
+  "threshold_selection_performed": false,
+  "heads_reconstructed_from_source_training": true,
+  "encoder_fine_tuned": false,
+  "test_evaluated": false,
+  "live_model_changed": false,
+  "review_sha256": "2a0651e683965eade1af08416616f9e91329ac7c2a535b2da0fd16325599c1ee",
+  "collection_sha256": "ff8f4f7792e28b09b2fd1967c125ec45a18fc278e9ceaa40fb0ee9547ccaabf9",
+  "frozen_experiment_report_sha256": "994cd502a42109a42e27a06b8b422af51a12031e3b80e70d1136d533defc3e82",
+  "frozen_thresholds": {
+    "word": {
+      "category_only": 0.7
+    },
+    "semantic": {
+      "category_only": 0.9,
+      "with_scope": 0.5
+    }
+  },
+  "intent_type_counts": {
+    "single_intent": 24,
+    "multiple_intents": 4,
+    "insufficient_context": 4,
+    "unsupported": 8
+  },
+  "guided_unsupported_rows": 8,
+  "labels_independently_adjudicated": false,
+  "encoder": {
+    "id": "sentence-transformers/all-MiniLM-L6-v2",
+    "revision": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41",
+    "dimensions": 384,
+    "normalize_embeddings": true,
+    "max_sequence_length_wordpieces": 256,
+    "device": "cpu",
+    "torch_threads": 2,
+    "batch_size": 64,
+    "test_double_used": false
+  },
+  "versions": {
+    "python": "3.12.14",
+    "scikit-learn": "1.8.0",
+    "numpy": "2.3.5",
+    "scipy": "1.17.0",
+    "joblib": "1.5.3",
+    "sentence-transformers": "5.1.2",
+    "transformers": "4.57.6",
+    "torch": "2.8.0+cpu",
+    "huggingface-hub": "0.36.2",
+    "tokenizers": "0.22.2",
+    "safetensors": "0.8.0"
+  },
+  "preparation_manifest_sha256": "7f91ea2a73a0a733d759d1b332962c26aed01a4423bc44d2b8f02fbabbe57e0d",
+  "baseline_model_sha256": "cccc36d4074548c23e15cf51e12acc740accfadbb19539d76986a4326f5dbd8e",
+  "training_counts": {
+    "supported": 16990,
+    "unsupported": 48
+  },
+  "training_overlap": {
+    "training_sha256": "938ba7b0d3f2d8edeed45a6d962798f0385796ee26bc0164a8d465b8e76b49fd",
+    "exact_overlap_case_ids": [],
+    "exact_overlap_rows": 0,
+    "method": "NFKC + casefold + whitespace collapse; near-template overlap not measured"
+  },
+  "models": {
+    "word": {
+      "forced_single_intent_metrics": {
+        "threshold": null,
+        "supported_rows": 24,
+        "unsupported_rows": 8,
+        "selected_supported_rows": 24,
+        "supported_coverage": 1.0,
+        "selected_supported_accuracy": 0.625,
+        "selected_supported_errors": 9,
+        "withheld_supported_rows": 0,
+        "withheld_correct_supported_rows": 0,
+        "unsupported_rejected_rows": 0,
+        "unsupported_rejection": 0.0,
+        "unsupported_suggestions": 8,
+        "ambiguous_rows": 8,
+        "ambiguous_withheld_rows": 0,
+        "ambiguous_withheld_fraction": 0.0
+      },
+      "policies": {
+        "category_only": {
+          "policy_selected": true,
+          "category_threshold": 0.7,
+          "metrics": {
+            "threshold": 0.7,
+            "supported_rows": 24,
+            "unsupported_rows": 8,
+            "selected_supported_rows": 4,
+            "supported_coverage": 0.16666666666666666,
+            "selected_supported_accuracy": 0.5,
+            "selected_supported_errors": 2,
+            "withheld_supported_rows": 20,
+            "withheld_correct_supported_rows": 13,
+            "unsupported_rejected_rows": 6,
+            "unsupported_rejection": 0.75,
+            "unsupported_suggestions": 2,
+            "ambiguous_rows": 8,
+            "ambiguous_withheld_rows": 7,
+            "ambiguous_withheld_fraction": 0.875
+          },
+          "by_intent_type": {
+            "single_intent": {
+              "rows": 24,
+              "accepted_rows": 4,
+              "withheld_rows": 20,
+              "correct_accepted_rows": 2,
+              "incorrect_accepted_rows": 2
+            },
+            "multiple_intents": {
+              "rows": 4,
+              "accepted_rows": 1,
+              "withheld_rows": 3
+            },
+            "insufficient_context": {
+              "rows": 4,
+              "accepted_rows": 0,
+              "withheld_rows": 4
+            },
+            "unsupported": {
+              "rows": 8,
+              "accepted_rows": 2,
+              "withheld_rows": 6
+            }
+          }
+        }
+      }
+    },
+    "semantic": {
+      "forced_single_intent_metrics": {
+        "threshold": null,
+        "supported_rows": 24,
+        "unsupported_rows": 8,
+        "selected_supported_rows": 24,
+        "supported_coverage": 1.0,
+        "selected_supported_accuracy": 0.8333333333333334,
+        "selected_supported_errors": 4,
+        "withheld_supported_rows": 0,
+        "withheld_correct_supported_rows": 0,
+        "unsupported_rejected_rows": 0,
+        "unsupported_rejection": 0.0,
+        "unsupported_suggestions": 8,
+        "ambiguous_rows": 8,
+        "ambiguous_withheld_rows": 0,
+        "ambiguous_withheld_fraction": 0.0
+      },
+      "policies": {
+        "category_only": {
+          "policy_selected": true,
+          "category_threshold": 0.9,
+          "metrics": {
+            "threshold": 0.9,
+            "supported_rows": 24,
+            "unsupported_rows": 8,
+            "selected_supported_rows": 8,
+            "supported_coverage": 0.3333333333333333,
+            "selected_supported_accuracy": 1.0,
+            "selected_supported_errors": 0,
+            "withheld_supported_rows": 16,
+            "withheld_correct_supported_rows": 12,
+            "unsupported_rejected_rows": 7,
+            "unsupported_rejection": 0.875,
+            "unsupported_suggestions": 1,
+            "ambiguous_rows": 8,
+            "ambiguous_withheld_rows": 7,
+            "ambiguous_withheld_fraction": 0.875
+          },
+          "by_intent_type": {
+            "single_intent": {
+              "rows": 24,
+              "accepted_rows": 8,
+              "withheld_rows": 16,
+              "correct_accepted_rows": 8,
+              "incorrect_accepted_rows": 0
+            },
+            "multiple_intents": {
+              "rows": 4,
+              "accepted_rows": 1,
+              "withheld_rows": 3
+            },
+            "insufficient_context": {
+              "rows": 4,
+              "accepted_rows": 0,
+              "withheld_rows": 4
+            },
+            "unsupported": {
+              "rows": 8,
+              "accepted_rows": 1,
+              "withheld_rows": 7
+            }
+          }
+        },
+        "with_scope": {
+          "policy_selected": true,
+          "category_threshold": 0.5,
+          "metrics": {
+            "threshold": 0.5,
+            "supported_rows": 24,
+            "unsupported_rows": 8,
+            "selected_supported_rows": 24,
+            "supported_coverage": 1.0,
+            "selected_supported_accuracy": 0.8333333333333334,
+            "selected_supported_errors": 4,
+            "withheld_supported_rows": 0,
+            "withheld_correct_supported_rows": 0,
+            "unsupported_rejected_rows": 8,
+            "unsupported_rejection": 1.0,
+            "unsupported_suggestions": 0,
+            "ambiguous_rows": 8,
+            "ambiguous_withheld_rows": 3,
+            "ambiguous_withheld_fraction": 0.375
+          },
+          "by_intent_type": {
+            "single_intent": {
+              "rows": 24,
+              "accepted_rows": 24,
+              "withheld_rows": 0,
+              "correct_accepted_rows": 20,
+              "incorrect_accepted_rows": 4
+            },
+            "multiple_intents": {
+              "rows": 4,
+              "accepted_rows": 3,
+              "withheld_rows": 1
+            },
+            "insufficient_context": {
+              "rows": 4,
+              "accepted_rows": 2,
+              "withheld_rows": 2
+            },
+            "unsupported": {
+              "rows": 8,
+              "accepted_rows": 0,
+              "withheld_rows": 8
+            }
+          }
+        }
+      }
+    }
+  },
+  "limitations": [
+    "Only 40 assistant-authored cases; related scenarios overlap earlier development families.",
+    "Labels were reconciled with assistant suggestions; eight unsupported labels were completed with guidance.",
+    "Counts describe these assisted development labels, not independent test accuracy or production reliability.",
+    "Multiple-intent and insufficient-context cases are evaluated as requests to withhold a single category.",
+    "Existing classifiers have no dedicated multi-intent or clarification head; withholding does not identify the reason.",
+    "Human-assistance flags are annotations and are not predicted or implemented in the live API.",
+    "Heads are reconstructed from the frozen training recipe; no exported semantic bundle is installed.",
+    "Encoder limits, uncalibrated scores, and known source/negative-template limitations still apply."
+  ]
+}

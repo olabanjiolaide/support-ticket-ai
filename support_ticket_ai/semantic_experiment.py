@@ -5,6 +5,7 @@ from collections import Counter
 import csv
 from importlib.metadata import version
 import json
+import math
 from pathlib import Path
 import platform
 import sys
@@ -102,7 +103,20 @@ def latency(function, texts: list[str]) -> dict:
 
 def run_experiment(model_dir: Path, prepared_dir: Path, cache_dir: Path,
                    probes_path: Path = PROBES_PATH, challenge_path: Path = CHALLENGE_PATH,
-                   negatives_path: Path = NEGATIVES_PATH, *, encoder_factory=None) -> dict:
+                   negatives_path: Path = NEGATIVES_PATH, *, encoder_factory=None,
+                   frozen_thresholds: dict | None = None) -> dict:
+    if frozen_thresholds is not None:
+        expected = {'word': {'category_only'}, 'semantic': {'category_only', 'with_scope'}}
+        if not isinstance(frozen_thresholds, dict) or set(frozen_thresholds) != set(expected):
+            raise ValueError('Invalid frozen threshold models.')
+        for name, policies in expected.items():
+            values = frozen_thresholds[name]
+            if not isinstance(values, dict) or set(values) != policies:
+                raise ValueError('Invalid frozen threshold policies.')
+            for threshold in values.values():
+                if threshold is not None and (type(threshold) not in (int, float) or
+                                              not math.isfinite(threshold) or not 0 < threshold <= 1):
+                    raise ValueError('Invalid frozen category threshold.')
     baseline = TicketPredictor(model_dir)
     categories = set(baseline.model.classes_)
     probes = load_probes(probes_path, categories)
@@ -167,7 +181,9 @@ def run_experiment(model_dir: Path, prepared_dir: Path, cache_dir: Path,
             variants.append(('with_scope', apply_scope(probe_rows), apply_scope(challenge_rows)))
         policies = {}
         for policy_name, p_rows, c_rows in variants:
-            selection = select_threshold([r for r in c_rows if r['split'] == 'selection'])
+            selection = (select_threshold([r for r in c_rows if r['split'] == 'selection'])
+                         if frozen_thresholds is None else
+                         {'candidates': [], 'selected_threshold': frozen_thresholds[name][policy_name]})
             threshold = selection['selected_threshold']
             policies[policy_name] = {'selection': selection,
                                     'previously_inspected_audit': summarize_policy([r for r in c_rows if r['split'] == 'audit'], threshold),
@@ -195,7 +211,9 @@ def run_experiment(model_dir: Path, prepared_dir: Path, cache_dir: Path,
         'scope_head': {'C': 1.0, 'max_iter': 1000, 'class_weight': 'balanced', 'scope_cutoff': SCOPE_CUTOFF},
         'training_counts': {'supported': len(train), 'unsupported': len(negatives)},
         'selection_criteria': CRITERIA, 'candidate_category_thresholds': THRESHOLDS,
-        'threshold_selection_partition': 'existing_challenge_selection_only',
+        'threshold_selection_performed': frozen_thresholds is None,
+        'threshold_selection_partition': ('existing_challenge_selection_only' if frozen_thresholds is None
+                                          else 'not_performed_using_frozen_policies'),
         'probe_label_status_counts': dict(Counter(r['label_status'] for r in probes)),
         'baseline_model_sha256': baseline.metadata['model_sha256'],
         'preparation_manifest_sha256': fingerprint(prepared_dir / 'manifest.json'),
