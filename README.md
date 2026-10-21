@@ -4,7 +4,9 @@ A Python portfolio project for classifying support requests and routing uncertai
 
 **Optional semantic browser mode is now available:** [setup and launch guide](docs/21-semantic-browser-mode.md). The word model remains the default; semantic mode requires a separately built bundle and optional CPU dependencies. Every prediction requires human review.
 
-**Manual labeling is paused.** The current engineering milestone is an [installable package and browser verification](docs/19-installable-package.md), with a [short recruiter walkthrough](docs/20-recruiter-walkthrough.md). The pending review collection requires no action to run or present the application.
+The [encoder fine-tuning pilot](docs/22-encoder-fine-tuning-pilot.md) compares one fixed train-only adaptation run with frozen sentence embeddings offline. Correct top categories on 66 supported development probes fall from 56 to 54 despite a small synthetic-validation gain, so the frozen encoder stays in the browser. The report documents the regressions; no additional manual labeling is required.
+
+**Manual labeling is paused.** The application has an [installable package and browser verification](docs/19-installable-package.md), with a [short recruiter walkthrough](docs/20-recruiter-walkthrough.md). The pending review collection requires no action to run or present the application.
 
 **Status: baseline, prediction CLI, local FastAPI service, similarity audit, and offline calibration experiment implemented.** Calibration is not activated in the live prediction interfaces. The test set has not been evaluated. All predictions require human review. Optional experimental abstention can withhold low-scoring category suggestions.
 
@@ -28,7 +30,7 @@ The [scope-detector experiment](docs/14-scope-detector-experiment.md) adds a sep
 
 The [frozen semantic-embedding experiment](docs/15-semantic-embedding-experiment.md) improves indirect wording on provisional probes: 18/22 correct versus 10/22 for word features. With a separately selected cutoff and semantic scope gate, it accepts 52/66 valid probes (49 correct) and rejects 24/24 unrelated probes, but accepts 5/8 ambiguous requests. It is available through the explicit experimental browser mode, and the guide discloses a training duplicate discovered in the older cutoff-selection collection.
 
-The [human label-review pilot](docs/16-human-label-review.md) collects interpretations of 40 new, unscored requests, five at a time, without model suggestions. It supports one routing intent, multiple routing intents, insufficient context, and unsupported tasks. Human review and adjudication are still pending.
+The [human label-review pilot](docs/16-human-label-review.md) provides a workflow for interpreting 40 unscored requests, five at a time, without model suggestions. It supports one routing intent, multiple routing intents, insufficient context, and unsupported tasks. The completed assisted review and its limitations are documented in the reconciled evaluation below; these are not independently adjudicated labels.
 
 The [reconciled pilot evaluation](docs/17-reviewed-pilot-evaluation.md) checks 40 assisted human-reviewed development labels using frozen cutoffs. The semantic-plus-scope policy routes 20/24 clear requests correctly and rejects 8/8 unrelated tasks, but still passes 3/4 multiple-intent and 2/4 unclear requests. Individual review records remain private; aggregate results show why ambiguity handling is still needed.
 
