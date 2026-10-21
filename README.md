@@ -6,6 +6,8 @@ A Python portfolio project for classifying support requests and routing uncertai
 
 The [encoder fine-tuning pilot](docs/22-encoder-fine-tuning-pilot.md) compares one fixed train-only adaptation run with frozen sentence embeddings offline. Correct top categories on 66 supported development probes fall from 56 to 54 despite a small synthetic-validation gain, so the frozen encoder stays in the browser. The report documents the regressions; no additional manual labeling is required.
 
+The [spelling-robustness pilot](docs/23-spelling-robustness-pilot.md) combines frozen embeddings with character fragments. Correct typo categories rise from 16/22 to 17/22, but indirect wording regresses and overall correct categories remain 56/66. The candidate stays offline; the browser model is unchanged.
+
 **Manual labeling is paused.** The application has an [installable package and browser verification](docs/19-installable-package.md), with a [short recruiter walkthrough](docs/20-recruiter-walkthrough.md). The pending review collection requires no action to run or present the application.
 
 **Status: baseline, prediction CLI, local FastAPI service, similarity audit, and offline calibration experiment implemented.** Calibration is not activated in the live prediction interfaces. The test set has not been evaluated. All predictions require human review. Optional experimental abstention can withhold low-scoring category suggestions.
