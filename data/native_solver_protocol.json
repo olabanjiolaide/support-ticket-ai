@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "experiment": "native-solver-v1",
+  "input_sha256": {
+    "train": "938ba7b0d3f2d8edeed45a6d962798f0385796ee26bc0164a8d465b8e76b49fd",
+    "negatives": "82fcbd6cabee7406dafa7f54128feab3aae1fb3e354ff638fd9f0a2f5b945d89",
+    "probes": "c46606e93cb295c56f343c0f131d28312cf55d85f2b7bbaacb55b92fe37b58c7"
+  },
+  "reference_model_sha256": "d64ac7cc0db38f9b6404a4b0ab07cd651848de13cf6dc8799e2283680f165cb4",
+  "settings": {
+    "control": {
+      "tol": 0.0001,
+      "max_iter": 1000
+    },
+    "tight": {
+      "tol": 1e-08,
+      "max_iter": 5000
+    }
+  },
+  "C": 1.0,
+  "seed": 42,
+  "category_threshold": 0.5,
+  "scope_threshold": 0.5,
+  "scope_class_weight": "balanced",
+  "selection_rule": "Both original and guarded policies must preserve or increase supported accepted count and correct accepted count, and preserve or decrease incorrect accepted count, unsupported suggestions and REVIEW suggestions. At least one of those counts must improve. Reconstructed control must match reference decisions/categories and scores within 1e-6. Passing only qualifies for further validation; no automatic bundle export or promotion.",
+  "boundaries": [
+    "Previously inspected 98 authored provisional development probes only.",
+    "Same trusted frozen encoder and training inputs; encode once for both fits.",
+    "No cutoff search, calibration, validation, final test, private reviews or pending reserved collection.",
+    "Every suggestion requires review. No browser or API policy changes."
+  ]
+}
