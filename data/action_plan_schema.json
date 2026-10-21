@@ -1,0 +1,274 @@
+{
+  "$defs": {
+    "ActionRelation": {
+      "additionalProperties": false,
+      "properties": {
+        "source_action_id": {
+          "pattern": "^[a-z][a-z0-9_-]{0,63}$",
+          "title": "Source Action Id",
+          "type": "string"
+        },
+        "target_action_id": {
+          "pattern": "^[a-z][a-z0-9_-]{0,63}$",
+          "title": "Target Action Id",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "depends_on",
+            "alternative_to"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "evidence": {
+          "items": {
+            "$ref": "#/$defs/EvidenceSpan"
+          },
+          "maxItems": 8,
+          "minItems": 1,
+          "title": "Evidence",
+          "type": "array"
+        }
+      },
+      "required": [
+        "source_action_id",
+        "target_action_id",
+        "kind",
+        "evidence"
+      ],
+      "title": "ActionRelation",
+      "type": "object"
+    },
+    "EvidenceSpan": {
+      "additionalProperties": false,
+      "properties": {
+        "start": {
+          "minimum": 0,
+          "title": "Start",
+          "type": "integer"
+        },
+        "end": {
+          "exclusiveMinimum": 0,
+          "title": "End",
+          "type": "integer"
+        },
+        "text": {
+          "maxLength": 2000,
+          "minLength": 1,
+          "title": "Text",
+          "type": "string"
+        }
+      },
+      "required": [
+        "start",
+        "end",
+        "text"
+      ],
+      "title": "EvidenceSpan",
+      "type": "object"
+    },
+    "ProposedAction": {
+      "additionalProperties": false,
+      "properties": {
+        "action_id": {
+          "pattern": "^[a-z][a-z0-9_-]{0,63}$",
+          "title": "Action Id",
+          "type": "string"
+        },
+        "description": {
+          "maxLength": 2000,
+          "minLength": 1,
+          "title": "Description",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "requested",
+            "negated",
+            "conditional",
+            "context",
+            "unclear"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "category": {
+          "anyOf": [
+            {
+              "enum": [
+                "ACCOUNT",
+                "CANCEL",
+                "CONTACT",
+                "DELIVERY",
+                "FEEDBACK",
+                "INVOICE",
+                "ORDER",
+                "PAYMENT",
+                "REFUND",
+                "SHIPPING",
+                "SUBSCRIPTION"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Category"
+        },
+        "disposition": {
+          "enum": [
+            "review",
+            "clarify",
+            "excluded"
+          ],
+          "title": "Disposition",
+          "type": "string"
+        },
+        "evidence": {
+          "items": {
+            "$ref": "#/$defs/EvidenceSpan"
+          },
+          "maxItems": 8,
+          "minItems": 1,
+          "title": "Evidence",
+          "type": "array"
+        },
+        "condition_evidence": {
+          "items": {
+            "$ref": "#/$defs/EvidenceSpan"
+          },
+          "maxItems": 8,
+          "title": "Condition Evidence",
+          "type": "array"
+        },
+        "uncalibrated_score": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Uncalibrated Score"
+        }
+      },
+      "required": [
+        "action_id",
+        "description",
+        "status",
+        "category",
+        "disposition",
+        "evidence"
+      ],
+      "title": "ProposedAction",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": 1,
+      "title": "Schema Version",
+      "type": "integer"
+    },
+    "taxonomy_id": {
+      "const": "bitext-support-v1",
+      "title": "Taxonomy Id",
+      "type": "string"
+    },
+    "offset_unit": {
+      "const": "unicode_code_points",
+      "title": "Offset Unit",
+      "type": "string"
+    },
+    "source_text": {
+      "maxLength": 2000,
+      "minLength": 1,
+      "title": "Source Text",
+      "type": "string"
+    },
+    "outcome": {
+      "enum": [
+        "actions_proposed",
+        "needs_clarification",
+        "unsupported"
+      ],
+      "title": "Outcome",
+      "type": "string"
+    },
+    "actions": {
+      "items": {
+        "$ref": "#/$defs/ProposedAction"
+      },
+      "maxItems": 20,
+      "title": "Actions",
+      "type": "array"
+    },
+    "relations": {
+      "items": {
+        "$ref": "#/$defs/ActionRelation"
+      },
+      "maxItems": 40,
+      "title": "Relations",
+      "type": "array"
+    },
+    "clarification_question": {
+      "anyOf": [
+        {
+          "maxLength": 2000,
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Clarification Question"
+    },
+    "requires_human_review": {
+      "const": true,
+      "title": "Requires Human Review",
+      "type": "boolean"
+    },
+    "origin": {
+      "enum": [
+        "authored_example",
+        "model_proposal"
+      ],
+      "title": "Origin",
+      "type": "string"
+    },
+    "model_sha256": {
+      "anyOf": [
+        {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Model Sha256"
+    }
+  },
+  "required": [
+    "schema_version",
+    "taxonomy_id",
+    "offset_unit",
+    "source_text",
+    "outcome",
+    "actions",
+    "requires_human_review",
+    "origin"
+  ],
+  "title": "ActionPlan",
+  "type": "object"
+}

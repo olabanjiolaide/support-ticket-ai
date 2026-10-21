@@ -4,6 +4,10 @@ A Python portfolio project for classifying support requests and routing uncertai
 
 The [public repository review and research roadmap](docs/25-public-repository-review.md) compares related projects and proposes a path toward structured support actions with inspectable text evidence. It distinguishes established methods from unvalidated research hypotheses; no novelty or external-benchmark performance is claimed.
 
+The first implementation step adds a validated [action-plan format and public benchmark importer](docs/26-action-plan-and-public-benchmark.md). BlendBanking77 is prepared with its native 77 labels, disjoint development partitions, pinned provenance, and opaque test payloads. This is offline preparation; the browser still uses the existing reviewed category predictions.
+
+The [first multilabel baseline](docs/27-first-multilabel-baseline.md) now measures independent label-set predictions: 28.49% exact-set accuracy on 2,008 development requests, with many missing intents. Calibration and final-test payloads remain unused by that experiment. The results define a concrete target for a semantic comparison; they do not establish a browser improvement.
+
 **Optional semantic browser mode is now available:** [setup and launch guide](docs/21-semantic-browser-mode.md). The word model remains the default; semantic mode requires a separately built bundle and optional CPU dependencies. Every prediction requires human review.
 
 Semantic mode also offers an unchecked [experimental separate-request check](docs/24-separate-request-check.md). On known development probes it withholds two additional multi-intent requests without changing supported-request coverage. It is a bounded rule-based option, not a trained general ambiguity detector; the guide documents remaining misses. Existing semantic bundles need no rebuild.

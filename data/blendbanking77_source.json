@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "dataset": "BlendBanking77",
+  "taxonomy_id": "blendbanking77-v1",
+  "source_repository": "https://github.com/HYU-NLP/BlendX",
+  "source_revision": "8828e46ea6b5b30d7a9a9c34a4f0f499e7d74efa",
+  "source_path": "v1.0/BlendX/BlendBanking77.json",
+  "source_filename": "BlendBanking77.jsonl",
+  "expected_label_count": 77,
+  "publisher_license_metadata": "GPL-2.0",
+  "underlying_dataset": "BANKING77 (PolyAI)",
+  "underlying_source_revision": "57ec275d8078af65b7731c2a98be812d844a6d6b",
+  "underlying_license_metadata": "CC-BY-4.0",
+  "files": {
+    "BlendBanking77.jsonl": {
+      "url": "https://raw.githubusercontent.com/HYU-NLP/BlendX/8828e46ea6b5b30d7a9a9c34a4f0f499e7d74efa/v1.0/BlendX/BlendBanking77.json",
+      "sha256": "9c2b9149b02fb2df979ad70d4e8b8894cde10825e15c205b274efef67e0a3679",
+      "bytes": 9560816
+    },
+    "BLENDX_LICENSE.txt": {
+      "url": "https://raw.githubusercontent.com/HYU-NLP/BlendX/8828e46ea6b5b30d7a9a9c34a4f0f499e7d74efa/LICENSE",
+      "sha256": "8177f97513213526df2cf6184d8ff986c675afb514d4e68a404010521b880643",
+      "bytes": 18092
+    },
+    "BLENDX_README.md": {
+      "url": "https://raw.githubusercontent.com/HYU-NLP/BlendX/8828e46ea6b5b30d7a9a9c34a4f0f499e7d74efa/README.md",
+      "sha256": "e13c82cde4a07ef7d334a58918839a81127402e42deb762fbf6ab6d4e550d68f",
+      "bytes": 10828
+    },
+    "BANKING77_LICENSE.txt": {
+      "url": "https://raw.githubusercontent.com/PolyAI-LDN/task-specific-datasets/57ec275d8078af65b7731c2a98be812d844a6d6b/LICENSE",
+      "sha256": "7e7170e3cebf88a9f60c7b8421418323c09304da1af4d5e90f4da1dc1c8a2661",
+      "bytes": 18650
+    }
+  }
+}

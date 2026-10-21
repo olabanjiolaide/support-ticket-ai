@@ -1,0 +1,36 @@
+name: Prepare public multilabel benchmark
+on:
+  workflow_dispatch:
+    inputs:
+      run_baseline:
+        description: Run the fixed train/selection multilabel baseline
+        type: boolean
+        default: true
+permissions:
+  contents: read
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r requirements.txt
+      - run: python -m unittest discover -s tests -v
+      - run: python -m support_ticket_ai.action_plan --file data/action_plan_example.json
+      - run: python -m support_ticket_ai.benchmark_prepare artifacts/blendbanking77-v1
+      - if: inputs.run_baseline
+        env:
+          OPENBLAS_NUM_THREADS: '1'
+          OMP_NUM_THREADS: '2'
+        run: python -m support_ticket_ai.multilabel_baseline artifacts/blendbanking77-v1 --output artifacts/multilabel-baseline-v1.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: blendbanking77-prepared-with-notices
+          path: |
+            artifacts/blendbanking77-v1/
+            artifacts/multilabel-baseline-v1.json
+          if-no-files-found: error
+          retention-days: 7

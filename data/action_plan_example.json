@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "taxonomy_id": "bitext-support-v1",
+  "offset_unit": "unicode_code_points",
+  "source_text": "Change my account email and refund my last purchase.",
+  "outcome": "actions_proposed",
+  "actions": [
+    {
+      "action_id": "action-1",
+      "description": "Update account email",
+      "status": "requested",
+      "category": "ACCOUNT",
+      "disposition": "review",
+      "evidence": [
+        {
+          "start": 0,
+          "end": 23,
+          "text": "Change my account email"
+        }
+      ],
+      "condition_evidence": [],
+      "uncalibrated_score": null
+    },
+    {
+      "action_id": "action-2",
+      "description": "Request refund",
+      "status": "requested",
+      "category": "REFUND",
+      "disposition": "review",
+      "evidence": [
+        {
+          "start": 28,
+          "end": 51,
+          "text": "refund my last purchase"
+        }
+      ],
+      "condition_evidence": [],
+      "uncalibrated_score": null
+    }
+  ],
+  "relations": [],
+  "clarification_question": null,
+  "requires_human_review": true,
+  "origin": "authored_example",
+  "model_sha256": null
+}

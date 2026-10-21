@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "experiment": "tfidf-ovr-fixed-v1",
+  "dataset": "BlendBanking77",
+  "taxonomy_id": "blendbanking77-v1",
+  "source_revision": "8828e46ea6b5b30d7a9a9c34a4f0f499e7d74efa",
+  "development_input_sha256": {
+    "train.jsonl": "c8645c052b74346bfd67b2149c5429ac7944048e2855bce13ae490a36b0e36a8",
+    "selection.jsonl": "e8df4b426161ad8085932ef585a8552460fac7da75b2d8986c10675ebed0fdb5"
+  },
+  "versions": {
+    "scikit-learn": "1.8.0",
+    "numpy": "2.3.5",
+    "scipy": "1.17.0"
+  },
+  "recipe": {
+    "features": "word TF-IDF",
+    "ngram_range": [
+      1,
+      2
+    ],
+    "min_df": 2,
+    "max_features": 50000,
+    "sublinear_tf": true,
+    "classifier": "77 independent logistic-regression heads",
+    "C": 1.0,
+    "max_iter": 1000,
+    "random_state": 42,
+    "threshold": 0.5,
+    "threshold_tuned": false,
+    "actual_vocabulary_size": 27211,
+    "all_heads_converged": true
+  },
+  "train_rows": 28338,
+  "selection_rows": 2008,
+  "label_count": 77,
+  "selection": {
+    "rows": 2008,
+    "exact_set_accuracy": 0.2848605577689243,
+    "micro_f1": 0.5752555516390553,
+    "macro_f1": 0.5581520737742779,
+    "micro_precision": 0.9137737961926092,
+    "micro_recall": 0.41975308641975306,
+    "hamming_loss": 0.015587002638795467,
+    "mean_predicted_labels": 0.8894422310756972,
+    "empty_prediction_fraction": 0.3137450199203187,
+    "by_true_label_count": {
+      "1": {
+        "rows": 539,
+        "exact_set_accuracy": 0.6641929499072357,
+        "micro_f1": 0.7988338192419825
+      },
+      "2": {
+        "rows": 1058,
+        "exact_set_accuracy": 0.1937618147448015,
+        "micro_f1": 0.5998071359691417
+      },
+      "3": {
+        "rows": 411,
+        "exact_set_accuracy": 0.021897810218978103,
+        "micro_f1": 0.3754889178617992
+      }
+    }
+  },
+  "most_frequent_single_label": {
+    "label": "declined_card_payment",
+    "selection": {
+      "rows": 2008,
+      "exact_set_accuracy": 0.0034860557768924302,
+      "micro_f1": 0.019335142469470826,
+      "macro_f1": 0.0007169585862079809,
+      "micro_precision": 0.02838645418326693,
+      "micro_recall": 0.014660493827160493,
+      "hamming_loss": 0.03739587106120971,
+      "mean_predicted_labels": 1.0,
+      "empty_prediction_fraction": 0.0,
+      "by_true_label_count": {
+        "1": {
+          "rows": 539,
+          "exact_set_accuracy": 0.012987012987012988,
+          "micro_f1": 0.012987012987012988
+        },
+        "2": {
+          "rows": 1058,
+          "exact_set_accuracy": 0.0,
+          "micro_f1": 0.017013232514177693
+        },
+        "3": {
+          "rows": 411,
+          "exact_set_accuracy": 0.0,
+          "micro_f1": 0.027980535279805353
+        }
+      }
+    }
+  },
+  "calibration_read": false,
+  "test_payload_decoded": false,
+  "test_evaluated": false,
+  "model_exported": false,
+  "live_model_changed": false,
+  "limitations": [
+    "Selection is development data, not an independent final test.",
+    "Publisher blended labels are not independently adjudicated; component/template overlap is unknown.",
+    "Fixed 0.5 decisions are uncalibrated and provide no reliability or out-of-scope guarantee.",
+    "Native banking labels do not establish accuracy on the app taxonomy or action spans, conditions, negation and relations."
+  ]
+}

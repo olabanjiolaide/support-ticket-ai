@@ -1,6 +1,6 @@
 # Install and verify the application package
 
-The installable Python package is now version **0.5.0**, with API **0.4.0**. The packaging milestone initially shipped as 0.3.0; optional semantic browser mode followed in package 0.4.0. The current release adds an unchecked experimental [separate-request check](24-separate-request-check.md) while preserving default word requests. See [semantic browser setup](21-semantic-browser-mode.md).
+The installable Python package is now version **0.6.0**, with API **0.4.0**. The packaging milestone initially shipped as 0.3.0; optional semantic browser mode followed in package 0.4.0 and the unchecked experimental [separate-request check](24-separate-request-check.md) in 0.5.0. Version 0.6.0 adds an offline [action-plan contract and public benchmark preparation](26-action-plan-and-public-benchmark.md) and a [multilabel baseline](27-first-multilabel-baseline.md); the prediction interfaces are unchanged. See [semantic browser setup](21-semantic-browser-mode.md).
 
 The wheel includes Python modules, HTML/CSS/JavaScript, authored sample collections, aggregate experiment reports, and the dataset-license copy accompanying those reports. It does not include trained models, downloaded source data, private annotation files, or semantic encoder weights. Source-tree datasets and reports map into package resource directories during the build, so there are no duplicate source copies to maintain.
 
