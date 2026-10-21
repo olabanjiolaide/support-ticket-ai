@@ -70,6 +70,8 @@ The tighter whole-message model gets 910/2,008 complete sets correct, compared w
 
 The nominal mean-pooling score of 44.67% is therefore not accepted as a verified representation improvement. Tighter optimization alone produces a stronger whole-message reference. A matched mean/max comparison at the reliable numerical settings is still needed; these cross-tolerance scores cannot establish that pooling itself helps or hurts. The tighter whole-message recipe can serve as the next development comparator, with its measured finite-data invariance check retained.
 
+The subsequent [matched strict-solver comparison](31-matched-segment-comparison.md) performs that follow-up with all four representations and an explicit numerical gate. The earlier results above remain the historical diagnostic record.
+
 The [numerical report](../reports/blendbanking77-v1/segment_optimizer.json) contains both tolerance pairs, score/set discrepancies, exact-transform checks and iteration counts. It does not refit mean/max pooling at tighter tolerance. A fair representation conclusion requires that subsequent matched comparison; neither an optimizer diagnostic nor better convergence validates heuristic request boundaries.
 
 ## Selection rule and limits

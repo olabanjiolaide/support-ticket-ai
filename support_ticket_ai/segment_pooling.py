@@ -7,6 +7,7 @@ import json
 from pathlib import Path
 import re
 import sys
+from time import perf_counter
 import warnings
 
 import numpy as np
@@ -21,6 +22,9 @@ from .semantic_experiment import DIMENSIONS, ENCODER_ID, ENCODER_REVISION, encod
 from .semantic_multilabel import dependency_versions, source_fingerprints
 
 PROTOCOL_PATH = data_path('segment_pooling_protocol.json')
+STABLE_PROTOCOL_PATH = data_path('segment_stable_protocol.json')
+NUMERICAL_CONTROL = {'maximum_score_difference': .001, 'maximum_set_disagreements': 0,
+                     'failure_policy': 'Retain whole as reference and mark comparison unusable; no representation adoption'}
 BOUNDARY = re.compile(r'(?:\b(?:and|also|plus|but)\b|[,;.!?\n]+)', re.I)
 NAMES = ['whole', 'whole_duplicate', 'whole_segment_mean', 'whole_segment_max']
 POOLING = ('Unit-normalize each mean/max pooled local vector; concatenate unit whole and local vectors divided by sqrt(2). '
@@ -56,18 +60,24 @@ def validate_protocol(protocol, manifest):
                           'minimum_words': 2, 'maximum_segments': 4,
                           'short_fragment_policy': 'merge with previous; prefix merges with next',
                           'overflow_policy': 'merge tail; preserve all characters'}
+    stable = protocol.get('experiment') == 'segment-pooling-stable-v1'
+    tolerance, max_iter = (1e-8, 5000) if stable else (1e-4, 1000)
     if (type(protocol.get('schema_version')) is not int or protocol['schema_version'] != 1 or
-            protocol.get('experiment') != 'segment-pooling-v1' or protocol.get('taxonomy_id') != manifest['taxonomy_id'] or
+            protocol.get('experiment') not in ('segment-pooling-v1', 'segment-pooling-stable-v1') or
+            protocol.get('taxonomy_id') != manifest['taxonomy_id'] or
             protocol.get('encoder_id') != ENCODER_ID or protocol.get('encoder_revision') != ENCODER_REVISION or
             protocol.get('representations') != NAMES or protocol.get('segmenter') != expected_segmenter or
             protocol.get('pooling') != POOLING or
             type(protocol.get('C')) not in (int, float) or protocol['C'] != 10 or
             protocol.get('class_weight', 'missing') is not None or
             type(protocol.get('threshold')) not in (int, float) or protocol['threshold'] != .5 or
-            type(protocol.get('max_iter')) is not int or protocol['max_iter'] != 1000 or
+            type(protocol.get('max_iter')) is not int or protocol['max_iter'] != max_iter or
+            type(protocol.get('tolerance', 1e-4)) not in (int, float) or protocol.get('tolerance', 1e-4) != tolerance or
             type(protocol.get('random_state')) is not int or protocol['random_state'] != 42 or
             protocol.get('selection_rule') != RULE):
         raise ValueError('Protocol differs from the fixed segment-pooling study.')
+    if stable and protocol.get('numerical_control') != NUMERICAL_CONTROL:
+        raise ValueError('Stable protocol must retain the numerical control gate.')
     expected = {name: manifest['files_sha256'][name] for name in ('train.jsonl', 'selection.jsonl')}
     if protocol.get('development_input_sha256') != expected:
         raise ValueError('Protocol input fingerprints differ from prepared development data.')
@@ -131,6 +141,14 @@ def choose_representation(candidates):
                candidates[i]['selection']['micro_f1'], candidates[i]['selection']['micro_precision'], -i)) if eligible else 0
 
 
+def check_numerical_control(whole, duplicate):
+    difference = float(np.max(np.abs(whole - duplicate)))
+    disagreements = int(np.any(threshold_predictions(whole) != threshold_predictions(duplicate), axis=1).sum())
+    return {'max_absolute_score_difference': difference, 'rows_with_different_predicted_sets': disagreements,
+            'passed': difference <= NUMERICAL_CONTROL['maximum_score_difference'] and
+                      disagreements <= NUMERICAL_CONTROL['maximum_set_disagreements']}
+
+
 def run(directory: Path, cache_dir: Path, protocol_path: Path = PROTOCOL_PATH, *, encoder_factory=None):
     manifest, partitions = load_development(directory)
     raw = protocol_path.read_bytes()
@@ -148,18 +166,25 @@ def run(directory: Path, cache_dir: Path, protocol_path: Path = PROTOCOL_PATH, *
     train_targets = binarizer.fit_transform([row['labels'] for row in partitions['train']])
     expected = binarizer.transform([row['labels'] for row in partitions['selection']])
     candidates, probabilities = [], {}
+    tolerance = protocol.get('tolerance', 1e-4)
     for name in NAMES:
-        print(f'Fitting representation: {name}', file=sys.stderr, flush=True)
-        heads = OneVsRestClassifier(LogisticRegression(C=10., max_iter=1000, random_state=42), n_jobs=1)
+        print(f'Fitting representation: {name}, tol={tolerance}', file=sys.stderr, flush=True)
+        heads = OneVsRestClassifier(LogisticRegression(C=10., tol=tolerance, max_iter=protocol['max_iter'], random_state=42), n_jobs=1)
+        started = perf_counter()
         with warnings.catch_warnings():
             warnings.simplefilter('error', ConvergenceWarning)
             heads.fit(features['train'][name], train_targets)
+        fit_seconds = perf_counter() - started
         probabilities[name] = heads.predict_proba(features['selection'][name])
         candidates.append({'representation': name, 'dimensions': features['train'][name].shape[1],
                            'all_heads_converged': True,
+                           'maximum_iterations': max(int(head.n_iter_.max()) for head in heads.estimators_),
+                           'fit_seconds': fit_seconds,
                            'selection': measure(expected, threshold_predictions(probabilities[name]))})
     whole, duplicate = probabilities['whole'], probabilities['whole_duplicate']
-    selected = choose_representation(candidates)
+    nomination = choose_representation(candidates)
+    numerical_control = check_numerical_control(whole, duplicate)
+    selected = nomination if protocol['experiment'] == 'segment-pooling-v1' or numerical_control['passed'] else 0
     return {'schema_version': 1, 'experiment': protocol['experiment'], 'protocol': protocol,
             'protocol_sha256': hashlib.sha256(raw).hexdigest(), 'versions': dependency_versions(),
             'dataset': manifest['dataset'], 'taxonomy_id': manifest['taxonomy_id'],
@@ -169,8 +194,9 @@ def run(directory: Path, cache_dir: Path, protocol_path: Path = PROTOCOL_PATH, *
                         'source_file_sha256': fingerprints,
                         'implementation': 'injected_test_double' if encoder_factory else 'pinned_sentence_transformer'},
             'segmentation_audit': audits, 'candidates': candidates, 'selected_candidate_index': selected,
-            'duplicate_control': {'max_absolute_score_difference': float(np.max(np.abs(whole - duplicate))),
-                'rows_with_different_predicted_sets': int(np.any(threshold_predictions(whole) != threshold_predictions(duplicate), axis=1).sum())},
+            'protocol_nomination_index': nomination, 'comparison_usable': numerical_control['passed'],
+            'solver': {'tolerance': tolerance, 'max_iter': protocol['max_iter'], 'C': 10., 'class_weight': None},
+            'duplicate_control': numerical_control,
             'calibration_read': False, 'test_payload_decoded': False, 'test_evaluated': False,
             'threshold_tuned': False, 'encoder_fine_tuned': False, 'model_exported': False, 'live_model_changed': False,
             'limitations': [
@@ -187,13 +213,16 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('benchmark_dir', type=Path)
     parser.add_argument('--cache-dir', type=Path, default=Path('artifacts/encoder-cache'))
-    parser.add_argument('--protocol', type=Path, default=PROTOCOL_PATH)
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument('--protocol', type=Path)
+    mode.add_argument('--stable', action='store_true', help='Use the packaged matched strict-solver protocol')
     parser.add_argument('--output', type=Path, required=True)
     args = parser.parse_args()
     if args.output.exists():
         parser.error('Output already exists; choose a fresh experiment file.')
     try:
-        report = run(args.benchmark_dir, args.cache_dir, args.protocol)
+        protocol_path = args.protocol or (STABLE_PROTOCOL_PATH if args.stable else PROTOCOL_PATH)
+        report = run(args.benchmark_dir, args.cache_dir, protocol_path)
         args.output.parent.mkdir(parents=True, exist_ok=True)
         with args.output.open('x', encoding='utf-8', newline='\n') as handle:
             handle.write(json.dumps(report, indent=2, allow_nan=False) + '\n')

@@ -90,6 +90,8 @@ class SegmentPoolingTests(unittest.TestCase):
                 self.assertEqual(len(x), 12)
                 self.assertEqual(y.shape, (12, 3))
                 self.assertEqual(heads.estimator.C, 10.)
+                self.assertEqual(heads.estimator.tol, 1e-4)
+                self.assertEqual(heads.estimator.max_iter, 1000)
                 dimensions.append(x.shape[1])
                 return original_fit(heads, x, y, **kwargs)
             def guarded(path, *args, **kwargs):
