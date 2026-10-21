@@ -1,6 +1,6 @@
 # Install and verify the application package
 
-The installable Python package is now version **0.10.0**, with API **0.4.0**. The latest addition is the [matched strict-solver segment comparison](31-matched-segment-comparison.md), available through `--stable`. Historical experiment commands remain available for reproduction, and browser prediction interfaces are unchanged. See [semantic browser setup](21-semantic-browser-mode.md).
+The installable Python package is now version **0.10.1**, with API **0.4.0**. The latest addition is the [native app solver comparison](32-native-solver-comparison.md), which tests training settings against the existing 11-category semantic model. Historical experiment commands remain available for reproduction, and browser prediction interfaces are unchanged. See [semantic browser setup](21-semantic-browser-mode.md).
 
 The wheel includes Python modules, HTML/CSS/JavaScript, authored sample collections, aggregate experiment reports, and the dataset-license copy accompanying those reports. It does not include trained models, downloaded source data, private annotation files, or semantic encoder weights. Source-tree datasets and reports map into package resource directories during the build, so there are no duplicate source copies to maintain.
 

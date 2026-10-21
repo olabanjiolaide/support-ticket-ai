@@ -19,6 +19,8 @@ The [segment-pooling study and numerical audit](docs/30-segment-pooling.md) expo
 
 The [matched strict-solver comparison](docs/31-matched-segment-comparison.md) passes the numerical control but rejects both pooling candidates under its predeclared rule. Mean pooling reaches 46.07% overall while three-intent correct sets fall from 41 to 38; whole-message features remain the 45.32% development reference. Package 0.10.0 adds `--stable` and a reproducible manual workflow for this comparison.
 
+The [native app solver comparison](docs/32-native-solver-comparison.md) tests tighter fitting on the actual 11-category semantic model. All 98 known development cases retain the same suggestions and review decisions, so the existing browser model is retained. Package 0.10.1 adds the reproducible offline comparison; no new labeling is required.
+
 **Optional semantic browser mode is now available:** [setup and launch guide](docs/21-semantic-browser-mode.md). The word model remains the default; semantic mode requires a separately built bundle and optional CPU dependencies. Every prediction requires human review.
 
 Semantic mode also offers an unchecked [experimental separate-request check](docs/24-separate-request-check.md). On known development probes it withholds two additional multi-intent requests without changing supported-request coverage. It is a bounded rule-based option, not a trained general ambiguity detector; the guide documents remaining misses. Existing semantic bundles need no rebuild.
