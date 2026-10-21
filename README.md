@@ -2,6 +2,8 @@
 
 A Python portfolio project for classifying support requests and routing uncertain predictions to human review.
 
+**Manual labeling is paused.** The current engineering milestone is an [installable package and browser verification](docs/19-installable-package.md), with a [short recruiter walkthrough](docs/20-recruiter-walkthrough.md). The pending review collection requires no action to run or present the application.
+
 **Status: baseline, prediction CLI, local FastAPI service, similarity audit, and offline calibration experiment implemented.** Calibration is not activated in the live prediction interfaces. The test set has not been evaluated. All predictions require human review. Optional experimental abstention can withhold low-scoring category suggestions.
 
 See [the baseline audit and results](docs/04-baseline-results.md). Validation macro-F1 is 0.9984 on a synthetic source; template overlap may inflate this result. It is not a production accuracy claim.
@@ -35,9 +37,9 @@ The [broader ambiguity review collection](docs/18-ambiguity-review-collection.md
 From the repository root, with Python 3.11–3.13 in a virtual environment:
 
 ```bash
-python -m pip install -r requirements.txt
-python -m support_ticket_ai.demo artifacts/demo-v1
-python -m support_ticket_ai.serve --model-dir artifacts/demo-v1/model
+python -m pip install .
+support-ticket-demo artifacts/demo-v1
+support-ticket-serve --model-dir artifacts/demo-v1/model
 ```
 
 The demo downloads approximately 19 MB of pinned source data, verifies checksums, prepares splits, trains the baseline, and creates a trusted local model bundle. Use a fresh output path on each run. Open http://127.0.0.1:8000/ for the ticket workspace. The developer API reference remains at http://127.0.0.1:8000/docs.

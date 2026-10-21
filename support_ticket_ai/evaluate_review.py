@@ -10,12 +10,14 @@ import tempfile
 
 from sklearn.exceptions import ConvergenceWarning
 
+from .resources import report_path
+
 from .predict import TicketPredictor
 from .review_cases import CASES_PATH, load_cases, validate_progress
 from .robustness import fingerprint
 from .semantic_experiment import ENCODER_ID, ENCODER_REVISION, run_experiment
 
-FROZEN_REPORT_PATH = Path(__file__).resolve().parents[1] / 'reports/bitext-baseline-v1/semantic_experiment.json'
+FROZEN_REPORT_PATH = report_path('semantic_experiment.json')
 WORD_CONFIG = {'ngram_range': [1, 2], 'max_features': 50000, 'min_df': 1, 'sublinear_tf': True,
                'C': 1.0, 'max_iter': 1000, 'class_weight': None, 'solver': 'lbfgs'}
 

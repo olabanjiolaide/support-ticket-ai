@@ -11,12 +11,14 @@ import sys
 
 import numpy as np
 
+from .resources import data_path
+
 from .abstain import summarize
 from .data import load_tickets
 from .predict import MAX_TEXT_LENGTH, TicketPredictor
 from .prepare import normalize
 
-PROBES_PATH = Path(__file__).resolve().parents[1] / 'data/robustness_probes.csv'
+PROBES_PATH = data_path('robustness_probes.csv')
 
 
 def fingerprint(path: Path) -> str:

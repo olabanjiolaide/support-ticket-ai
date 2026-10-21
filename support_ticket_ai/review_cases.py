@@ -10,9 +10,11 @@ from pathlib import Path
 import sys
 import tempfile
 
+from .resources import data_path
+
 from .prepare import normalize
 
-CASES_PATH = Path(__file__).resolve().parents[1] / 'data/review_pilot.csv'
+CASES_PATH = data_path('review_pilot.csv')
 CATEGORIES = frozenset({'ACCOUNT', 'CANCEL', 'CONTACT', 'DELIVERY', 'FEEDBACK', 'INVOICE',
                         'ORDER', 'PAYMENT', 'REFUND', 'SHIPPING', 'SUBSCRIPTION'})
 KINDS = {'1': 'single_intent', '2': 'multiple_intents',

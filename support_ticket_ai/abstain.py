@@ -10,10 +10,12 @@ import sys
 
 import numpy as np
 
+from .resources import data_path
+
 from .predict import MAX_TEXT_LENGTH, TicketPredictor
 from .prepare import normalize
 
-CHALLENGE_PATH = Path(__file__).resolve().parents[1] / "data/development_challenge.csv"
+CHALLENGE_PATH = data_path('development_challenge.csv')
 THRESHOLDS = (0.5, 0.6, 0.7, 0.8, 0.85, 0.9, 0.95, 0.98, 0.99)
 CRITERIA = {"minimum_supported_coverage": 0.25, "minimum_selected_supported_accuracy": 0.90,
             "minimum_unsupported_rejection": 0.90}

@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools==84.0.0", "wheel==0.48.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "support-ticket-ai"
+version = "0.3.0"
+description = "A local, human-reviewed support-ticket classification portfolio demo"
+readme = "README.md"
+requires-python = ">=3.11,<3.14"
+dynamic = ["dependencies"]
+
+[project.urls]
+Repository = "https://github.com/olabanjiolaide/support-ticket-ai"
+
+[project.scripts]
+support-ticket-ai = "support_ticket_ai.__main__:main"
+support-ticket-demo = "support_ticket_ai.demo:main"
+support-ticket-serve = "support_ticket_ai.serve:main"
+support-ticket-predict = "support_ticket_ai.predict:main"
+
+[tool.setuptools]
+packages = ["support_ticket_ai", "support_ticket_ai.web", "support_ticket_ai.datasets", "support_ticket_ai.baseline_reports"]
+include-package-data = true
+
+[tool.setuptools.package-dir]
+"support_ticket_ai.datasets" = "data"
+"support_ticket_ai.baseline_reports" = "reports/bitext-baseline-v1"
+
+[tool.setuptools.package-data]
+"support_ticket_ai.web" = ["*.html", "*.css", "*.js"]
+"support_ticket_ai.datasets" = ["*.csv", "*.json"]
+"support_ticket_ai.baseline_reports" = ["*.json", "*.txt"]
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}

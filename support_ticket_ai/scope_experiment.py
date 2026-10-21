@@ -18,13 +18,15 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
 from sklearn.pipeline import FeatureUnion, Pipeline
 
+from .resources import data_path
+
 from .data import load_tickets
 from .predict import TicketPredictor
 from .prepare import normalize
 from .robustness import (PROBES_PATH, check_training_overlap, diagnostic_metrics,
                          fingerprint, load_probes)
 
-NEGATIVES_PATH = Path(__file__).resolve().parents[1] / 'data/scope_training_negatives.csv'
+NEGATIVES_PATH = data_path('scope_training_negatives.csv')
 CATEGORY_CUTOFF = .7
 SCOPE_CUTOFF = .5
 FEATURE_CONFIG = {'word_ngram_range': [1, 2], 'character_analyzer': 'char_wb',
