@@ -56,6 +56,8 @@ The [aggregate report](../reports/blendbanking77-v1/semantic_multilabel.json) co
 
 ## Learning and next experiment
 
+The subsequent [class-weight and regularization study](29-semantic-head-study.md) implements the bounded follow-up described below, with its six-setting protocol committed before fitting.
+
 Sentence embeddings help this fixed classifier recover semantic intent signals, but they do not demonstrate complete sentence understanding. In particular, the three-intent results show why adding a semantic encoder alone does not solve compositional routing.
 
 The next bounded study should predeclare a small training/selection protocol for imbalance and regularization, keeping the frozen 0.5 result visible. Reserve calibration data for its stated future purpose and retain the final-test boundary. A later comparison of whole-message and request-local representations could test the pooling hypothesis, provided both use the same data and the localization method is evaluated rather than assumed correct.

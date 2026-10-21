@@ -10,6 +10,8 @@ The [first multilabel baseline](docs/27-first-multilabel-baseline.md) now measur
 
 The [frozen semantic multilabel comparison](docs/28-semantic-multilabel-comparison.md) raises exact-set accuracy to 35.81% and micro F1 to 67.28% on the same development partition, with slightly lower precision. Three-intent requests remain largely unresolved (10/411 complete sets correct). This is an offline experiment with the native banking taxonomy; the live app is unchanged.
 
+A predeclared six-setting [class-weight and regularization study](docs/29-semantic-head-study.md) selects unweighted C=10, reaching 42.23% exact-set accuracy and 73.09% micro F1 on reused selection data. Class balancing adds excessive false positives at the fixed threshold. Three-intent accuracy remains 7.30%; no final-test or live-app improvement is claimed.
+
 **Optional semantic browser mode is now available:** [setup and launch guide](docs/21-semantic-browser-mode.md). The word model remains the default; semantic mode requires a separately built bundle and optional CPU dependencies. Every prediction requires human review.
 
 Semantic mode also offers an unchecked [experimental separate-request check](docs/24-separate-request-check.md). On known development probes it withholds two additional multi-intent requests without changing supported-request coverage. It is a bounded rule-based option, not a trained general ambiguity detector; the guide documents remaining misses. Existing semantic bundles need no rebuild.
