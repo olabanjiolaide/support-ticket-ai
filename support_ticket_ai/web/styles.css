@@ -1205,4 +1205,9 @@ pre {
 .model-controls select:focus-visible { outline: 3px solid #e2a58c; outline-offset: 3px; }
 .model-controls p { color: var(--muted); margin: 0; flex: 1 1 230px; }
 .semantic-notice { padding: 12px 16px; border: 1px solid #e5cfab; border-radius: 10px; background: #fff8ed; color: #715020; margin: 0 0 20px; }
+.request-check-controls { padding: 0 4px 18px; }
+.request-check-controls label { display: flex; align-items: flex-start; gap: 10px; font-weight: 600; cursor: pointer; }
+.request-check-controls input { width: 18px; height: 18px; margin: 2px 0 0; flex-shrink: 0; accent-color: var(--ink); }
+.request-check-controls input:focus-visible { outline: 3px solid #e2a58c; outline-offset: 3px; }
+.request-check-controls p { color: var(--muted); font-size: 13px; margin: 6px 0 0 28px; }
 @media (max-width: 600px) { .model-controls { gap: 12px; padding: 16px; } .model-controls > div { width: 100%; } .model-controls select { width: 100%; } }

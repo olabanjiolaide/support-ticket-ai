@@ -41,7 +41,9 @@ class ApiTests(unittest.TestCase):
 
     def test_invalid_requests_rejected_without_echoing_text(self):
         bodies = [{}, {"text": None}, {"text": 123}, {"text": "  "},
-                  {"text": "x" * 2001}, {"text": "private request", "secret": "do-not-echo"}]
+                  {"text": "x" * 2001}, {"text": "private request", "secret": "do-not-echo"},
+                  {"text": "private request", "check_multiple_requests": True},
+                  {"text": "private request", "mode": "semantic", "check_multiple_requests": "true"}]
         with TestClient(create_app(self.root)) as client:
             for body in bodies:
                 with self.subTest(keys=list(body)):

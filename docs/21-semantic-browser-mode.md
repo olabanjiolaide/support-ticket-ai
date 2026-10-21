@@ -4,6 +4,8 @@ The frozen semantic model can now be used in the local ticket workspace. **Word 
 
 The semantic mode uses the frozen MiniLM sentence encoder, a category head, and a binary support-scope head. It uses the previously selected category cutoff 0.50 and scope cutoff 0.50. It does not add a reliable multi-intent or clarification classifier. See the [semantic experiment](15-semantic-embedding-experiment.md) and [reviewed-pilot results](17-reviewed-pilot-evaluation.md) for the remaining errors.
 
+An unchecked [experimental separate-request option](24-separate-request-check.md) is now available in semantic mode. It uses bounded English rules and existing clause predictions to withhold some messages containing separate requests. It is not a trained general multi-intent detector, and enabling it does not rebuild or change the model bundle.
+
 ## One-time setup on Windows
 
 Run from `C:\Users\User\support-ticket-ai`. Stop the current server with Ctrl+C. If the prompt says `(support-ticket-ai)`, deactivate to the base environment before pulling, because Git was unavailable in that environment on this computer:

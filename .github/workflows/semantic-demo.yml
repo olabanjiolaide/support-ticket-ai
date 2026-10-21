@@ -4,6 +4,9 @@ on:
   push:
     paths:
       - support_ticket_ai/semantic_bundle.py
+      - support_ticket_ai/multi_intent.py
+      - support_ticket_ai/api.py
+      - support_ticket_ai/web/**
       - scripts/check_semantic_ui.py
       - .github/workflows/semantic-demo.yml
 permissions:
@@ -32,6 +35,7 @@ jobs:
       - run: python -m playwright install --with-deps chromium --only-shell
       - run: python -m support_ticket_ai.demo artifacts/demo-v1
       - run: python -m support_ticket_ai.semantic_bundle artifacts/demo-v1/prepared artifacts/semantic-v1
+      - run: python -m support_ticket_ai.multi_intent_experiment artifacts/semantic-v1 artifacts/demo-v1/prepared artifacts/multi-intent-pilot.json
       - run: python scripts/check_semantic_ui.py artifacts/demo-v1/model artifacts/semantic-v1 --artifacts artifacts/semantic-ui-checks
       - uses: actions/upload-artifact@v4
         with:
@@ -44,4 +48,5 @@ jobs:
             artifacts/demo-v1/source/LICENSE.txt
             artifacts/demo-v1/source/source_provenance.json
             artifacts/semantic-v1/
+            artifacts/multi-intent-pilot.json
             artifacts/semantic-ui-checks/

@@ -4,6 +4,7 @@
   const byId = (id) => document.getElementById(id);
   const form = byId("ticket-form");
   const modelMode = byId("model-mode");
+  const requestCheck = byId("check-multiple-requests");
   const input = byId("ticket");
   const submit = byId("submit");
   const clear = byId("clear");
@@ -17,6 +18,7 @@
   let ready = false;
   let busy = false;
   let checking = false;
+  let supportsRequestCheck = false;
 
   async function request(path, options = {}) {
     const controller = new AbortController();
@@ -50,6 +52,7 @@
     submit.disabled = busy || !ready || !input.value.trim() || overLimit;
     clear.disabled = busy || !input.value;
     modelMode.disabled = busy;
+    requestCheck.disabled = busy || modelMode.value !== "semantic" || !supportsRequestCheck;
     input.disabled = busy;
     examples.forEach((button) => {
       button.disabled = busy;
@@ -93,6 +96,7 @@
       ? "Active: Semantic encoder + scope gate · experimental. Every suggestion needs human review."
       : "Active: Word baseline. Every suggestion needs human review.";
     byId("semantic-notice").hidden = !semantic;
+    byId("request-check-controls").hidden = !semantic;
   }
 
   async function checkReadiness() {
@@ -105,6 +109,8 @@
       if (catalog.ok) {
         const data = await catalog.json();
         const semantic = data.modes?.find((item) => item.mode === "semantic");
+        supportsRequestCheck = Boolean(semantic?.available && semantic?.supports_multiple_request_check);
+        if (!supportsRequestCheck) requestCheck.checked = false;
         byId("semantic-option").disabled = !semantic?.available;
         byId("semantic-option").textContent = semantic?.available
           ? "Semantic · experimental" : "Semantic · experimental (not loaded)";
@@ -124,6 +130,7 @@
   }
 
   modelMode.addEventListener("change", () => {
+    requestCheck.checked = false;
     ready = false;
     edit();
     showModel();
@@ -131,6 +138,8 @@
     byId("service-label").textContent = "Checking model";
     checkReadiness();
   });
+
+  requestCheck.addEventListener("change", edit);
 
   input.addEventListener("input", edit);
   clear.addEventListener("click", () => {
@@ -162,11 +171,13 @@
     updateControls();
     let completed = false;
     const requestedMode = modelMode.value;
+    const requestedCheck = requestedMode === "semantic" && requestCheck.checked;
     try {
       const response = await request("/predict", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text: input.value, mode: requestedMode }),
+        body: JSON.stringify({ text: input.value, mode: requestedMode,
+          ...(requestedCheck ? { check_multiple_requests: true } : {}) }),
       });
       if (!response.ok) {
         if (response.status === 503) {
@@ -188,6 +199,7 @@
       }
       const result = await response.json();
       if ((result.model_mode ?? "word") !== requestedMode) throw new Error("The response did not match the selected model. Please retry.");
+      if ((result.multiple_request_check_enabled ?? false) !== requestedCheck) throw new Error("The response did not match the separate-request setting. Please retry.");
       const decision = result.decision ?? "suggestion";
       const abstained = decision === "abstain";
       if (
@@ -216,7 +228,9 @@
         ? "MANUAL CLASSIFICATION NEEDED"
         : "SUGGESTED CATEGORY";
       byId("result-subtitle").textContent = abstained
-        ? "The experimental score rule withheld a category."
+        ? result.multiple_requests_detected
+          ? "More than one request may need attention."
+          : "The experimental review rules withheld a category."
         : "A starting point for the right handoff.";
       byId("review-description").textContent = requestedMode === "semantic"
         ? result.review_reason

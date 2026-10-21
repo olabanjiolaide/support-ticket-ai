@@ -10,7 +10,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
-from pydantic import BaseModel, ConfigDict, Field, field_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 from .predict import MAX_TEXT_LENGTH, TicketPredictor
 
@@ -21,6 +21,13 @@ class PredictionRequest(BaseModel):
     model_config = ConfigDict(extra="forbid")
     text: Annotated[str, Field(strict=True, min_length=1, max_length=MAX_TEXT_LENGTH)]
     mode: Literal["word", "semantic"] = "word"
+    check_multiple_requests: Annotated[bool, Field(strict=True)] = False
+
+    @model_validator(mode="after")
+    def check_semantic_option(self):
+        if self.check_multiple_requests and self.mode != "semantic":
+            raise ValueError("The separate-request check is available only in semantic mode.")
+        return self
 
     @field_validator("text")
     @classmethod
@@ -44,6 +51,10 @@ class PredictionResponse(BaseModel):
     scope_score: Annotated[float, Field(ge=0, le=1)] | None = None
     scope_threshold: Annotated[float, Field(gt=0, le=1)] | None = None
     input_truncated: bool = False
+    multiple_request_check_enabled: bool = False
+    multiple_requests_detected: bool = False
+    request_check_status: str | None = None
+    request_check_version: int | None = None
 
 
 def create_app(model_dir: Path | None = None, semantic_model_dir: Path | None = None) -> FastAPI:
@@ -74,7 +85,7 @@ def create_app(model_dir: Path | None = None, semantic_model_dir: Path | None = 
 
     application = FastAPI(
         title="Support Ticket AI",
-        version="0.3.0",
+        version="0.4.0",
         description="Category suggestions requiring human review; scores are not calibrated.",
         lifespan=lifespan,
     )
@@ -108,6 +119,7 @@ def create_app(model_dir: Path | None = None, semantic_model_dir: Path | None = 
         return {"default": "word", "modes": [
             {"mode": "word", "name": "Word baseline", "available": getattr(application.state, "predictor", None) is not None},
             {"mode": "semantic", "name": "Semantic encoder + scope gate (experimental)",
+             "supports_multiple_request_check": True,
              "available": getattr(application.state, "semantic_predictor", None) is not None},
         ]}
 
@@ -120,7 +132,15 @@ def create_app(model_dir: Path | None = None, semantic_model_dir: Path | None = 
     def predict(body: PredictionRequest):
         predictor = predictor_or_unavailable(body.mode)
         try:
-            result = predictor.predict(body.text)
+            if body.check_multiple_requests:
+                from .multi_intent import VERSION, guarded_prediction
+                outcomes = guarded_prediction(body.text, predictor)
+                inspection = outcomes["inspection"]
+                result = {**outcomes["guarded"], "multiple_request_check_enabled": True,
+                          "multiple_requests_detected": inspection["review_triggered"],
+                          "request_check_status": inspection["status"], "request_check_version": VERSION}
+            else:
+                result = predictor.predict(body.text)
             return {**result, "model_mode": body.mode, "model_name": "Word baseline" if body.mode == "word" else "Semantic encoder + scope gate (experimental)"}
         except Exception as error:
             logger.error("Prediction failed (%s)", type(error).__name__)

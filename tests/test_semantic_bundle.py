@@ -126,6 +126,29 @@ class SemanticBundleTests(unittest.TestCase):
             self.assertEqual(client.post('/predict', json={'text': 'password reset', 'mode': 'semantic'}).status_code, 503)
             self.assertEqual(client.post('/predict', json={'text': 'password reset'}).status_code, 200)
 
+    def test_optional_request_guard_withholds_without_changing_model_score(self):
+        with patch('support_ticket_ai.semantic_bundle.SemanticPredictor', side_effect=lambda path: self.load(path)):
+            with TestClient(create_app(self.word, self.output)) as client:
+                body = {'text': 'Change my account name and send my payment invoice.', 'mode': 'semantic'}
+                original = client.post('/predict', json=body).json()
+                self.assertEqual(original['decision'], 'suggestion')
+                self.assertFalse(original['multiple_request_check_enabled'])
+                response = client.post('/predict', json={**body, 'check_multiple_requests': True})
+                self.assertEqual(response.status_code, 200)
+                guarded = response.json()
+                self.assertTrue(guarded['multiple_request_check_enabled'])
+                self.assertTrue(guarded['multiple_requests_detected'])
+                self.assertEqual(guarded['request_check_version'], 1)
+                self.assertEqual(guarded['decision'], 'abstain')
+                self.assertIsNone(guarded['suggested_category'])
+                for field in ('model_top_category', 'uncalibrated_probability', 'model_sha256'):
+                    self.assertEqual(guarded[field], original[field])
+                self.assertTrue(guarded['requires_human_review'])
+                same = client.post('/predict', json={'text': 'Change my account name and reset my password.',
+                                                      'mode': 'semantic', 'check_multiple_requests': True}).json()
+                self.assertEqual(same['decision'], 'suggestion')
+                self.assertFalse(same['multiple_requests_detected'])
+
     def test_failed_semantic_loading_does_not_break_word_mode(self):
         with self.assertLogs('support_ticket_ai.api', level='ERROR'):
             with TestClient(create_app(self.word, self.root / 'missing')) as client:

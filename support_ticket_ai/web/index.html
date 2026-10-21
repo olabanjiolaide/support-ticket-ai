@@ -93,6 +93,13 @@
           </div>
           <p id="model-description">Active: Word baseline. Every suggestion needs human review.</p>
         </section>
+        <div id="request-check-controls" class="request-check-controls" hidden>
+          <label for="check-multiple-requests">
+            <input id="check-multiple-requests" type="checkbox" disabled aria-describedby="request-check-help" />
+            Check for separate requests · experimental
+          </label>
+          <p id="request-check-help">May withhold a message that appears to need different categories. Some combined requests will still be missed.</p>
+        </div>
         <p id="semantic-notice" class="semantic-notice" hidden>
           Experimental semantic mode can miss multiple or unclear intents. Confirm every category before routing.
           Long requests beyond the encoder limit are withheld.

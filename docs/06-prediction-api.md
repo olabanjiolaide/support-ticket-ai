@@ -74,3 +74,5 @@ Next: package a reproducible local demo and document operating the service befor
 ## Optional semantic browser mode
 
 API 0.3 adds explicit `mode="semantic"`, model identity, scope diagnostics, and truncation reporting. Word remains the default. See [semantic mode setup and API additions](21-semantic-browser-mode.md).
+
+API 0.4 adds an optional strict Boolean `check_multiple_requests`, default false and supported only with semantic mode. It enables an experimental clause check that can withhold additional requests; it does not change the classifier, scores, or model fingerprint. Responses add `multiple_request_check_enabled`, `multiple_requests_detected`, `request_check_status`, and `request_check_version`. See [behavior and limitations](24-separate-request-check.md).

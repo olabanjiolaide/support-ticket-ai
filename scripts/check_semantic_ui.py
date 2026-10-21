@@ -59,6 +59,8 @@ def main():
                     expect(page.locator('#result-success')).to_be_hidden()
                     expect(page.locator('#service-label')).to_have_text('Model ready')
                     expect(page.locator('#semantic-notice')).to_be_visible()
+                    expect(page.locator('#request-check-controls')).to_be_visible()
+                    expect(page.locator('#check-multiple-requests')).not_to_be_checked()
                     page.locator('#submit').click()
                     expect(page.locator('#result-success')).to_be_visible()
                     expect(page.locator('#category')).to_have_text('Account')
@@ -66,6 +68,35 @@ def main():
                     assert semantic['model_mode'] == 'semantic' and semantic['requires_human_review'] is True
                     assert semantic['model_sha256'] != word['model_sha256']
                     assert isinstance(semantic['scope_score'], float)
+                    page.locator('#ticket').fill('Change my account email and refund my last purchase.')
+                    page.locator('#submit').click()
+                    expect(page.locator('#result-success')).to_be_visible()
+                    original = json.loads(page.locator('#json-response').text_content())
+                    assert original['decision'] == 'suggestion' and original['multiple_request_check_enabled'] is False
+                    page.locator('#check-multiple-requests').check()
+                    expect(page.locator('#result-success')).to_be_hidden()
+                    page.locator('#submit').click()
+                    expect(page.locator('#result-success')).to_be_visible()
+                    expect(page.locator('#category')).to_have_text('No reliable suggestion')
+                    guarded = json.loads(page.locator('#json-response').text_content())
+                    assert guarded['multiple_request_check_enabled'] and guarded['multiple_requests_detected']
+                    assert guarded['requires_human_review'] is True
+                    assert guarded['uncalibrated_probability'] == original['uncalibrated_probability']
+                    expect(page.locator('#review-description')).to_contain_text('separate requests')
+                    page.screenshot(path=str(args.artifacts / f'request-check-{width}.png'), full_page=True)
+                    page.locator('#ticket').fill('Change my account name and reset my password.')
+                    page.locator('#submit').click()
+                    expect(page.locator('#result-success')).to_be_visible()
+                    expect(page.locator('#category')).to_have_text('Account')
+                    assert json.loads(page.locator('#json-response').text_content())['multiple_requests_detected'] is False
+                    page.locator('#ticket').fill('My purchase arrived broken and I want a refund.')
+                    page.locator('#submit').click()
+                    expect(page.locator('#result-success')).to_be_visible()
+                    context = json.loads(page.locator('#json-response').text_content())
+                    assert context['request_check_status'] in ('fewer_than_two_explicit_requests', 'outer_prediction_already_withheld')
+                    assert context['multiple_requests_detected'] is False
+                    page.locator('#check-multiple-requests').uncheck()
+                    expect(page.locator('#result-success')).to_be_hidden()
                     assert page.evaluate('document.documentElement.scrollWidth <= innerWidth')
                     page.screenshot(path=str(args.artifacts / f'semantic-{width}.png'), full_page=True)
                     page.locator('#ticket').fill('Write a poem about the moon.')
@@ -81,6 +112,8 @@ def main():
                     page.locator('#model-mode').select_option('word')
                     expect(page.locator('#result-success')).to_be_hidden()
                     expect(page.locator('#semantic-notice')).to_be_hidden()
+                    expect(page.locator('#request-check-controls')).to_be_hidden()
+                    expect(page.locator('#check-multiple-requests')).not_to_be_checked()
                 assert not errors, errors
                 browser.close()
         finally:
@@ -90,7 +123,7 @@ def main():
             except subprocess.TimeoutExpired:
                 server.kill()
                 server.wait(timeout=5)
-    print('Real semantic/word switching, abstention, truncation, mobile layout, and human-review checks passed.')
+    print('Real model switching, optional request guard, abstention, truncation, mobile layout, and human-review checks passed.')
 
 
 if __name__ == '__main__':
