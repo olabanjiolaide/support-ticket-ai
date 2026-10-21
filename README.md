@@ -21,6 +21,8 @@ The [matched strict-solver comparison](docs/31-matched-segment-comparison.md) pa
 
 The [native app solver comparison](docs/32-native-solver-comparison.md) tests tighter fitting on the actual 11-category semantic model. All 98 known development cases retain the same suggestions and review decisions, so the existing browser model is retained. Package 0.10.1 adds the reproducible offline comparison; no new labeling is required.
 
+The [error analysis](docs/33-error-analysis.md) traces the remaining wrong suggestions and missed REVIEW cases to spelling, indirect wording, insufficient context and declarative multiple-problem descriptions. It identifies a separate clarification decision as the next experiment to design; this analysis adds no model or browser change.
+
 **Optional semantic browser mode is now available:** [setup and launch guide](docs/21-semantic-browser-mode.md). The word model remains the default; semantic mode requires a separately built bundle and optional CPU dependencies. Every prediction requires human review.
 
 Semantic mode also offers an unchecked [experimental separate-request check](docs/24-separate-request-check.md). On known development probes it withholds two additional multi-intent requests without changing supported-request coverage. It is a bounded rule-based option, not a trained general ambiguity detector; the guide documents remaining misses. Existing semantic bundles need no rebuild.
