@@ -9,7 +9,7 @@ This is a rule-based engineering baseline, not a trained general multi-intent or
 Update the checkout and restart the server using the environment that already runs semantic mode successfully. On the current Windows setup, stop the server with Ctrl+C, then:
 
 ```bat
-conda deactivate
+conda activate base
 git pull --ff-only
 conda activate support-ticket-ai
 python -m support_ticket_ai.serve --model-dir artifacts/demo-v1/model --semantic-model-dir artifacts/semantic-v1

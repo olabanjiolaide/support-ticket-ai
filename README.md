@@ -2,6 +2,8 @@
 
 A Python portfolio project for classifying support requests and routing uncertain predictions to human review.
 
+The [public repository review and research roadmap](docs/25-public-repository-review.md) compares related projects and proposes a path toward structured support actions with inspectable text evidence. It distinguishes established methods from unvalidated research hypotheses; no novelty or external-benchmark performance is claimed.
+
 **Optional semantic browser mode is now available:** [setup and launch guide](docs/21-semantic-browser-mode.md). The word model remains the default; semantic mode requires a separately built bundle and optional CPU dependencies. Every prediction requires human review.
 
 Semantic mode also offers an unchecked [experimental separate-request check](docs/24-separate-request-check.md). On known development probes it withholds two additional multi-intent requests without changing supported-request coverage. It is a bounded rule-based option, not a trained general ambiguity detector; the guide documents remaining misses. Existing semantic bundles need no rebuild.
