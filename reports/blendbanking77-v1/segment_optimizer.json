@@ -1,0 +1,249 @@
+{
+  "schema_version": 1,
+  "experiment": "segment-optimizer-audit-v1",
+  "protocol": {
+    "schema_version": 1,
+    "experiment": "segment-optimizer-audit-v1",
+    "taxonomy_id": "blendbanking77-v1",
+    "development_input_sha256": {
+      "train.jsonl": "c8645c052b74346bfd67b2149c5429ac7944048e2855bce13ae490a36b0e36a8",
+      "selection.jsonl": "e8df4b426161ad8085932ef585a8552460fac7da75b2d8986c10675ebed0fdb5"
+    },
+    "encoder_id": "sentence-transformers/all-MiniLM-L6-v2",
+    "encoder_revision": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41",
+    "C": 10.0,
+    "class_weight": null,
+    "threshold": 0.5,
+    "random_state": 42,
+    "max_iter": 5000,
+    "tolerances": [
+      0.0001,
+      1e-08
+    ],
+    "representations": [
+      "whole",
+      "whole_duplicate"
+    ],
+    "purpose": "Numerical audit only; no representation or threshold selection. Compare independent fits with exact coefficient transformation.",
+    "reference_report_sha256": "f8240e7b3a842b00a705edb87294af5664e9cdcbd8e9c3cf1e8c15a401d021b8",
+    "observed_reason": {
+      "max_absolute_score_difference": 0.6610800110402424,
+      "rows_with_different_predicted_sets": 85
+    },
+    "boundaries": [
+      "Designed after observing the failed duplicate control, fixed before numerical audit fits.",
+      "Two tolerances crossed with whole/duplicate features; all fits use training labels only.",
+      "Max-iteration cap is 5000 for both tolerances. Record actual iterations and score/set discrepancies.",
+      "No pooling candidates are refitted or declared validated by this numerical-only audit.",
+      "Calibration, test, private reviews, encoder updates and live app changes remain excluded."
+    ]
+  },
+  "protocol_sha256": "ae125168a31ee0352e8e3355ca1844d4c5847d48f09104f0aa3faf01f61c92de",
+  "versions": {
+    "scikit-learn": "1.8.0",
+    "numpy": "2.3.5",
+    "scipy": "1.17.0",
+    "torch": "2.8.0+cpu",
+    "sentence-transformers": "5.1.2",
+    "transformers": "4.57.6"
+  },
+  "dataset": "BlendBanking77",
+  "taxonomy_id": "blendbanking77-v1",
+  "source_revision": "8828e46ea6b5b30d7a9a9c34a4f0f499e7d74efa",
+  "train_rows": 28338,
+  "selection_rows": 2008,
+  "label_count": 77,
+  "encoder": {
+    "id": "sentence-transformers/all-MiniLM-L6-v2",
+    "revision": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41",
+    "frozen": true,
+    "source_file_sha256": {
+      "model.safetensors": "53aa51172d142c89d9012cce15ae4d6cc0ca6895895114379cacb4fab128d9db",
+      "tokenizer.json": "be50c3628f2bf5bb5e3a7f17b1f74611b2561a3a27eeab05e5aa30f411572037",
+      "tokenizer_config.json": "acb92769e8195aabd29b7b2137a9e6d6e25c476a4f15aa4355c233426c61576b",
+      "config.json": "953f9c0d463486b10a6871cc2fd59f223b2c70184f49815e7efbcab5d8908b41",
+      "modules.json": "84e40c8e006c9b1d6c122e02cba9b02458120b5fb0c87b746c41e0207cf642cf",
+      "1_Pooling/config.json": "4be450dde3b0273bb9787637cfbd28fe04a7ba6ab9d36ac48e92b11e350ffc23",
+      "sentence_bert_config.json": "fc1993fde0a95c24ec6c022539d41cf6e2f7c9721e5415d6fb6897472a9cd4b7"
+    },
+    "implementation": "pinned_sentence_transformer"
+  },
+  "tolerance_pairs": [
+    {
+      "tolerance": 0.0001,
+      "fits": [
+        {
+          "representation": "whole",
+          "all_heads_converged": true,
+          "maximum_iterations": 43,
+          "median_iterations": 22.0,
+          "selection": {
+            "rows": 2008,
+            "exact_set_accuracy": 0.42231075697211157,
+            "micro_f1": 0.7308656540333284,
+            "macro_f1": 0.7250369176522963,
+            "micro_precision": 0.8565502938126512,
+            "micro_recall": 0.6373456790123457,
+            "hamming_loss": 0.011803435608216485,
+            "mean_predicted_labels": 1.4407370517928286,
+            "empty_prediction_fraction": 0.05627490039840637,
+            "by_true_label_count": {
+              "1": {
+                "rows": 539,
+                "exact_set_accuracy": 0.7959183673469388,
+                "micro_f1": 0.8766114180478821
+              },
+              "2": {
+                "rows": 1058,
+                "exact_set_accuracy": 0.3676748582230624,
+                "micro_f1": 0.7451085499865988
+              },
+              "3": {
+                "rows": 411,
+                "exact_set_accuracy": 0.072992700729927,
+                "micro_f1": 0.6232179226069247
+              }
+            }
+          }
+        },
+        {
+          "representation": "whole_duplicate",
+          "all_heads_converged": true,
+          "maximum_iterations": 43,
+          "median_iterations": 21.0,
+          "selection": {
+            "rows": 2008,
+            "exact_set_accuracy": 0.4218127490039841,
+            "micro_f1": 0.7268155598284277,
+            "macro_f1": 0.7202064160989008,
+            "micro_precision": 0.8552036199095022,
+            "micro_recall": 0.6319444444444444,
+            "hamming_loss": 0.011945723599110053,
+            "mean_predicted_labels": 1.4307768924302788,
+            "empty_prediction_fraction": 0.0602589641434263,
+            "by_true_label_count": {
+              "1": {
+                "rows": 539,
+                "exact_set_accuracy": 0.7884972170686456,
+                "micro_f1": 0.8721251149954001
+              },
+              "2": {
+                "rows": 1058,
+                "exact_set_accuracy": 0.3705103969754253,
+                "micro_f1": 0.7425503355704698
+              },
+              "3": {
+                "rows": 411,
+                "exact_set_accuracy": 0.072992700729927,
+                "micro_f1": 0.6157003591585428
+              }
+            }
+          }
+        }
+      ],
+      "independent_fit_difference": {
+        "max_absolute_score_difference": 0.6610800110402424,
+        "rows_with_different_predicted_sets": 85
+      },
+      "exact_coefficient_transform_difference": {
+        "max_absolute_score_difference": 6.5503158452884236e-15,
+        "rows_with_different_predicted_sets": 0
+      }
+    },
+    {
+      "tolerance": 1e-08,
+      "fits": [
+        {
+          "representation": "whole",
+          "all_heads_converged": true,
+          "maximum_iterations": 209,
+          "median_iterations": 132.0,
+          "selection": {
+            "rows": 2008,
+            "exact_set_accuracy": 0.4531872509960159,
+            "micro_f1": 0.7515436636283446,
+            "macro_f1": 0.7467252243495933,
+            "micro_precision": 0.8771448181194235,
+            "micro_recall": 0.6574074074074074,
+            "hamming_loss": 0.01093030475500595,
+            "mean_predicted_labels": 1.451195219123506,
+            "empty_prediction_fraction": 0.05179282868525897,
+            "by_true_label_count": {
+              "1": {
+                "rows": 539,
+                "exact_set_accuracy": 0.8311688311688312,
+                "micro_f1": 0.8967441860465116
+              },
+              "2": {
+                "rows": 1058,
+                "exact_set_accuracy": 0.39792060491493386,
+                "micro_f1": 0.7639186295503212
+              },
+              "3": {
+                "rows": 411,
+                "exact_set_accuracy": 0.09975669099756691,
+                "micro_f1": 0.6499246609743847
+              }
+            }
+          }
+        },
+        {
+          "representation": "whole_duplicate",
+          "all_heads_converged": true,
+          "maximum_iterations": 209,
+          "median_iterations": 127.0,
+          "selection": {
+            "rows": 2008,
+            "exact_set_accuracy": 0.4531872509960159,
+            "micro_f1": 0.7515436636283446,
+            "macro_f1": 0.7467252243495933,
+            "micro_precision": 0.8771448181194235,
+            "micro_recall": 0.6574074074074074,
+            "hamming_loss": 0.01093030475500595,
+            "mean_predicted_labels": 1.451195219123506,
+            "empty_prediction_fraction": 0.05179282868525897,
+            "by_true_label_count": {
+              "1": {
+                "rows": 539,
+                "exact_set_accuracy": 0.8311688311688312,
+                "micro_f1": 0.8967441860465116
+              },
+              "2": {
+                "rows": 1058,
+                "exact_set_accuracy": 0.39792060491493386,
+                "micro_f1": 0.7639186295503212
+              },
+              "3": {
+                "rows": 411,
+                "exact_set_accuracy": 0.09975669099756691,
+                "micro_f1": 0.6499246609743847
+              }
+            }
+          }
+        }
+      ],
+      "independent_fit_difference": {
+        "max_absolute_score_difference": 0.00010492070693512989,
+        "rows_with_different_predicted_sets": 0
+      },
+      "exact_coefficient_transform_difference": {
+        "max_absolute_score_difference": 6.217248937900877e-15,
+        "rows_with_different_predicted_sets": 0
+      }
+    }
+  ],
+  "model_selection_performed": false,
+  "calibration_read": false,
+  "test_evaluated": false,
+  "test_payload_decoded": false,
+  "threshold_tuned": false,
+  "model_exported": false,
+  "live_model_changed": false,
+  "limitations": [
+    "Diagnostic follow-up fixed after observing duplicate-control disagreement; not an independent predictive evaluation.",
+    "Maximum-iteration cap is 5000 at both tolerances; actual iteration counts are recorded.",
+    "Exact parameter transformation tests the feature construction without a second optimization.",
+    "This audit does not refit or validate the segment-pooling candidates at tighter tolerance.",
+    "Accuracy is reported descriptively, not used to choose a tolerance or promote a live model."
+  ]
+}

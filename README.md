@@ -6,11 +6,16 @@ The [public repository review and research roadmap](docs/25-public-repository-re
 
 The first implementation step adds a validated [action-plan format and public benchmark importer](docs/26-action-plan-and-public-benchmark.md). BlendBanking77 is prepared with its native 77 labels, disjoint development partitions, pinned provenance, and opaque test payloads. This is offline preparation; the browser still uses the existing reviewed category predictions.
 
-The [first multilabel baseline](docs/27-first-multilabel-baseline.md) now measures independent label-set predictions: 28.49% exact-set accuracy on 2,008 development requests, with many missing intents. Calibration and final-test payloads remain unused by that experiment. The results define a concrete target for a semantic comparison; they do not establish a browser improvement.
+Offline multi-intent studies use 2,008 reused development requests with 77 native banking labels, separate from the browser's 11 support categories:
 
-The [frozen semantic multilabel comparison](docs/28-semantic-multilabel-comparison.md) raises exact-set accuracy to 35.81% and micro F1 to 67.28% on the same development partition, with slightly lower precision. Three-intent requests remain largely unresolved (10/411 complete sets correct). This is an offline experiment with the native banking taxonomy; the live app is unchanged.
+| Recorded recipe | Complete label-set accuracy | Guide |
+|---|---:|---|
+| Word TF-IDF, C=1 | 28.49% | [First multilabel baseline](docs/27-first-multilabel-baseline.md) |
+| Frozen sentence embeddings, C=1 | 35.81% | [Semantic comparison](docs/28-semantic-multilabel-comparison.md) |
+| Frozen sentence embeddings, C=10 | 42.23% | [Class weights and regularization](docs/29-semantic-head-study.md) |
+| Frozen sentence embeddings, C=10, tighter solver tolerance | 45.32% | [Numerical control audit](docs/30-segment-pooling.md#numerical-follow-up) |
 
-A predeclared six-setting [class-weight and regularization study](docs/29-semantic-head-study.md) selects unweighted C=10, reaching 42.23% exact-set accuracy and 73.09% micro F1 on reused selection data. Class balancing adds excessive false positives at the fixed threshold. Three-intent accuracy remains 7.30%; no final-test or live-app improvement is claimed.
+The [segment-pooling study and numerical audit](docs/30-segment-pooling.md) expose a failed duplicate-vector control at the default optimizer tolerance. Tighter stopping reduces disagreements from 85 to zero predicted label sets on this partition and supplies the 45.32% whole-message reference. The nominal pooling gain is not promoted as a verified representation improvement. The guides retain the recorded recipes and qualify their numerical interpretation. Calibration/final-test data remain unused by these experiments; the live app is unchanged.
 
 **Optional semantic browser mode is now available:** [setup and launch guide](docs/21-semantic-browser-mode.md). The word model remains the default; semantic mode requires a separately built bundle and optional CPU dependencies. Every prediction requires human review.
 

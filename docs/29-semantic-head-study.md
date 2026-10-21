@@ -43,6 +43,10 @@ The selected recipe has been chosen on reused development data. Its score is a d
 
 These are established classifier techniques; the study makes no NLP-method novelty claim. C=10 without balancing can serve as a fixed development comparator for a later request-local representation study. That study must evaluate its localization method and preserve the final-test boundary, rather than assuming that splitting text solves references, conditions or negation.
 
+The subsequent [segment-pooling ablation](30-segment-pooling.md) evaluates two bounded text-segment representations against this comparator, with a duplicate-vector control. It does not treat heuristic boundaries as verified request spans.
+
+That later control exposes prediction differences under mathematically equivalent feature duplication at the default solver tolerance. The [numerical follow-up](30-segment-pooling.md#numerical-follow-up) therefore qualifies causal interpretation of this study: these are reproducible results of the stated software recipe, rather than a guarantee that independently fitted heads reached equivalent numerical optima. Future representation comparisons need the numerical control as well as predictive metrics.
+
 A change in C or class weights cannot establish faithful action descriptions, source spans, conditions, negation handling or relations. Better label-set predictions also do not validate unsupported-request detection. The benchmark's 77 banking labels remain separate from the browser's 11 support categories. Publisher labels are not independently adjudicated, and composition-family and pretrained-source overlap remain unknown.
 
 The experiment reads the manifest, training file, selection file and protocol only, plus the frozen encoder's files. It does not read calibration data, publisher-test payloads, Bitext test data or paused private/reserved reviews. The raw public source still contains all publisher splits, as documented in the [preparation boundary](26-action-plan-and-public-benchmark.md); this study does not open that source. No models, embeddings or per-request predictions are exported by the study, and the browser is unchanged.
