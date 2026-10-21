@@ -83,6 +83,21 @@
           </div>
         </div>
 
+        <section class="model-controls" aria-label="Prediction model">
+          <div>
+            <label for="model-mode">Prediction model</label>
+            <select id="model-mode" aria-describedby="model-description">
+              <option value="word">Word baseline</option>
+              <option id="semantic-option" value="semantic" disabled>Semantic · experimental (not loaded)</option>
+            </select>
+          </div>
+          <p id="model-description">Active: Word baseline. Every suggestion needs human review.</p>
+        </section>
+        <p id="semantic-notice" class="semantic-notice" hidden>
+          Experimental semantic mode can miss multiple or unclear intents. Confirm every category before routing.
+          Long requests beyond the encoder limit are withheld.
+        </p>
+
         <div id="connection-notice" class="connection-notice" hidden>
           <span id="connection-message"></span
           ><button id="retry" type="button">

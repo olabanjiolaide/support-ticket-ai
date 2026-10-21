@@ -30,7 +30,7 @@ Explain that model bundles are checksum-checked and version-checked, input valid
 
 ## Explain the ML findings honestly
 
-“The source validation score was very high, but the source is synthetic and contains related templates. I therefore investigated overlap, manually written failures, coverage, unsupported requests, and indirect wording. Frozen sentence embeddings improved indirect wording on an authored development set. However, a semantic model still accepted ambiguous requests and made routing errors, so I kept it offline.”
+“The source validation score was very high, but the source is synthetic and contains related templates. I therefore investigated overlap, manually written failures, coverage, unsupported requests, and indirect wording. Frozen sentence embeddings improved indirect wording on an authored development set. However, a semantic model still accepted ambiguous requests and made routing errors, so I kept it experimental, with human review required. It can now be enabled explicitly in the local browser demo while the word baseline remains the default.”
 
 Use [the semantic experiment](15-semantic-embedding-experiment.md) and [the reconciled pilot report](17-reviewed-pilot-evaluation.md) for exact counts and limitations. Identify authored, provisional, guided, and reconciled labels accurately. Do not describe these development collections as an independent benchmark, real-customer accuracy, or a production deployment. The final source test remains untouched.
 

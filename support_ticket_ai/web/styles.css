@@ -1197,3 +1197,12 @@ pre {
     font-size: 10px;
   }
 }
+
+/* Explicit optional model selection. */
+.model-controls { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; margin: 0 0 20px; padding: 18px 22px; border: 1px solid var(--border); border-radius: 12px; background: var(--surface); }
+.model-controls label { display: block; margin-bottom: 6px; font-weight: 600; }
+.model-controls select { font: inherit; color: var(--ink); background: var(--surface); border: 1px solid #bcc5d0; padding: 9px 12px; border-radius: 8px; max-width: 100%; }
+.model-controls select:focus-visible { outline: 3px solid #e2a58c; outline-offset: 3px; }
+.model-controls p { color: var(--muted); margin: 0; flex: 1 1 230px; }
+.semantic-notice { padding: 12px 16px; border: 1px solid #e5cfab; border-radius: 10px; background: #fff8ed; color: #715020; margin: 0 0 20px; }
+@media (max-width: 600px) { .model-controls { gap: 12px; padding: 16px; } .model-controls > div { width: 100%; } .model-controls select { width: 100%; } }

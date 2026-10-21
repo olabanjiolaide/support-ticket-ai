@@ -1,6 +1,6 @@
 # Install and verify the application package
 
-Support Ticket AI now builds as version **0.3.0** of an installable Python package. The HTTP prediction schema remains API 0.2; packaging does not change model decisions or API fields.
+The installable Python package is now version **0.4.0**. The packaging milestone initially shipped as 0.3.0; optional semantic browser mode adds API 0.3 while preserving default word requests. See [semantic browser setup](21-semantic-browser-mode.md).
 
 The wheel includes Python modules, HTML/CSS/JavaScript, authored sample collections, aggregate experiment reports, and the dataset-license copy accompanying those reports. It does not include trained models, downloaded source data, private annotation files, or semantic encoder weights. Source-tree datasets and reports map into package resource directories during the build, so there are no duplicate source copies to maintain.
 

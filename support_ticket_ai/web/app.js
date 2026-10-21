@@ -3,6 +3,7 @@
 (() => {
   const byId = (id) => document.getElementById(id);
   const form = byId("ticket-form");
+  const modelMode = byId("model-mode");
   const input = byId("ticket");
   const submit = byId("submit");
   const clear = byId("clear");
@@ -48,6 +49,7 @@
     input.setAttribute("aria-invalid", String(overLimit));
     submit.disabled = busy || !ready || !input.value.trim() || overLimit;
     clear.disabled = busy || !input.value;
+    modelMode.disabled = busy;
     input.disabled = busy;
     examples.forEach((button) => {
       button.disabled = busy;
@@ -85,26 +87,50 @@
     updateControls();
   }
 
+  function showModel() {
+    const semantic = modelMode.value === "semantic";
+    byId("model-description").textContent = semantic
+      ? "Active: Semantic encoder + scope gate · experimental. Every suggestion needs human review."
+      : "Active: Word baseline. Every suggestion needs human review.";
+    byId("semantic-notice").hidden = !semantic;
+  }
+
   async function checkReadiness() {
     if (checking) return;
+    const mode = modelMode.value;
     checking = true;
     byId("retry").disabled = true;
     try {
-      const response = await request("/readyz");
-      setService(
+      const catalog = await request("/models");
+      if (catalog.ok) {
+        const data = await catalog.json();
+        const semantic = data.modes?.find((item) => item.mode === "semantic");
+        byId("semantic-option").disabled = !semantic?.available;
+        byId("semantic-option").textContent = semantic?.available
+          ? "Semantic · experimental" : "Semantic · experimental (not loaded)";
+      }
+      const response = await request(`/readyz?mode=${mode}`);
+      if (mode === modelMode.value) setService(
         response.ok,
-        "The model is not ready. Load a trained model on your local server, then check again.",
+        "The selected model is not ready. Check the local server configuration, then retry.",
       );
     } catch {
-      setService(
-        false,
-        "Cannot connect to the local server. Keep it running, then check again.",
-      );
+      if (mode === modelMode.value) setService(false, "Cannot connect to the local server. Keep it running, then check again.");
     } finally {
       checking = false;
       byId("retry").disabled = false;
+      if (mode !== modelMode.value) checkReadiness();
     }
   }
+
+  modelMode.addEventListener("change", () => {
+    ready = false;
+    edit();
+    showModel();
+    byId("service-status").classList.add("checking");
+    byId("service-label").textContent = "Checking model";
+    checkReadiness();
+  });
 
   input.addEventListener("input", edit);
   clear.addEventListener("click", () => {
@@ -135,11 +161,12 @@
     showState("loading");
     updateControls();
     let completed = false;
+    const requestedMode = modelMode.value;
     try {
       const response = await request("/predict", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text: input.value }),
+        body: JSON.stringify({ text: input.value, mode: requestedMode }),
       });
       if (!response.ok) {
         if (response.status === 503) {
@@ -160,6 +187,7 @@
         );
       }
       const result = await response.json();
+      if ((result.model_mode ?? "word") !== requestedMode) throw new Error("The response did not match the selected model. Please retry.");
       const decision = result.decision ?? "suggestion";
       const abstained = decision === "abstain";
       if (
@@ -190,7 +218,9 @@
       byId("result-subtitle").textContent = abstained
         ? "The experimental score rule withheld a category."
         : "A starting point for the right handoff.";
-      byId("review-description").textContent = abstained
+      byId("review-description").textContent = requestedMode === "semantic"
+        ? result.review_reason
+        : abstained
         ? "Read the request and choose a category manually."
         : "Confirm the category before routing this request.";
       byId("score").textContent = result.uncalibrated_probability.toFixed(3);
@@ -214,6 +244,7 @@
     }
   });
 
+  showModel();
   updateControls();
   checkReadiness();
   setInterval(checkReadiness, 30000);

@@ -111,6 +111,8 @@ def browser_checks(model: Path, artifacts: Path, executable: str | None):
                         page.goto(base)
                         expect(page.locator('#service-label')).to_have_text('Model ready')
                         expect(page.locator('#submit')).to_be_disabled()
+                        expect(page.locator('#model-mode')).to_have_value('word')
+                        expect(page.locator('#semantic-option')).to_be_disabled()
                         page.locator('#ticket').fill('password reset account login')
                         page.get_by_role('button', name='Suggest category').click()
                         expect(page.locator('#category')).to_have_text('Account')
@@ -132,11 +134,11 @@ def browser_checks(model: Path, artifacts: Path, executable: str | None):
                     page.locator('#ticket').fill('password reset account login again')
                     page.get_by_role('button', name='Suggest category').click()
                     expect(page.locator('#category')).to_have_text('Account')
-                    page.route('**/readyz', lambda route: route.fulfill(status=503, content_type='application/json', body='{}'))
+                    page.route('**/readyz*', lambda route: route.fulfill(status=503, content_type='application/json', body='{}'))
                     page.reload()
                     expect(page.locator('#service-label')).to_have_text('Model unavailable')
                     expect(page.locator('#submit')).to_be_disabled()
-                    page.unroute('**/readyz')
+                    page.unroute('**/readyz*')
                     page.locator('#retry').click()
                     expect(page.locator('#service-label')).to_have_text('Model ready')
                     assert not errors, errors
@@ -169,7 +171,7 @@ def main():
     validated = subprocess.run([str(scripts_dir / ('support-ticket-ai' + suffix)), str(data_path('sample_tickets.csv'))],
                                capture_output=True, text=True, check=True)
     assert 'Validated 12 tickets' in validated.stdout
-    for command in ('support-ticket-demo', 'support-ticket-serve', 'support-ticket-predict'):
+    for command in ('support-ticket-demo', 'support-ticket-serve', 'support-ticket-predict', 'support-ticket-semantic'):
         subprocess.run([str(scripts_dir / (command + suffix)), '--help'], capture_output=True, text=True, check=True)
     with tempfile.TemporaryDirectory(prefix='ticket-installed-') as directory:
         model = fixture(Path(directory))

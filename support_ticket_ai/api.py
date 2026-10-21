@@ -20,6 +20,7 @@ logger = logging.getLogger(__name__)
 class PredictionRequest(BaseModel):
     model_config = ConfigDict(extra="forbid")
     text: Annotated[str, Field(strict=True, min_length=1, max_length=MAX_TEXT_LENGTH)]
+    mode: Literal["word", "semantic"] = "word"
 
     @field_validator("text")
     @classmethod
@@ -38,14 +39,20 @@ class PredictionResponse(BaseModel):
     requires_human_review: Literal[True]
     review_reason: str
     model_sha256: str
+    model_mode: Literal["word", "semantic"] = "word"
+    model_name: str = "Word baseline"
+    scope_score: Annotated[float, Field(ge=0, le=1)] | None = None
+    scope_threshold: Annotated[float, Field(gt=0, le=1)] | None = None
+    input_truncated: bool = False
 
 
-def create_app(model_dir: Path | None = None) -> FastAPI:
+def create_app(model_dir: Path | None = None, semantic_model_dir: Path | None = None) -> FastAPI:
     """Load one trusted bundle per worker at startup, not per request."""
 
     @asynccontextmanager
     async def lifespan(application: FastAPI):
         application.state.predictor = None
+        application.state.semantic_predictor = None
         configured = model_dir if model_dir is not None else os.environ.get("SUPPORT_TICKET_MODEL_DIR")
         if configured:
             try:
@@ -53,12 +60,21 @@ def create_app(model_dir: Path | None = None) -> FastAPI:
             except Exception as error:
                 # Keep paths and bundle details out of HTTP responses and logs.
                 logger.error("Model initialization failed (%s)", type(error).__name__)
+        semantic_configured = (semantic_model_dir if semantic_model_dir is not None else
+                               os.environ.get("SUPPORT_TICKET_SEMANTIC_MODEL_DIR"))
+        if semantic_configured:
+            try:
+                from .semantic_bundle import SemanticPredictor
+                application.state.semantic_predictor = SemanticPredictor(Path(semantic_configured))
+            except Exception as error:
+                logger.error("Semantic initialization failed (%s)", type(error).__name__)
         yield
         application.state.predictor = None
+        application.state.semantic_predictor = None
 
     application = FastAPI(
         title="Support Ticket AI",
-        version="0.2.0",
+        version="0.3.0",
         description="Category suggestions requiring human review; scores are not calibrated.",
         lifespan=lifespan,
     )
@@ -76,8 +92,9 @@ def create_app(model_dir: Path | None = None) -> FastAPI:
                    for item in error.errors()]
         return JSONResponse(status_code=422, content={"detail": details})
 
-    def predictor_or_unavailable() -> TicketPredictor:
-        predictor = getattr(application.state, "predictor", None)
+    def predictor_or_unavailable(mode="word"):
+        attribute = "predictor" if mode == "word" else "semantic_predictor"
+        predictor = getattr(application.state, attribute, None)
         if predictor is None:
             raise HTTPException(status_code=503, detail="Model is not ready.")
         return predictor
@@ -86,16 +103,25 @@ def create_app(model_dir: Path | None = None) -> FastAPI:
     def health():
         return {"status": "alive"}
 
+    @application.get("/models")
+    def models():
+        return {"default": "word", "modes": [
+            {"mode": "word", "name": "Word baseline", "available": getattr(application.state, "predictor", None) is not None},
+            {"mode": "semantic", "name": "Semantic encoder + scope gate (experimental)",
+             "available": getattr(application.state, "semantic_predictor", None) is not None},
+        ]}
+
     @application.get("/readyz")
-    def readiness():
-        predictor = predictor_or_unavailable()
-        return {"status": "ready", "model_sha256": predictor.metadata["model_sha256"]}
+    def readiness(mode: Literal["word", "semantic"] = "word"):
+        predictor = predictor_or_unavailable(mode)
+        return {"status": "ready", "model_sha256": predictor.metadata["model_sha256"], "model_mode": mode}
 
     @application.post("/predict", response_model=PredictionResponse)
     def predict(body: PredictionRequest):
-        predictor = predictor_or_unavailable()
+        predictor = predictor_or_unavailable(body.mode)
         try:
-            return predictor.predict(body.text)
+            result = predictor.predict(body.text)
+            return {**result, "model_mode": body.mode, "model_name": "Word baseline" if body.mode == "word" else "Semantic encoder + scope gate (experimental)"}
         except Exception as error:
             logger.error("Prediction failed (%s)", type(error).__name__)
             raise HTTPException(status_code=500, detail="Prediction could not be completed.") from error

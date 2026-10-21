@@ -2,6 +2,8 @@
 
 A Python portfolio project for classifying support requests and routing uncertain predictions to human review.
 
+**Optional semantic browser mode is now available:** [setup and launch guide](docs/21-semantic-browser-mode.md). The word model remains the default; semantic mode requires a separately built bundle and optional CPU dependencies. Every prediction requires human review.
+
 **Manual labeling is paused.** The current engineering milestone is an [installable package and browser verification](docs/19-installable-package.md), with a [short recruiter walkthrough](docs/20-recruiter-walkthrough.md). The pending review collection requires no action to run or present the application.
 
 **Status: baseline, prediction CLI, local FastAPI service, similarity audit, and offline calibration experiment implemented.** Calibration is not activated in the live prediction interfaces. The test set has not been evaluated. All predictions require human review. Optional experimental abstention can withhold low-scoring category suggestions.
@@ -20,11 +22,11 @@ The [abstention experiment](docs/11-experimental-abstention.md) adds an opt-in â
 
 The [broader robustness diagnostics](docs/12-robustness-diagnostics.md) add 98 provisional stress probes, per-category and writing-style reports, and a label-review protocol. At the frozen 0.70 cutoff, only 14/66 valid probes receive a suggestion and 4/24 unrelated tasks still pass. These diagnostic findings motivate further model work; they are not independent accuracy estimates.
 
-The [character-feature experiment](docs/13-character-feature-experiment.md) compares a fixed spelling-tolerant candidate with the word baseline. Correct categories on provisional supported probes rose from 34/66 to 45/66 before abstention, but coverage and unrelated-task failures remain unresolved. This is an offline experiment; the live model is unchanged.
+The [character-feature experiment](docs/13-character-feature-experiment.md) compares a fixed spelling-tolerant candidate with the word baseline. Correct categories on provisional supported probes rose from 34/66 to 45/66 before abstention, but coverage and unrelated-task failures remain unresolved. The character-feature candidate remains offline. The optional browser mode uses frozen sentence embeddings; the default word model is unchanged.
 
 The [scope-detector experiment](docs/14-scope-detector-experiment.md) adds a separate binary support-scope gate offline. Combined with the word-category cutoff, unrelated false suggestions fall from 4/24 to 1/24 while supported coverage remains 14/66 on existing provisional probes. Negative training examples reflect known failure families, so these are development findings, not independent audit results.
 
-The [frozen semantic-embedding experiment](docs/15-semantic-embedding-experiment.md) improves indirect wording on provisional probes: 18/22 correct versus 10/22 for word features. With a separately selected cutoff and semantic scope gate, it accepts 52/66 valid probes (49 correct) and rejects 24/24 unrelated probes, but accepts 5/8 ambiguous requests. It remains offline, and the guide discloses a training duplicate discovered in the older cutoff-selection collection.
+The [frozen semantic-embedding experiment](docs/15-semantic-embedding-experiment.md) improves indirect wording on provisional probes: 18/22 correct versus 10/22 for word features. With a separately selected cutoff and semantic scope gate, it accepts 52/66 valid probes (49 correct) and rejects 24/24 unrelated probes, but accepts 5/8 ambiguous requests. It is available through the explicit experimental browser mode, and the guide discloses a training duplicate discovered in the older cutoff-selection collection.
 
 The [human label-review pilot](docs/16-human-label-review.md) collects interpretations of 40 new, unscored requests, five at a time, without model suggestions. It supports one routing intent, multiple routing intents, insufficient context, and unsupported tasks. Human review and adjudication are still pending.
 

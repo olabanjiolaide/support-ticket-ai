@@ -70,3 +70,7 @@ A process may be alive while its model is unavailable. Separate checks let an op
 **Interview practice:** “I wrapped the classifier in a validated API, loaded the model once at startup, and separated liveness from readiness so missing model artifacts produce explicit service-unavailable responses.”
 
 Next: package a reproducible local demo and document operating the service before considering deployment.
+
+## Optional semantic browser mode
+
+API 0.3 adds explicit `mode="semantic"`, model identity, scope diagnostics, and truncation reporting. Word remains the default. See [semantic mode setup and API additions](21-semantic-browser-mode.md).

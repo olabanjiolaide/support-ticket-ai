@@ -87,3 +87,7 @@ From a phone, the **Run offline semantic experiment** workflow in GitHub Actions
 An embedding changes how text is represented; a classifier still learns the application labels. Inspect whether meaningfully different wording improves, whether scope rejects tasks about support rather than actual support requests, and how much coverage costs in errors and CPU time.
 
 Do not tune against the exposed audit or immediately promote a winner. The next evidence needed is a separately reviewed, family-disjoint audit whose texts are not authored to match these known examples. Freeze candidate and threshold selection first; keep that audit out of fitting and selection. Preserve the final source test for the eventual frozen model, while recognizing that in-source test performance alone cannot establish scope handling.
+
+## Optional browser integration
+
+The experiment above remains a development comparison. Its frozen encoder/head recipe is now available as a separate, opt-in local browser mode with human review required. See [semantic browser setup](21-semantic-browser-mode.md). No model is promoted automatically and word mode remains the default.
