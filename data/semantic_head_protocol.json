@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "experiment": "semantic-head-study-v1",
+  "taxonomy_id": "blendbanking77-v1",
+  "development_input_sha256": {
+    "train.jsonl": "c8645c052b74346bfd67b2149c5429ac7944048e2855bce13ae490a36b0e36a8",
+    "selection.jsonl": "e8df4b426161ad8085932ef585a8552460fac7da75b2d8986c10675ebed0fdb5"
+  },
+  "encoder_id": "sentence-transformers/all-MiniLM-L6-v2",
+  "encoder_revision": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41",
+  "threshold": 0.5,
+  "candidates": [
+    {
+      "C": 0.1,
+      "class_weight": null
+    },
+    {
+      "C": 0.1,
+      "class_weight": "balanced"
+    },
+    {
+      "C": 1.0,
+      "class_weight": null
+    },
+    {
+      "C": 1.0,
+      "class_weight": "balanced"
+    },
+    {
+      "C": 10.0,
+      "class_weight": null
+    },
+    {
+      "C": 10.0,
+      "class_weight": "balanced"
+    }
+  ],
+  "max_iter": 1000,
+  "random_state": 42,
+  "selection_rule": "exact_set_accuracy, micro_f1, micro_precision, then earlier candidate",
+  "reference_report_sha256": "27deafa77e2afdef2ba0ab9dc34bef57f5e2352e4552da500f712c35364f5e59",
+  "boundaries": [
+    "This follow-up was designed after observing the first development comparison; it is not a preregistered unseen-data study.",
+    "Only train and selection are read. Class balancing uses training labels only.",
+    "One frozen encoding per partition is shared across six candidate fits. No encoder updates or threshold search.",
+    "Calibration, publisher test, Bitext test, and private reviews remain unused.",
+    "No model export or browser promotion. Development selection provides no independent accuracy estimate."
+  ]
+}
