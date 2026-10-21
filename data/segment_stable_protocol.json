@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "experiment": "segment-pooling-stable-v1",
+  "taxonomy_id": "blendbanking77-v1",
+  "development_input_sha256": {
+    "train.jsonl": "c8645c052b74346bfd67b2149c5429ac7944048e2855bce13ae490a36b0e36a8",
+    "selection.jsonl": "e8df4b426161ad8085932ef585a8552460fac7da75b2d8986c10675ebed0fdb5"
+  },
+  "encoder_id": "sentence-transformers/all-MiniLM-L6-v2",
+  "encoder_revision": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41",
+  "representations": [
+    "whole",
+    "whole_duplicate",
+    "whole_segment_mean",
+    "whole_segment_max"
+  ],
+  "C": 10.0,
+  "class_weight": null,
+  "threshold": 0.5,
+  "max_iter": 5000,
+  "random_state": 42,
+  "segmenter": {
+    "version": 1,
+    "boundary_regex": "(?:\\b(?:and|also|plus|but)\\b|[,;.!?\\n]+)",
+    "ignore_case": true,
+    "minimum_words": 2,
+    "maximum_segments": 4,
+    "short_fragment_policy": "merge with previous; prefix merges with next",
+    "overflow_policy": "merge tail; preserve all characters"
+  },
+  "pooling": "Unit-normalize each mean/max pooled local vector; concatenate unit whole and local vectors divided by sqrt(2). Whole duplicate uses the same construction. Zero pooled norm falls back to whole.",
+  "selection_rule": "Only mean/max candidates with strictly higher exact-set accuracy and no lower three-intent exact accuracy than whole are eligible; rank by exact_set_accuracy, micro_f1, micro_precision, earlier representation. Otherwise retain whole.",
+  "reference_report_sha256": "c205d550318113460b03b8581b4d031247e5fb9839580a1f211185cdf6f9d3ad",
+  "boundaries": [
+    "Designed after the first pooling comparison and numerical audit; fixed before these matched strict-tolerance fits.",
+    "Same four representations and predictive selection rule; independent duplicate fits must agree on all selection label sets with score difference at most 0.001.",
+    "All heads use tol=1e-8, max_iter=5000, C=10, no class weighting, threshold=0.5 and seed=42.",
+    "No further grid, threshold, encoder, segmentation or pooling changes based on these outcomes.",
+    "Calibration, publisher-test payloads, Bitext test, private reviews and browser changes remain excluded."
+  ],
+  "tolerance": 1e-08,
+  "numerical_control": {
+    "maximum_score_difference": 0.001,
+    "maximum_set_disagreements": 0,
+    "failure_policy": "Retain whole as reference and mark comparison unusable; no representation adoption"
+  }
+}
