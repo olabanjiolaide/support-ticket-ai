@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "experiment": "segment-optimizer-audit-v1",
+  "taxonomy_id": "blendbanking77-v1",
+  "development_input_sha256": {
+    "train.jsonl": "c8645c052b74346bfd67b2149c5429ac7944048e2855bce13ae490a36b0e36a8",
+    "selection.jsonl": "e8df4b426161ad8085932ef585a8552460fac7da75b2d8986c10675ebed0fdb5"
+  },
+  "encoder_id": "sentence-transformers/all-MiniLM-L6-v2",
+  "encoder_revision": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41",
+  "C": 10.0,
+  "class_weight": null,
+  "threshold": 0.5,
+  "random_state": 42,
+  "max_iter": 5000,
+  "tolerances": [
+    0.0001,
+    1e-08
+  ],
+  "representations": [
+    "whole",
+    "whole_duplicate"
+  ],
+  "purpose": "Numerical audit only; no representation or threshold selection. Compare independent fits with exact coefficient transformation.",
+  "reference_report_sha256": "f8240e7b3a842b00a705edb87294af5664e9cdcbd8e9c3cf1e8c15a401d021b8",
+  "observed_reason": {
+    "max_absolute_score_difference": 0.6610800110402424,
+    "rows_with_different_predicted_sets": 85
+  },
+  "boundaries": [
+    "Designed after observing the failed duplicate control, fixed before numerical audit fits.",
+    "Two tolerances crossed with whole/duplicate features; all fits use training labels only.",
+    "Max-iteration cap is 5000 for both tolerances. Record actual iterations and score/set discrepancies.",
+    "No pooling candidates are refitted or declared validated by this numerical-only audit.",
+    "Calibration, test, private reviews, encoder updates and live app changes remain excluded."
+  ]
+}
