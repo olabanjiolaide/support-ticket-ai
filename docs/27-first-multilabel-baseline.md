@@ -48,6 +48,8 @@ From a phone, the **Prepare public multilabel benchmark** GitHub Actions workflo
 
 ## Next controlled experiment
 
+The subsequent [frozen semantic comparison](28-semantic-multilabel-comparison.md) now records that fixed-recipe experiment and its remaining weaknesses. The protocol below describes the intended boundary for that step.
+
 Compare frozen sentence embeddings with the same independent binary-head setup and development partitions. Report exact-set accuracy and performance by intent count alongside precision/recall. Keep the fixed-threshold result visible before trying threshold selection; any later selected threshold is a development decision, not evidence of calibrated confidence. Do not use the reserved calibration data for model selection or open the final test to improve the recipe.
 
 Only a measured improvement justifies advancing to semantic adaptation or browser integration. Even a better label-set classifier will not establish faithful action descriptions, correct condition/negation handling or exact source evidence. Those require a separate evaluation protocol. No research novelty is established by this baseline.
