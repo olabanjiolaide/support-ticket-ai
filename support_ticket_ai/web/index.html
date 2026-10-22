@@ -13,6 +13,7 @@
     <script src="/assets/app.js" defer></script>
   </head>
   <body>
+    <p id="workspace-announcement" class="sr-only" role="status" aria-live="polite"></p>
     <a class="skip-link" href="#ticket">Skip to ticket form</a>
     <aside class="sidebar" aria-label="Workspace navigation">
       <a class="brand" href="/" aria-label="Support Ticket AI home">
@@ -61,16 +62,15 @@
         <span
           ><span class="breadcrumb">Workspace</span
           ><span class="slash">/</span>Ticket classification</span
-        ><span class="local-badge"><span></span>Local demo</span>
+        ><div class="topbar-actions"><span class="local-badge"><span></span>Local demo</span><button id="theme-toggle" class="icon-button" type="button" aria-label="Switch to dark theme" aria-pressed="false">Dark theme</button></div>
       </header>
       <main id="workspace">
         <div class="page-heading">
           <div>
-            <p class="eyebrow">FROM REQUEST TO NEXT STEP</p>
-            <h1>Make sense of the message.</h1>
+            <p class="eyebrow">YOUR SUPPORT, WITH MORE CLARITY</p>
+            <h1>A better next step<br class="heading-break" /> starts here.</h1>
             <p class="intro">
-              Turn a support request into a category suggestion, ready for your
-              review.
+              Write a request. Explore a suggestion. Make the final call.
             </p>
           </div>
           <div
@@ -83,6 +83,7 @@
           </div>
         </div>
 
+        <div class="workflow-progress" aria-label="Workspace progress"><span id="compose-step" class="workflow-step current"><span>01</span> Write a request</span><span class="workflow-line" aria-hidden="true"></span><span id="review-step" class="workflow-step"><span>02</span> Review the suggestion</span><a id="jump-result" href="#result-panel" hidden>View result ↓</a></div>
         <section class="model-controls" aria-label="Prediction model">
           <div>
             <label for="model-mode">Prediction model</label>
@@ -118,26 +119,27 @@
               <div class="step-label">
                 <span class="step-number">01</span><span>THE REQUEST</span>
               </div>
-              <span class="quiet-tag">One ticket at a time</span>
+              <span class="quiet-tag">MESSAGE COMPOSER</span>
             </div>
-            <h2 id="composer-title">What does the customer need?</h2>
+            <h2 id="composer-title">Start with the message.</h2>
             <p class="section-description">
-              Paste a message or start with an example below.
+              Tell us what happened, in the customer’s own words.
             </p>
             <form id="ticket-form">
               <label for="ticket">Customer message</label>
               <textarea
                 id="ticket"
                 name="text"
-                rows="7"
+                rows="6"
                 placeholder="e.g. I can’t access my account after resetting my password."
                 aria-describedby="input-hint character-count form-error"
                 required
               ></textarea>
               <div class="field-meta">
-                <span id="input-hint">Use a short, clear support request.</span
+                <span id="input-hint">Plain language works best.</span
                 ><span id="character-count">0 / 2,000</span>
               </div>
+              <div class="input-progress" aria-hidden="true"><span id="input-progress-bar"></span></div>
               <div class="examples">
                 <span class="example-label">TRY AN EXAMPLE</span>
                 <div class="example-buttons">
@@ -179,7 +181,7 @@
                   ></span></button
                 ><button id="clear" class="text-button" type="button" disabled>
                   Clear
-                </button>
+                </button><span class="keyboard-hint"><kbd>Ctrl</kbd> + <kbd>Enter</kbd></span>
               </div>
             </form>
             <div class="composer-footer">
@@ -194,8 +196,8 @@
           </section>
 
           <section
-            class="card result-card"
-            aria-labelledby="result-title"
+            class="card result-card" data-state="idle"
+            aria-label="Category suggestion"
             aria-busy="false"
             id="result-panel"
           >
@@ -203,7 +205,7 @@
               <div class="step-label">
                 <span class="step-number">02</span><span>THE SUGGESTION</span>
               </div>
-              <span class="quiet-tag">AI assisted</span>
+              <span class="quiet-tag" id="result-status">AWAITING REQUEST</span>
             </div>
             <div id="result-idle" class="result-empty">
               <div class="empty-illustration" aria-hidden="true">
@@ -214,10 +216,9 @@
                   <path d="m70 64 4 4 8-9" />
                 </svg>
               </div>
-              <h2 id="result-title" tabindex="-1">A clearer next step.</h2>
+              <h2 id="result-title" tabindex="-1">Ready when you are.</h2>
               <p>
-                Your category suggestion will appear here after you submit a
-                message.
+                Your message goes in. A suggested category comes back.<br />You decide what happens next.
               </p>
               <div class="empty-rule"></div>
               <span class="review-reminder"
@@ -227,9 +228,10 @@
             <div id="result-loading" class="result-empty" role="status" hidden>
               <span class="large-spinner" aria-hidden="true"></span>
               <h2>Reading the request…</h2>
-              <p>Finding the most likely category.</p>
+              <p id="loading-description">Finding the most likely category.</p><button id="cancel-request" class="secondary-button" type="button">Cancel request</button>
             </div>
             <div id="result-success" hidden>
+              <div class="result-meta"><span id="result-model-label">Word baseline</span><button id="copy-result" class="text-button" type="button">Copy result</button></div>
               <p class="result-kicker" id="result-kicker">SUGGESTED CATEGORY</p>
               <h2 id="category" class="category" tabindex="-1"></h2>
               <p class="result-subtitle" id="result-subtitle">
@@ -257,6 +259,7 @@
                   is correct.
                 </p>
               </div>
+              <p id="copy-feedback" class="copy-feedback" role="status"></p>
               <details class="response-details">
                 <summary>
                   View API response

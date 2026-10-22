@@ -9,6 +9,7 @@ on:
       - data/**
       - reports/**
       - scripts/check_installed.py
+      - scripts/check_workspace_ui.py
       - .github/workflows/package.yml
   pull_request:
     paths:
@@ -18,6 +19,7 @@ on:
       - data/**
       - reports/**
       - scripts/check_installed.py
+      - scripts/check_workspace_ui.py
       - .github/workflows/package.yml
 permissions:
   contents: read
@@ -49,6 +51,11 @@ jobs:
         run: |
           cd "$RUNNER_TEMP"
           "$RUNNER_TEMP/ticket-wheel-env/bin/python" "$GITHUB_WORKSPACE/scripts/check_installed.py" --browser --artifacts "$GITHUB_WORKSPACE/artifacts/package-checks"
+      - name: Check responsive workspace interactions
+        shell: bash
+        run: |
+          cd "$RUNNER_TEMP"
+          "$RUNNER_TEMP/ticket-wheel-env/bin/python" "$GITHUB_WORKSPACE/scripts/check_workspace_ui.py" --artifacts "$GITHUB_WORKSPACE/artifacts/workspace-ui-checks"
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -58,3 +65,4 @@ jobs:
           path: |
             artifacts/dist/
             artifacts/package-checks/
+            artifacts/workspace-ui-checks/

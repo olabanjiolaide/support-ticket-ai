@@ -19,9 +19,11 @@
   let busy = false;
   let checking = false;
   let supportsRequestCheck = false;
+  let activePrediction = null;
+  let cancelled = false;
+  let lastResult = null;
 
-  async function request(path, options = {}) {
-    const controller = new AbortController();
+  async function request(path, options = {}, controller = new AbortController()) {
     const timer = setTimeout(() => controller.abort(), 15000);
     try {
       return await fetch(path, {
@@ -39,6 +41,15 @@
     byId("result-loading").hidden = state !== "loading";
     byId("result-success").hidden = state !== "success";
     byId("result-panel").setAttribute("aria-busy", String(state === "loading"));
+    byId("result-panel").dataset.state = state;
+    byId("result-status").textContent = state === "success" ? "READY FOR REVIEW" : state === "loading" ? "READING MESSAGE" : "AWAITING REQUEST";
+    byId("compose-step").classList.toggle("current", state !== "success");
+    byId("review-step").classList.toggle("current", state === "success");
+    byId("jump-result").hidden = state !== "success";
+    for (const id of ["compose-step", "review-step"]) {
+      if (byId(id).classList.contains("current")) byId(id).setAttribute("aria-current", "step");
+      else byId(id).removeAttribute("aria-current");
+    }
   }
 
   function updateControls() {
@@ -47,6 +58,9 @@
     byId("character-count").textContent =
       `${count.toLocaleString("en-US")} / 2,000`;
     byId("character-count").classList.toggle("over-limit", overLimit);
+    byId("input-progress-bar").style.width = `${Math.min(count / maxLength, 1) * 100}%`;
+    byId("input-progress-bar").parentElement.classList.toggle("over-limit", overLimit);
+    byId("copy-result").disabled = busy || !lastResult;
     input.setCustomValidity(overLimit ? "Use 2,000 characters or fewer." : "");
     input.setAttribute("aria-invalid", String(overLimit));
     submit.disabled = busy || !ready || !input.value.trim() || overLimit;
@@ -70,6 +84,9 @@
   }
 
   function edit() {
+    lastResult = null;
+    byId("copy-feedback").textContent = "";
+    byId("input-hint").textContent = "Plain language works best.";
     clearError();
     showState("idle");
     byId("json-response").textContent = "";
@@ -141,15 +158,67 @@
 
   requestCheck.addEventListener("change", edit);
 
+  function resizeInput() {
+    input.style.height = "auto";
+    input.style.height = `${Math.min(Math.max(input.scrollHeight, 170), 360)}px`;
+  }
+
+  input.addEventListener("input", resizeInput);
+  input.addEventListener("keydown", (event) => {
+    if ((event.ctrlKey || event.metaKey) && event.key === "Enter" && !event.isComposing) {
+      event.preventDefault();
+      if (!submit.disabled) form.requestSubmit();
+    }
+  });
+  byId("cancel-request").addEventListener("click", () => {
+    cancelled = true;
+    activePrediction?.abort();
+  });
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && busy) {
+      cancelled = true;
+      activePrediction?.abort();
+    }
+  });
+  byId("copy-result").addEventListener("click", async () => {
+    if (!lastResult) return;
+    const snapshot = lastResult;
+    const text = `${byId("category").textContent}\nHuman review required\n${snapshot.review_reason ?? "Confirm the category before routing this request."}\nUncalibrated model score: ${snapshot.uncalibrated_probability.toFixed(3)}`;
+    try {
+      await navigator.clipboard.writeText(text);
+      if (lastResult === snapshot) byId("copy-feedback").textContent = "Result copied. Customer message not included.";
+    } catch {
+      if (lastResult === snapshot) byId("copy-feedback").textContent = "Copy unavailable. Select text in the API response below to copy manually.";
+    }
+  });
+
+  const themeButton = byId("theme-toggle");
+  function setTheme(theme) {
+    document.documentElement.dataset.theme = theme;
+    themeButton.textContent = theme === "dark" ? "Light theme" : "Dark theme";
+    themeButton.setAttribute("aria-label", `Switch to ${theme === "dark" ? "light" : "dark"} theme`);
+    themeButton.setAttribute("aria-pressed", String(theme === "dark"));
+  }
+  let savedTheme;
+  try { savedTheme = localStorage.getItem("support-ticket-theme"); } catch { /* Storage can be unavailable. */ }
+  setTheme(["light", "dark"].includes(savedTheme) ? savedTheme : matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+  themeButton.addEventListener("click", () => {
+    const theme = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+    setTheme(theme);
+    try { localStorage.setItem("support-ticket-theme", theme); } catch { /* Theme still works in this tab. */ }
+  });
+
   input.addEventListener("input", edit);
   clear.addEventListener("click", () => {
     input.value = "";
+    resizeInput();
     edit();
     input.focus();
   });
   examples.forEach((button) =>
     button.addEventListener("click", () => {
       input.value = messages[button.dataset.example];
+      resizeInput();
       edit();
       input.focus();
     }),
@@ -166,10 +235,22 @@
     )
       return;
     busy = true;
+    lastResult = null;
+    byId("json-response").textContent = "";
+    byId("copy-feedback").textContent = "";
+    document.querySelector(".response-details").open = false;
     clearError();
     showState("loading");
     updateControls();
     let completed = false;
+    cancelled = false;
+    activePrediction = new AbortController();
+    const started = performance.now();
+    byId("loading-description").textContent = "Finding the most likely category.";
+    const loadingTimer = setInterval(() => {
+      const seconds = Math.floor((performance.now() - started) / 1000);
+      byId("loading-description").textContent = `Still reading… ${seconds}s elapsed. You can cancel below.`;
+    }, 1000);
     const requestedMode = modelMode.value;
     const requestedCheck = requestedMode === "semantic" && requestCheck.checked;
     try {
@@ -178,7 +259,7 @@
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ text: input.value, mode: requestedMode,
           ...(requestedCheck ? { check_multiple_requests: true } : {}) }),
-      });
+      }, activePrediction);
       if (!response.ok) {
         if (response.status === 503) {
           setService(
@@ -239,10 +320,18 @@
         : "Confirm the category before routing this request.";
       byId("score").textContent = result.uncalibrated_probability.toFixed(3);
       byId("json-response").textContent = JSON.stringify(result, null, 2);
+      byId("result-model-label").textContent = requestedMode === "semantic" ? "Semantic · experimental" : "Word baseline";
+      lastResult = result;
+      byId("workspace-announcement").textContent = abstained ? "No category suggested. Human review needed." : `Suggested category: ${byId("category").textContent}. Human review required.`;
       showState("success");
       completed = true;
     } catch (error) {
       showState("idle");
+      if (cancelled) {
+        byId("input-hint").textContent = "Cancelled in this tab. You can edit and try again.";
+        byId("workspace-announcement").textContent = "Request cancelled in this tab. Server processing may continue.";
+        return;
+      }
       byId("form-error").textContent =
         error.name === "AbortError"
           ? "The request took too long. Check your local server and try again."
@@ -251,9 +340,12 @@
             : error.message;
       byId("form-error").hidden = false;
     } finally {
+      clearInterval(loadingTimer);
+      activePrediction = null;
       busy = false;
       updateControls();
       if (completed) byId("category").focus();
+      else if (cancelled) input.focus();
       else byId("form-error").focus();
     }
   });
@@ -261,5 +353,7 @@
   showModel();
   updateControls();
   checkReadiness();
-  setInterval(checkReadiness, 30000);
+  window.addEventListener("online", checkReadiness);
+  document.addEventListener("visibilitychange", () => { if (!document.hidden && !busy) checkReadiness(); });
+  setInterval(() => { if (!document.hidden && !busy) checkReadiness(); }, 30000);
 })();

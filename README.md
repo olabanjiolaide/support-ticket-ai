@@ -2,6 +2,8 @@
 
 A Python portfolio project for classifying support requests and routing uncertain predictions to human review.
 
+The [responsive workspace refresh](docs/36-responsive-workspace.md) adds light/dark themes, phone-to-desktop layouts, keyboard submission, cancellable requests, and copyable review summaries. See the guide for screenshots and the update commands.
+
 The [public repository review and research roadmap](docs/25-public-repository-review.md) compares related projects and proposes a path toward structured support actions with inspectable text evidence. It distinguishes established methods from unvalidated research hypotheses; no novelty or external-benchmark performance is claimed.
 
 The first implementation step adds a validated [action-plan format and public benchmark importer](docs/26-action-plan-and-public-benchmark.md). BlendBanking77 is prepared with its native 77 labels, disjoint development partitions, pinned provenance, and opaque test payloads. This is offline preparation; the browser still uses the existing reviewed category predictions.

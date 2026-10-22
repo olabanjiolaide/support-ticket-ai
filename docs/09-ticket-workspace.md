@@ -1,3 +1,5 @@
+> The current interface is documented in the [responsive workspace guide](36-responsive-workspace.md), including light/dark screenshots and update instructions.
+
 # Ticket workspace
 
 Open **http://127.0.0.1:8000/** after starting the existing local server. This is the main interface for trying the model. The API reference remains available at **/docs**.
