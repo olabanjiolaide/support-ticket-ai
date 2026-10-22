@@ -1,6 +1,6 @@
 # Install and verify the application package
 
-The installable Python package is now version **0.13.0**, with API **0.4.0**. The latest addition is the [responsive workspace refresh](36-responsive-workspace.md), with light/dark themes, keyboard submission, cancellable requests and copyable review summaries. Historical experiment commands remain available for reproduction, and the prediction API contract remains unchanged. See [semantic browser setup](21-semantic-browser-mode.md).
+The installable Python package is now version **0.14.0**, with API **0.4.0**. The latest addition is the [decision-first result card](37-decision-first-results.md), with recorded withholding reasons, next review steps and expandable model details. Historical experiment commands remain available for reproduction, and the prediction API contract remains unchanged. See [semantic browser setup](21-semantic-browser-mode.md).
 
 The wheel includes Python modules, HTML/CSS/JavaScript, authored sample collections, aggregate experiment reports, and the dataset-license copy accompanying those reports. It does not include trained models, downloaded source data, private annotation files, or semantic encoder weights. Source-tree datasets and reports map into package resource directories during the build, so there are no duplicate source copies to maintain.
 

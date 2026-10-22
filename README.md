@@ -2,6 +2,8 @@
 
 A Python portfolio project for classifying support requests and routing uncertain predictions to human review.
 
+The [decision-first result card](docs/37-decision-first-results.md) now separates suggested categories from manual-classification decisions, shows recorded withholding reasons and next review steps, and keeps scores/JSON in expandable details. Retry and cancellation have dedicated states.
+
 The [responsive workspace refresh](docs/36-responsive-workspace.md) adds light/dark themes, phone-to-desktop layouts, keyboard submission, cancellable requests, and copyable review summaries. See the guide for screenshots and the update commands.
 
 The [public repository review and research roadmap](docs/25-public-repository-review.md) compares related projects and proposes a path toward structured support actions with inspectable text evidence. It distinguishes established methods from unvalidated research hypotheses; no novelty or external-benchmark performance is claimed.

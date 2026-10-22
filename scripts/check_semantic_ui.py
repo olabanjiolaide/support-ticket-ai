@@ -77,12 +77,12 @@ def main():
                     expect(page.locator('#result-success')).to_be_hidden()
                     page.locator('#submit').click()
                     expect(page.locator('#result-success')).to_be_visible()
-                    expect(page.locator('#category')).to_have_text('No reliable suggestion')
+                    expect(page.locator('#category')).to_have_text('Category withheld')
                     guarded = json.loads(page.locator('#json-response').text_content())
                     assert guarded['multiple_request_check_enabled'] and guarded['multiple_requests_detected']
                     assert guarded['requires_human_review'] is True
                     assert guarded['uncalibrated_probability'] == original['uncalibrated_probability']
-                    expect(page.locator('#review-description')).to_contain_text('separate requests')
+                    expect(page.locator('#decision-reasons')).to_contain_text('Separate-request check')
                     page.screenshot(path=str(args.artifacts / f'request-check-{width}.png'), full_page=True)
                     page.locator('#ticket').fill('Change my account name and reset my password.')
                     page.locator('#submit').click()
@@ -102,13 +102,13 @@ def main():
                     page.locator('#ticket').fill('Write a poem about the moon.')
                     page.locator('#submit').click()
                     expect(page.locator('#result-success')).to_be_visible()
-                    expect(page.locator('#category')).to_have_text('No reliable suggestion')
+                    expect(page.locator('#category')).to_have_text('Category withheld')
                     page.locator('#ticket').fill('word ' * 260)
                     page.locator('#submit').click()
                     expect(page.locator('#result-success')).to_be_visible()
-                    expect(page.locator('#category')).to_have_text('No reliable suggestion')
+                    expect(page.locator('#category')).to_have_text('Category withheld')
                     assert json.loads(page.locator('#json-response').text_content())['input_truncated'] is True
-                    expect(page.locator('#review-description')).to_contain_text('truncated')
+                    expect(page.locator('#decision-reasons')).to_contain_text('input limit')
                     page.locator('#model-mode').select_option('word')
                     expect(page.locator('#result-success')).to_be_hidden()
                     expect(page.locator('#semantic-notice')).to_be_hidden()

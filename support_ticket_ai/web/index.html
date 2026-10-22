@@ -10,7 +10,7 @@
       href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='11' fill='%231d2939'/%3E%3Cpath d='M12 13h16v11H18l-6 5z' fill='none' stroke='white' stroke-width='2'/%3E%3C/svg%3E"
     />
     <link rel="stylesheet" href="/assets/styles.css" />
-    <script src="/assets/app.js" defer></script>
+    <script src="/assets/app.js" type="module"></script>
   </head>
   <body>
     <p id="workspace-announcement" class="sr-only" role="status" aria-live="polite"></p>
@@ -230,43 +230,48 @@
               <h2>Reading the request…</h2>
               <p id="loading-description">Finding the most likely category.</p><button id="cancel-request" class="secondary-button" type="button">Cancel request</button>
             </div>
+            <div id="result-error" class="result-empty" hidden>
+              <span class="outcome-icon" aria-hidden="true">!</span>
+              <h2>Request not completed</h2>
+              <p id="result-error-description"></p>
+              <button id="retry-prediction" class="secondary-button" type="button">Retry suggestion</button>
+            </div>
+            <div id="result-cancelled" class="result-empty" hidden>
+              <h2>Request cancelled</h2>
+              <p>Your message is still here. You can edit it or submit again. Server processing may continue.</p>
+              <button id="cancelled-edit" class="secondary-button" type="button">Back to message</button>
+            </div>
             <div id="result-success" hidden>
-              <div class="result-meta"><span id="result-model-label">Word baseline</span><button id="copy-result" class="text-button" type="button">Copy result</button></div>
-              <p class="result-kicker" id="result-kicker">SUGGESTED CATEGORY</p>
+              <div class="result-meta"><span id="result-model-label">Word baseline</span><button id="copy-result" class="text-button" type="button">Copy review summary</button></div>
+              <p class="decision-badge" id="result-kicker">Category suggested</p>
               <h2 id="category" class="category" tabindex="-1"></h2>
-              <p class="result-subtitle" id="result-subtitle">
-                A starting point for the right handoff.
-              </p>
-              <div class="review-box">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <circle cx="12" cy="8" r="3" />
-                  <path d="M6 20v-3a6 6 0 0 1 12 0v3M15 4l3-1" />
-                </svg>
+              <p class="result-subtitle" id="result-subtitle"></p>
+              <section id="decision-reasons" class="decision-reasons" aria-labelledby="reasons-title" hidden>
+                <h3 id="reasons-title">Why the category was withheld</h3>
+                <ul id="reason-list"></ul>
+              </section>
+              <section class="review-box" aria-labelledby="next-step-title">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3" /><path d="M6 20v-3a6 6 0 0 1 12 0v3" /></svg>
                 <div>
-                  <strong>Human review required</strong>
-                  <p id="review-description">
-                    Confirm the category before routing this request.
-                  </p>
+                  <span class="review-eyebrow">Human review required · next step</span>
+                  <h3 id="next-step-title">Confirm the category before routing</h3>
+                  <p id="review-description"></p>
                 </div>
-              </div>
-              <div class="score-block">
-                <span
-                  >Model score
-                  <span class="uncalibrated-tag">Uncalibrated</span></span
-                ><strong id="score"></strong>
-                <p>
-                  This score is not a verified probability that the suggestion
-                  is correct.
-                </p>
-              </div>
+              </section>
+              <div class="result-actions"><button id="edit-message" class="secondary-button" type="button">Review / edit message</button></div>
               <p id="copy-feedback" class="copy-feedback" role="status"></p>
-              <details class="response-details">
+              <details class="response-details" id="technical-details">
                 <summary>
-                  View API response
+                  Model details &amp; API response
                   <svg viewBox="0 0 24 24" aria-hidden="true">
                     <path d="m8 10 4 4 4-4" />
                   </svg>
                 </summary>
+                <p class="technical-disclaimer">Scores are uncalibrated. They are not verified probabilities that a category is correct. These checks describe the review decision, not why the model learned a category.</p>
+                <dl id="technical-facts" class="technical-facts"></dl>
+                <h3 class="technical-heading">Recorded review note</h3>
+                <p id="recorded-review-note" class="technical-note"></p>
+                <h3 class="technical-heading">API response</h3>
                 <pre
                   id="json-response"
                   tabindex="0"

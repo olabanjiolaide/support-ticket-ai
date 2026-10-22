@@ -59,7 +59,7 @@ def api_checks(model: Path):
         assert client.get('/healthz').status_code == 200
         assert client.get('/readyz').status_code == 200
         assert 'ticket-form' in client.get('/').text
-        for asset in ('styles.css', 'app.js'):
+        for asset in ('styles.css', 'app.js', 'result-view.js'):
             assert client.get('/assets/' + asset).status_code == 200
         response = client.post('/predict', json={'text': 'password reset account login'})
         assert response.status_code == 200
@@ -122,7 +122,7 @@ def browser_checks(model: Path, artifacts: Path, executable: str | None):
                         page.locator('#ticket').fill('zzzxxyy qqqvvv')
                         expect(page.locator('#result-success')).to_be_hidden()
                         page.get_by_role('button', name='Suggest category').click()
-                        expect(page.locator('#category')).to_have_text('No reliable suggestion')
+                        expect(page.locator('#category')).to_have_text('Category withheld')
                         assert json.loads(page.locator('#json-response').text_content())['suggested_category'] is None
                         page.locator('#ticket').fill('x' * 2001)
                         expect(page.locator('#submit')).to_be_disabled()

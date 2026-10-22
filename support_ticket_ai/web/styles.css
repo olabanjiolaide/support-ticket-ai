@@ -202,3 +202,38 @@ pre { max-height: 240px; overflow: auto; background: var(--soft); color: var(--i
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; } *, *::before, *::after { animation: none !important; transition: none !important; }
 }
+
+/* Decision-first review card: a recommendation is separate from its review policy. */
+.decision-badge { display: inline-flex; align-items: center; gap: 7px; padding: 6px 10px; border-radius: 20px; background: var(--tint); color: var(--green); font-size: 11px; font-weight: 650; margin: 0 0 16px; }
+.decision-badge::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.result-card[data-state="success"][data-decision="withheld"] { border-color: var(--amber-border); }
+[data-decision="withheld"] .decision-badge { background: var(--amber-bg); color: var(--amber); }
+.result-meta { flex-wrap: wrap; margin-bottom: 18px; }
+.category { font-size: clamp(27px, 2.5vw, 37px); }
+.decision-reasons { padding: 0 0 20px; }
+.decision-reasons h3 { font-size: 12px; font-weight: 650; margin: 0 0 14px; }
+.decision-reasons ul { padding: 0; margin: 0; list-style: none; }
+.decision-reasons li { padding: 0 0 0 12px; border-left: 2px solid var(--amber-border); margin: 0 0 16px; }
+.decision-reasons li:last-child { margin-bottom: 0; }
+.decision-reasons strong { display: block; font-size: 12px; font-weight: 600; }
+.decision-reasons p { color: var(--muted); font-size: 12px; line-height: 1.8; margin: 5px 0 0; }
+.review-box { background: var(--tint); border-color: var(--border); color: var(--ink); }
+.review-eyebrow { display: block; color: var(--accent); font-size: 9px; letter-spacing: .4px; margin: 0 0 7px; }
+.review-box h3 { margin: 0 0 6px; font-size: 14px; line-height: 1.5; font-weight: 650; }
+.review-box p { color: var(--muted); font-size: 12px; }
+.result-actions { margin-top: 16px; }
+.result-actions .secondary-button { width: 100%; }
+.technical-disclaimer, .technical-note { color: var(--muted); font-size: 11px; line-height: 1.8; overflow-wrap: anywhere; }
+.technical-facts { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 10px 12px; padding: 15px 0; border-block: 1px solid var(--border); margin: 15px 0 20px; font-size: 11px; }
+.technical-facts dt { color: var(--muted); }
+.technical-facts dd { margin: 0; text-align: right; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.technical-heading { margin: 18px 0 7px; font-size: 11px; font-weight: 650; }
+.result-card:has(details[open]) { position: static; }
+.outcome-icon { width: 42px; height: 42px; border-radius: 50%; display: grid; place-items: center; background: var(--error-bg); color: var(--error); font-size: 23px; margin-bottom: 20px; }
+#result-error h2 { color: var(--error); }
+@media (max-width: 720px) {
+  .result-meta { gap: 0 10px; }
+  .result-meta .text-button { padding-right: 0; }
+  .category { font-size: 31px; }
+  .decision-reasons p, .review-box p { font-size: 12px; }
+}

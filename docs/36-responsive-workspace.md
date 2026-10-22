@@ -1,3 +1,5 @@
+> For the current result-card behavior and update instructions, see [decision-first results](37-decision-first-results.md).
+
 # A more responsive ticket workspace
 
 Package **0.13.0** refreshes the browser workspace with larger type, a calmer green palette, clearer input/result cards, light and dark themes, and layouts for phones through wide desktop screens. The interaction changes give immediate feedback while the existing prediction request runs; they do not claim faster inference or better model accuracy.

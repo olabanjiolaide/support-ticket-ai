@@ -30,6 +30,16 @@ async def check(base, out):
                 await page.locator('[data-example="account"]').click()
                 await page.locator('#ticket').press('Control+Enter')
                 await expect(page.locator('#category')).to_have_text('Account')
+                await expect(page.locator('#result-kicker')).to_have_text('Category suggested')
+                await expect(page.locator('#decision-reasons')).to_be_hidden()
+                await expect(page.locator('#technical-details')).not_to_have_attribute('open', '')
+                await page.locator('#technical-details summary').click()
+                await expect(page.locator('#technical-facts')).to_contain_text('Uncalibrated', ignore_case=True)
+                await expect(page.locator('#recorded-review-note')).not_to_be_empty()
+                assert await page.evaluate('document.documentElement.scrollWidth <= innerWidth')
+                await page.locator('#technical-details summary').click()
+                await page.locator('#edit-message').click()
+                await expect(page.locator('#ticket')).to_be_focused()
                 await expect(page.locator('#review-step')).to_have_attribute('aria-current', 'step')
                 assert await page.evaluate('document.documentElement.scrollWidth <= innerWidth'), width
                 await page.locator('#copy-result').click()
@@ -40,6 +50,7 @@ async def check(base, out):
                     if await page.locator('html').get_attribute('data-theme') != theme:
                         await page.locator('#theme-toggle').click()
                     assert await page.evaluate('document.documentElement.scrollWidth <= innerWidth'), (width, theme)
+                    await page.evaluate("scrollTo({top: 0, behavior: 'instant'})")
                     await page.screenshot(path=str(out / f'{theme}-{width}.png'), full_page=True, animations="disabled")
                 await page.reload()
                 await expect(page.locator('html')).to_have_attribute('data-theme', 'dark')
@@ -81,18 +92,21 @@ async def check(base, out):
             await expect(page.locator('#result-loading')).to_be_visible()
             await expect(page.locator('#ticket')).to_be_disabled()
             await expect(page.locator('#loading-description')).to_contain_text('elapsed', timeout=3000)
+            await page.evaluate("scrollTo({top: 0, behavior: 'instant'})")
             await page.screenshot(path=str(out / 'loading-mobile.png'), full_page=True, animations="disabled")
             await page.locator('#cancel-request').click()
             await expect(page.locator('#ticket')).to_be_enabled()
             await expect(page.locator('#result-loading')).to_be_hidden()
             await expect(page.locator('#input-hint')).to_contain_text('Cancelled')
+            await expect(page.locator('#result-cancelled')).to_be_visible()
             release.set()
             await page.unroute('**/predict', slow)
             await page.route('**/predict', lambda route: route.abort())
             await page.locator('#submit').click()
             await expect(page.locator('#form-error')).to_contain_text('Connection lost')
+            await expect(page.locator('#result-error')).to_be_visible()
             await page.unroute('**/predict')
-            await page.locator('#submit').click()
+            await page.locator('#retry-prediction').click()
             await expect(page.locator('#result-success')).to_be_visible()
             await expect(page.locator('#form-error')).to_be_hidden()
 
@@ -118,9 +132,52 @@ async def check(base, out):
                     'multiple_request_check_enabled': True, 'multiple_requests_detected': True})
             await page.route('**/predict', abstention)
             await page.locator('#submit').click()
-            await expect(page.locator('#category')).to_have_text('No reliable suggestion')
-            await expect(page.locator('#review-description')).to_contain_text('Separate requests')
+            await expect(page.locator('#category')).to_have_text('Category withheld')
+            await expect(page.locator('#decision-reasons')).to_contain_text('Separate-request check')
+            await page.evaluate("scrollTo({top: 0, behavior: 'instant'})")
             await page.screenshot(path=str(out / 'semantic-review-mobile.png'), full_page=True, animations="disabled")
+            await page.unroute('**/predict')
+            profiles = {
+                'cutoff': {'uncalibrated_probability': .4},
+                'scope': {'scope_score': .1},
+                'truncated': {'input_truncated': True},
+                'multiple': {'multiple_requests_detected': True},
+                'policy': {'abstention_threshold': None, 'scope_threshold': None},
+                'combined': {'uncalibrated_probability': .4, 'scope_score': .1, 'input_truncated': True, 'multiple_requests_detected': True},
+            }
+            for width in [320, 1440]:
+                await page.set_viewport_size({'width': width, 'height': 1000})
+                for name, fields in profiles.items():
+                    body = {'model_mode': 'semantic', 'decision': 'abstain', 'suggested_category': None,
+                        'model_top_category': 'PAYMENT', 'uncalibrated_probability': .8,
+                        'abstention_threshold': .5, 'scope_score': .9, 'scope_threshold': .5,
+                        'requires_human_review': True, 'input_truncated': False,
+                        'review_reason': '<svg onload="window.unsafeReviewNote=true">Recorded review note</svg>',
+                        'multiple_request_check_enabled': True, 'multiple_requests_detected': False, **fields}
+                    async def profile_response(route):
+                        await route.fulfill(json=body)
+                    await page.route('**/predict', profile_response)
+                    await page.locator('#ticket').fill('UI contract fixture, not model inference.')
+                    await page.locator('#submit').click()
+                    await expect(page.locator('#category')).to_have_text('Category withheld')
+                    expected = 'category' if name == 'cutoff' else name
+                    if name == 'combined':
+                        assert await page.locator('#reason-list li').count() == 4
+                    else:
+                        await expect(page.locator(f'#reason-list [data-reason="{expected}"]')).to_be_visible()
+                        assert await page.locator('#reason-list li').count() == 1
+                    await expect(page.locator('#result-kicker')).to_have_text('Needs manual classification')
+                    assert await page.evaluate('document.documentElement.scrollWidth <= innerWidth')
+                    await page.locator('#technical-details summary').click()
+                    assert await page.locator('#recorded-review-note svg').count() == 0
+                    assert await page.evaluate('window.unsafeReviewNote !== true')
+                    assert await page.evaluate('document.documentElement.scrollWidth <= innerWidth')
+                    await page.locator('#technical-details summary').click()
+                    if name in ('cutoff', 'combined'):
+                        await page.evaluate("scrollTo({top: 0, behavior: 'instant'})")
+                        await page.screenshot(path=str(out / f'decision-{name}-{width}.png'), full_page=True, animations='disabled')
+                    await page.unroute('**/predict')
+
             await page.locator('#model-mode').select_option('word')
             await expect(page.locator('#result-success')).to_be_hidden()
             await expect(page.locator('#check-multiple-requests')).not_to_be_checked()
@@ -129,6 +186,7 @@ async def check(base, out):
             await page.reload()
             await expect(page.locator('#service-label')).to_have_text('Model unavailable')
             await expect(page.locator('#submit')).to_be_disabled()
+            await page.evaluate("scrollTo({top: 0, behavior: 'instant'})")
             await page.screenshot(path=str(out / 'unavailable-mobile.png'), full_page=True, animations="disabled")
             await page.unroute('**/readyz*')
             await page.locator('#retry').click()
@@ -137,6 +195,7 @@ async def check(base, out):
             assert await page.locator('.empty-illustration').evaluate("e => getComputedStyle(e).animationName") == 'none'
             assert not errors, errors
         except BaseException:
+            await page.evaluate("scrollTo({top: 0, behavior: 'instant'})")
             await page.screenshot(path=str(out / 'failure.png'), full_page=True, animations="disabled")
             raise
         finally:
@@ -176,7 +235,7 @@ def main():
             server.terminate()
             server.wait(timeout=10)
             temporary.cleanup()
-    print('Five widths, two themes, real word predictions, copy, keyboard, input limits, cancellation, errors/recovery, readiness, reduced motion and stubbed semantic contracts passed.')
+    print('Five widths, two themes, real word predictions, decision reasons/details, copy, keyboard, input limits, cancellation, retry, readiness, safe note rendering, reduced motion and stubbed semantic contracts passed.')
 
 
 if __name__ == '__main__':

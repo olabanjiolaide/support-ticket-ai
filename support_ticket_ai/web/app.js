@@ -1,3 +1,5 @@
+import { describeResult, technicalFacts } from "./result-view.js";
+
 "use strict";
 
 (() => {
@@ -40,9 +42,12 @@
     byId("result-idle").hidden = state !== "idle";
     byId("result-loading").hidden = state !== "loading";
     byId("result-success").hidden = state !== "success";
+    byId("result-error").hidden = state !== "error";
+    byId("result-cancelled").hidden = state !== "cancelled";
     byId("result-panel").setAttribute("aria-busy", String(state === "loading"));
     byId("result-panel").dataset.state = state;
-    byId("result-status").textContent = state === "success" ? "READY FOR REVIEW" : state === "loading" ? "READING MESSAGE" : "AWAITING REQUEST";
+    if (state !== "success") delete byId("result-panel").dataset.decision;
+    byId("result-status").textContent = state === "success" ? "READY FOR REVIEW" : state === "loading" ? "READING MESSAGE" : state === "error" ? "REQUEST NOT COMPLETED" : state === "cancelled" ? "CANCELLED" : "AWAITING REQUEST";
     byId("compose-step").classList.toggle("current", state !== "success");
     byId("review-step").classList.toggle("current", state === "success");
     byId("jump-result").hidden = state !== "success";
@@ -61,6 +66,7 @@
     byId("input-progress-bar").style.width = `${Math.min(count / maxLength, 1) * 100}%`;
     byId("input-progress-bar").parentElement.classList.toggle("over-limit", overLimit);
     byId("copy-result").disabled = busy || !lastResult;
+    byId("retry-prediction").disabled = busy || !ready || !input.value.trim() || overLimit;
     input.setCustomValidity(overLimit ? "Use 2,000 characters or fewer." : "");
     input.setAttribute("aria-invalid", String(overLimit));
     submit.disabled = busy || !ready || !input.value.trim() || overLimit;
@@ -86,6 +92,7 @@
   function edit() {
     lastResult = null;
     byId("copy-feedback").textContent = "";
+    byId("workspace-announcement").textContent = "";
     byId("input-hint").textContent = "Plain language works best.";
     clearError();
     showState("idle");
@@ -183,14 +190,23 @@
   byId("copy-result").addEventListener("click", async () => {
     if (!lastResult) return;
     const snapshot = lastResult;
-    const text = `${byId("category").textContent}\nHuman review required\n${snapshot.review_reason ?? "Confirm the category before routing this request."}\nUncalibrated model score: ${snapshot.uncalibrated_probability.toFixed(3)}`;
+    const view = describeResult(snapshot);
+    const text = [view.status, view.title, "Human review required", ...view.reasons.map((reason) => `${reason.title}: ${reason.description}`), view.nextTitle, view.nextDescription].join("\n");
     try {
       await navigator.clipboard.writeText(text);
       if (lastResult === snapshot) byId("copy-feedback").textContent = "Result copied. Customer message not included.";
     } catch {
-      if (lastResult === snapshot) byId("copy-feedback").textContent = "Copy unavailable. Select text in the API response below to copy manually.";
+      if (lastResult === snapshot) byId("copy-feedback").textContent = "Copy unavailable. Open model details below and select text to copy manually.";
     }
   });
+
+  function returnToMessage() {
+    input.focus();
+    input.scrollIntoView({block: "center", behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"});
+  }
+  byId("edit-message").addEventListener("click", returnToMessage);
+  byId("cancelled-edit").addEventListener("click", returnToMessage);
+  byId("retry-prediction").addEventListener("click", () => { if (!submit.disabled) form.requestSubmit(); });
 
   const themeButton = byId("theme-toggle");
   function setTheme(theme) {
@@ -299,26 +315,30 @@
           "The server returned an unexpected response. Please try again.",
         );
       }
-      byId("category").textContent = abstained
-        ? "No reliable suggestion"
-        : result.suggested_category
-            .toLowerCase()
-            .replaceAll("_", " ")
-            .replace(/\b\w/g, (letter) => letter.toUpperCase());
-      byId("result-kicker").textContent = abstained
-        ? "MANUAL CLASSIFICATION NEEDED"
-        : "SUGGESTED CATEGORY";
-      byId("result-subtitle").textContent = abstained
-        ? result.multiple_requests_detected
-          ? "More than one request may need attention."
-          : "The experimental review rules withheld a category."
-        : "A starting point for the right handoff.";
-      byId("review-description").textContent = requestedMode === "semantic"
-        ? result.review_reason
-        : abstained
-        ? "Read the request and choose a category manually."
-        : "Confirm the category before routing this request.";
-      byId("score").textContent = result.uncalibrated_probability.toFixed(3);
+      const view = describeResult(result);
+      byId("result-panel").dataset.decision = abstained ? "withheld" : "suggested";
+      byId("category").textContent = view.title;
+      byId("result-kicker").textContent = view.status;
+      byId("result-subtitle").textContent = view.summary;
+      byId("decision-reasons").hidden = !view.reasons.length;
+      byId("reason-list").replaceChildren(...view.reasons.map((reason) => {
+        const item = document.createElement("li");
+        item.dataset.reason = reason.code;
+        const heading = document.createElement("strong");
+        heading.textContent = reason.title;
+        const description = document.createElement("p");
+        description.textContent = reason.description;
+        item.append(heading, description);
+        return item;
+      }));
+      byId("next-step-title").textContent = view.nextTitle;
+      byId("review-description").textContent = view.nextDescription;
+      byId("recorded-review-note").textContent = view.recordedNote;
+      byId("technical-facts").replaceChildren(...technicalFacts(result).flatMap(([label, value]) => {
+        const term = document.createElement("dt"); term.textContent = label;
+        const detail = document.createElement("dd"); detail.textContent = value;
+        return [term, detail];
+      }));
       byId("json-response").textContent = JSON.stringify(result, null, 2);
       byId("result-model-label").textContent = requestedMode === "semantic" ? "Semantic · experimental" : "Word baseline";
       lastResult = result;
@@ -328,6 +348,7 @@
     } catch (error) {
       showState("idle");
       if (cancelled) {
+        showState("cancelled");
         byId("input-hint").textContent = "Cancelled in this tab. You can edit and try again.";
         byId("workspace-announcement").textContent = "Request cancelled in this tab. Server processing may continue.";
         return;
@@ -339,6 +360,8 @@
             ? "Connection lost. Keep your local server running and try again."
             : error.message;
       byId("form-error").hidden = false;
+      byId("result-error-description").textContent = byId("form-error").textContent;
+      showState("error");
     } finally {
       clearInterval(loadingTimer);
       activePrediction = null;

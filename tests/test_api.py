@@ -104,8 +104,10 @@ class ApiTests(unittest.TestCase):
             self.assertEqual(response.status_code, 200)
             self.assertIn("text/html", response.headers["content-type"])
             self.assertIn('id="ticket-form"', response.text)
+            self.assertIn('type="module"', response.text)
             for path, media_type in [("/assets/styles.css", "text/css"),
-                                     ("/assets/app.js", "javascript")]:
+                                     ("/assets/app.js", "javascript"),
+                                     ("/assets/result-view.js", "javascript")]:
                 asset = client.get(path)
                 self.assertEqual(asset.status_code, 200)
                 self.assertIn(media_type, asset.headers["content-type"])
