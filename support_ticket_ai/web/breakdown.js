@@ -24,6 +24,7 @@ async function post(path, body, signal) {
 // Fresh previews and fragment predictions are never persisted implicitly.
 export function initBreakdown(host, getSource, stageNote = null) {
   const heading = el('h2', 'Understand the individual needs');
+  heading.tabIndex = -1;
   const intro = el('p', 'Human-assisted preview · inspect fragments, distinguish requests from background, and assess each confirmed request separately.', 'section-description');
   const caution = el('p', 'This preview uses text boundaries, not a trained intent extractor. Read the complete message: a fragment may contain several needs or depend on another fragment. Nothing here changes the overall prediction or handling status.', 'technical-note');
   const build = el('button', 'Break down message', 'secondary-button'); build.type = 'button';
@@ -119,5 +120,11 @@ export function initBreakdown(host, getSource, stageNote = null) {
     const error = stageNote(lines.join('\n'));
     feedback.textContent = error || 'Added to the note draft. Review it and use Add note to save; status and overall category are unchanged.';
   });
-  return {reset};
+  function open() {
+    // Reopening the same preview must preserve the reviewer's unsaved choices.
+    if (currentKey !== sourceKey(getSource()) || (!preview && !build.disabled)) build.click();
+    heading.focus({preventScroll:true});
+    host.scrollIntoView({block:'start', behavior:'instant'});
+  }
+  return {reset, open};
 }

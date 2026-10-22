@@ -25,8 +25,12 @@ async def check(base, out):
         await page.locator('#submit').click()
         await expect(page.locator('#category')).to_have_text('Category withheld')
         host=page.locator('#draft-breakdown')
-        await host.get_by_role('button',name='Break down message',exact=True).click()
+        await page.locator('#review-needs').click()
         await expect(host.locator('.breakdown-part')).to_have_count(4)
+        await expect(host.locator('h2')).to_be_focused()
+        await host.locator('.breakdown-part').first.get_by_label('Your interpretation').select_option('context')
+        await page.locator('#review-needs').click()
+        await expect(host.locator('.breakdown-part').first.get_by_label('Your interpretation')).to_have_value('context')
         assert (await (await page.request.get(base+'/requests/overview')).json())['total']==0
         # Changing text invalidates its evidence immediately.
         await page.locator('#ticket').fill('Changed message')
@@ -81,6 +85,39 @@ async def check(base, out):
         assert len(after['history'])==2
         await page.reload()
         await expect(page.locator('#request-history')).to_contain_text('Human-assisted breakdown v1')
+        # Semantic UI responses are stubs, not a semantic inference evaluation.
+        await page.route('**/models', lambda route:route.fulfill(json={'default':'word','modes':[
+            {'mode':'word','available':True}, {'mode':'semantic','available':True,'supports_multiple_request_check':True}]}))
+        await page.route('**/readyz?mode=semantic',lambda route:route.fulfill(json={'status':'ready','model_sha256':'a'*64,'model_mode':'semantic'}))
+        async def semantic_response(route):
+            body=route.request.post_data_json
+            flagged=body.get('check_multiple_requests',False)
+            await route.fulfill(json={'decision':'abstain' if flagged else 'suggestion',
+                'suggested_category':None if flagged else 'INVOICE','model_top_category':'INVOICE',
+                'abstention_threshold':.5,'uncalibrated_probability':.8,'requires_human_review':True,
+                'review_reason':'UI fixture only','model_sha256':'a'*64,'model_mode':'semantic',
+                'model_name':'Semantic UI fixture','multiple_request_check_enabled':flagged,
+                'multiple_requests_detected':flagged})
+        await page.route('**/predict',semantic_response)
+        await page.goto(base+'/#new')
+        await page.locator('#model-mode').select_option('semantic')
+        await expect(page.locator('#service-label')).to_have_text('Model ready')
+        await page.locator('#ticket').fill(text)
+        await page.locator('#check-multiple-requests').check()
+        await page.locator('#submit').click()
+        await expect(page.locator('#category')).to_have_text('Category withheld')
+        await expect(page.locator('#breakdown-next-step')).to_contain_text('flagged separate requests')
+        snapshot=await page.locator('#json-response').text_content()
+        await page.locator('#review-needs').click()
+        host=page.locator('#draft-breakdown')
+        await expect(host.locator('.breakdown-part')).to_have_count(4)
+        assert await page.locator('#json-response').text_content()==snapshot
+        await page.locator('#check-multiple-requests').uncheck()
+        await page.locator('#submit').click()
+        await expect(page.locator('#category')).to_have_text('Invoice')
+        await page.locator('#review-needs').click()
+        await expect(host.locator('.breakdown-part')).to_have_count(4)
+        await page.unroute('**/predict',semantic_response)
         # HTML-looking text stays literal, including in fragments.
         await page.goto(base+'/#new')
         await page.locator('#ticket').fill('<img src=x onerror="window.bad=1">. Please reset my password.')

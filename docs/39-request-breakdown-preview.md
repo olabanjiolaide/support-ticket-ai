@@ -9,7 +9,7 @@ This release adds a review tool, **not a learned intent extractor or evidence of
 ## Try it
 
 1. Update the repository, restart the existing server and refresh the browser.
-2. Enter a message or open a saved request through Review queue. Choose **Break down message**.
+2. After getting a prediction, choose **Review individual needs** on the result card to open and generate the preview. This works for suggestions and withheld results. Reopening it preserves your choices for the unchanged message/model. You can also choose **Break down message** directly on New request or a saved request in Review queue.
 3. Read the full message and each exact text fragment. Choose Current request, Background / context, Unclear, Conditional, Alternative, Not requested or Already resolved.
 4. For a current request, choose a human category, Outside current categories or Unclear. Optionally ask the selected model for a **fragment-only hypothesis**. This calls the existing `/predict` endpoint independently of the whole-message result. It retains the existing model cutoffs and never automatically fills the human category. A missing model or failed prediction still allows manual review.
 5. On a saved request, enter a clarification/coordination note where needed and choose **Add reviewed breakdown to note draft**. Existing draft text is preserved; the combined 2,000-character limit is checked without silently truncating.

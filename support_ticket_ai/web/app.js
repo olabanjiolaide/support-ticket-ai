@@ -70,6 +70,7 @@ import { initWorkspace } from "./workspace.js";
     byId("input-progress-bar").style.width = `${Math.min(count / maxLength, 1) * 100}%`;
     byId("input-progress-bar").parentElement.classList.toggle("over-limit", overLimit);
     byId("copy-result").disabled = busy || !lastResult;
+    byId("review-needs").disabled = locked || !lastResult;
     byId("retry-prediction").disabled = busy || !ready || !input.value.trim() || overLimit;
     input.setCustomValidity(overLimit ? "Use 2,000 characters or fewer." : "");
     input.setAttribute("aria-invalid", String(overLimit));
@@ -326,6 +327,10 @@ import { initWorkspace } from "./workspace.js";
       byId("category").textContent = view.title;
       byId("result-kicker").textContent = view.status;
       byId("result-subtitle").textContent = view.summary;
+      byId("breakdown-next-step").textContent = result.multiple_requests_detected === true
+        ? "The check flagged separate requests. Open the breakdown to review each need and distinguish background information."
+        : abstained ? "You can review individual fragments even when the overall category is withheld."
+        : "If the message contains other needs, review them separately before choosing categories.";
       byId("decision-reasons").hidden = !view.reasons.length;
       byId("reason-list").replaceChildren(...view.reasons.map((reason) => {
         const item = document.createElement("li");
@@ -380,6 +385,7 @@ import { initWorkspace } from "./workspace.js";
   });
 
   const draftBreakdown = initBreakdown(byId('draft-breakdown'), () => ({text: input.value, mode: modelMode.value}));
+  byId('review-needs').addEventListener('click', () => { if (lastResult) draftBreakdown.open(); });
   document.addEventListener('ticket-edited', () => draftBreakdown.reset());
   modelMode.addEventListener('change', () => draftBreakdown.reset());
   initWorkspace({
