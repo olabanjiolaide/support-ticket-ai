@@ -334,3 +334,23 @@ pre { max-height: 240px; overflow: auto; background: var(--soft); color: var(--i
 }
 
 .detail-card, .history-card, .activity-row { overflow-wrap: anywhere; }
+
+/* Human-assisted evidence preview: no implicit classification or persistence. */
+.breakdown-card { padding: 28px; margin: 24px 0; min-width: 0; overflow-wrap: anywhere; }
+.breakdown-card h2 { font-size: 21px; margin: 0 0 12px; }
+.breakdown-card > .technical-note { margin-bottom: 18px; }
+.breakdown-parts { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 16px; margin: 18px 0; }
+.breakdown-part { padding: 20px; border: 1px solid var(--border); border-radius: 12px; min-width: 0; }
+.breakdown-part h3 { font-size: 14px; margin: 0 0 12px; }
+.breakdown-part blockquote { margin: 0; padding: 0 0 0 12px; border-left: 2px solid var(--accent); }
+.breakdown-controls { display: grid; gap: 10px; margin: 18px 0; }
+.breakdown-card label { display: block; font-size: 12px; margin: 12px 0; }
+.breakdown-card select, .breakdown-card textarea { width: 100%; max-width: 100%; margin-top: 8px; min-height: 44px; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--soft); color: var(--ink); font: inherit; }
+.breakdown-card textarea { min-height: 100px; }
+.breakdown-card button { white-space: normal; max-width: 100%; }
+@media (max-width: 720px) {
+  .breakdown-card { padding: 20px 18px; }
+  .breakdown-parts { grid-template-columns: minmax(0,1fr); }
+  .breakdown-part { padding: 16px; }
+  .breakdown-card select, .breakdown-card textarea { font-size: 16px; }
+}

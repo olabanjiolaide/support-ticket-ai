@@ -129,3 +129,7 @@ Read [the first learning guide](docs/01-data-contract.md), inspect `support_tick
 - `tests/`: validation and command-line behavior checks
 - `docs/`: practical learning notes
 - `.github/workflows/`: automated checks
+
+### Individual needs in a message
+
+Use **Break down message** on New request or a saved request to review exact text fragments, distinguish requests from context, and ask for separate category hypotheses. Saved-request breakdowns can be staged into a note and saved explicitly. This is a human-assisted review tool, not a new semantic model; see [the walkthrough and limitations](docs/39-request-breakdown-preview.md).

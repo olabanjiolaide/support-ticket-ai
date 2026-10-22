@@ -13,6 +13,7 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 from .predict import MAX_TEXT_LENGTH, TicketPredictor
+from .breakdown import BreakdownRequest, preview
 
 logger = logging.getLogger(__name__)
 
@@ -94,7 +95,7 @@ def create_app(model_dir: Path | None = None, semantic_model_dir: Path | None = 
 
     application = FastAPI(
         title="Support Ticket AI",
-        version="0.5.0",
+        version="0.6.0",
         description="Category suggestions requiring human review; scores are not calibrated.",
         lifespan=lifespan,
     )
@@ -136,6 +137,11 @@ def create_app(model_dir: Path | None = None, semantic_model_dir: Path | None = 
     def readiness(mode: Literal["word", "semantic"] = "word"):
         predictor = predictor_or_unavailable(mode)
         return {"status": "ready", "model_sha256": predictor.metadata["model_sha256"], "model_mode": mode}
+
+    @application.post("/breakdown")
+    def breakdown(body: BreakdownRequest):
+        """Stateless evidence fragments; works without a loaded model or database."""
+        return preview(body.text)
 
     @application.post("/predict", response_model=PredictionResponse)
     def predict(body: PredictionRequest):

@@ -11,6 +11,7 @@ on:
       - scripts/check_installed.py
       - scripts/check_workspace_ui.py
       - scripts/check_request_workflow.py
+      - scripts/check_breakdown_ui.py
       - .github/workflows/package.yml
   pull_request:
     paths:
@@ -22,6 +23,7 @@ on:
       - scripts/check_installed.py
       - scripts/check_workspace_ui.py
       - scripts/check_request_workflow.py
+      - scripts/check_breakdown_ui.py
       - .github/workflows/package.yml
 permissions:
   contents: read
@@ -63,6 +65,11 @@ jobs:
         run: |
           cd "$RUNNER_TEMP"
           "$RUNNER_TEMP/ticket-wheel-env/bin/python" "$GITHUB_WORKSPACE/scripts/check_request_workflow.py" --artifacts "$GITHUB_WORKSPACE/artifacts/request-workflow-checks"
+      - name: Check human-assisted request breakdown
+        shell: bash
+        run: |
+          cd "$RUNNER_TEMP"
+          "$RUNNER_TEMP/ticket-wheel-env/bin/python" "$GITHUB_WORKSPACE/scripts/check_breakdown_ui.py" --artifacts "$GITHUB_WORKSPACE/artifacts/breakdown-checks"
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -74,3 +81,4 @@ jobs:
             artifacts/package-checks/
             artifacts/workspace-ui-checks/
             artifacts/request-workflow-checks/
+            artifacts/breakdown-checks/

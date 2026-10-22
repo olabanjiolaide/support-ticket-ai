@@ -1,3 +1,4 @@
+import { initBreakdown } from './breakdown.js';
 import { describeResult } from './result-view.js';
 
 const byId = (id) => document.getElementById(id);
@@ -33,6 +34,15 @@ export function initWorkspace({getDraft, setSaving, onSaved}) {
   let config = null, route = 'new', detailId = null, current = null;
   let offset = 0, total = 0, listSequence = 0, detailSequence = 0, overviewSequence = 0;
   let saving = false, actionPending = false, saveMessage = '', saveKey = null, reviewer = '';
+  const savedBreakdown = initBreakdown(byId('saved-breakdown'),
+    () => current ? {text:current.message, mode:current.prediction?.model_mode || 'word', key:current.id} : null,
+    (text) => {
+      const field = byId('review-note');
+      if (field.disabled) return 'Wait for the current operation to complete.';
+      const combined = [field.value.trim(), text].filter(Boolean).join('\n\n');
+      if (Array.from(combined).length > 2000) return 'The combined note exceeds 2,000 characters. Save your existing note separately or shorten the clarification.';
+      field.value = combined; field.focus(); return null;
+    });
   const saveButton = byId('save-request');
   const savePrediction = byId('save-with-prediction');
 
@@ -148,6 +158,7 @@ export function initWorkspace({getDraft, setSaving, onSaved}) {
     byId('reopen-request').disabled = disabled || !resolved;
   }
   function renderDetail(record, preserveDraft = false) {
+    savedBreakdown.reset();
     current = record;
     byId('request-detail-content').hidden = false;
     byId('request-detail-title').textContent = shortId(record.id);
@@ -246,6 +257,7 @@ export function initWorkspace({getDraft, setSaving, onSaved}) {
     const isDetail = hash.startsWith('request/');
     route = isDetail ? 'detail' : Object.hasOwn(titles, hash) ? hash : 'new';
     detailId = isDetail ? hash.slice(8) : null;
+    savedBreakdown.reset();
     ++listSequence; ++detailSequence; ++overviewSequence;
     for (const [id, name] of [['classification-view','new'],['records-view','list'],['request-detail-view','detail'],['overview-view','overview']])
       byId(id).hidden = name === 'list' ? !['requests','review','in-progress','resolved'].includes(route) : route !== name;

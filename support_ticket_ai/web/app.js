@@ -1,3 +1,4 @@
+import { initBreakdown } from './breakdown.js';
 import { describeResult, technicalFacts } from "./result-view.js";
 import { initWorkspace } from "./workspace.js";
 
@@ -378,6 +379,9 @@ import { initWorkspace } from "./workspace.js";
     }
   });
 
+  const draftBreakdown = initBreakdown(byId('draft-breakdown'), () => ({text: input.value, mode: modelMode.value}));
+  document.addEventListener('ticket-edited', () => draftBreakdown.reset());
+  modelMode.addEventListener('change', () => draftBreakdown.reset());
   initWorkspace({
     getDraft: () => ({text: input.value, mode: modelMode.value, check_multiple_requests: modelMode.value === "semantic" && requestCheck.checked, ready, blocked: busy || savingRequest}),
     setSaving: (value) => { savingRequest = value; updateControls(); },
