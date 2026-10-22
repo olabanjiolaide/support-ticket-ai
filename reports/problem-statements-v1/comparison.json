@@ -1,0 +1,4537 @@
+{
+  "experiment": "problem-statements-v1",
+  "protocol_sha256": "8129fd66550161cc5590a79afaa0f563d2313924a78194d92bf4ddb9ae141c29",
+  "source_report_sha256": "d4961f7101160614ba4c8c09aa8ef67912536632f856d53585b696c1346c0ab1",
+  "contrast_sha256": "b83937c723aac76a0065a4f98dc68386945316fd8e9e55f26463e379be1237b9",
+  "before": {
+    "supported_rows": 66,
+    "supported_accepted": 52,
+    "correct_accepted": 49,
+    "incorrect_accepted": 3,
+    "review_rows": 8,
+    "review_withheld": 7,
+    "unsupported_suggestions": 0
+  },
+  "after": {
+    "supported_rows": 66,
+    "supported_accepted": 52,
+    "correct_accepted": 49,
+    "incorrect_accepted": 3,
+    "review_rows": 8,
+    "review_withheld": 8,
+    "unsupported_suggestions": 0
+  },
+  "development_gate_passed": true,
+  "newly_withheld_case_ids": [
+    "ambiguous-08"
+  ],
+  "contrast_matches": 30,
+  "contrast_rows": 30,
+  "cases": [
+    {
+      "case_id": "account-01",
+      "text": "I need to update the name on my customer profile.",
+      "expected_category": "ACCOUNT",
+      "before": {
+        "suggested_category": "ACCOUNT",
+        "model_top_category": "ACCOUNT",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.8395512292095186,
+        "scope_score": 0.9727604356898688,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": "ACCOUNT",
+        "model_top_category": "ACCOUNT",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.8395512292095186,
+        "scope_score": 0.9727604356898688,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "outside_fragment_bounds"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "account-02",
+      "text": "Where do I reset the password for my customer account?",
+      "expected_category": "ACCOUNT",
+      "before": {
+        "suggested_category": "ACCOUNT",
+        "model_top_category": "ACCOUNT",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.9870661888391147,
+        "scope_score": 0.9659009814545395,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": "ACCOUNT",
+        "model_top_category": "ACCOUNT",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.9870661888391147,
+        "scope_score": 0.9659009814545395,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "outside_fragment_bounds"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "account-03",
+      "text": "cant loggin to my acount pls help",
+      "expected_category": "ACCOUNT",
+      "before": {
+        "suggested_category": "ACCOUNT",
+        "model_top_category": "ACCOUNT",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.9571706818653296,
+        "scope_score": 0.9981310251837856,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": "ACCOUNT",
+        "model_top_category": "ACCOUNT",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.9571706818653296,
+        "scope_score": 0.9981310251837856,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "outside_fragment_bounds"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "account-04",
+      "text": "need to chnage my acount passwrod",
+      "expected_category": "ACCOUNT",
+      "before": {
+        "suggested_category": "ACCOUNT",
+        "model_top_category": "ACCOUNT",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.9711727870793011,
+        "scope_score": 0.9967091927634085,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": "ACCOUNT",
+        "model_top_category": "ACCOUNT",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.9711727870793011,
+        "scope_score": 0.9967091927634085,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "outside_fragment_bounds"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "account-05",
+      "text": "The email I registered with is no longer mine; where can I replace it?",
+      "expected_category": "ACCOUNT",
+      "before": {
+        "suggested_category": "ACCOUNT",
+        "model_top_category": "ACCOUNT",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.8636895508135974,
+        "scope_score": 0.9867168953493637,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": "ACCOUNT",
+        "model_top_category": "ACCOUNT",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.8636895508135974,
+        "scope_score": 0.9867168953493637,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "unrecognized_fragment"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "account-06",
+      "text": "I signed up here before but have forgotten the credentials to get back in.",
+      "expected_category": "ACCOUNT",
+      "before": {
+        "suggested_category": "ACCOUNT",
+        "model_top_category": "ACCOUNT",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.9833122399797084,
+        "scope_score": 0.998631337822147,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": "ACCOUNT",
+        "model_top_category": "ACCOUNT",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.9833122399797084,
+        "scope_score": 0.998631337822147,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "conditional_alternative_causal_or_quoted_skipped"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "cancel-01",
+      "text": "What penalties apply when an order is cancelled?",
+      "expected_category": "CANCEL",
+      "before": {
+        "suggested_category": "CANCEL",
+        "model_top_category": "CANCEL",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.7063874746466816,
+        "scope_score": 0.9339894940504008,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": "CANCEL",
+        "model_top_category": "CANCEL",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.7063874746466816,
+        "scope_score": 0.9339894940504008,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "conditional_alternative_causal_or_quoted_skipped"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "cancel-02",
+      "text": "Is cancelling a purchase free of charge?",
+      "expected_category": "CANCEL",
+      "before": {
+        "suggested_category": "CANCEL",
+        "model_top_category": "CANCEL",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.5958030488832244,
+        "scope_score": 0.979893156978192,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": "CANCEL",
+        "model_top_category": "CANCEL",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.5958030488832244,
+        "scope_score": 0.979893156978192,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "outside_fragment_bounds"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "cancel-03",
+      "text": "how much is the cancelation fee?",
+      "expected_category": "CANCEL",
+      "before": {
+        "suggested_category": "CANCEL",
+        "model_top_category": "CANCEL",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.963360276778124,
+        "scope_score": 0.9336905702201563,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": "CANCEL",
+        "model_top_category": "CANCEL",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.963360276778124,
+        "scope_score": 0.9336905702201563,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "outside_fragment_bounds"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "cancel-04",
+      "text": "will i pay a penelty for cancling?",
+      "expected_category": "CANCEL",
+      "before": {
+        "suggested_category": "REFUND",
+        "model_top_category": "REFUND",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.713019585946701,
+        "scope_score": 0.9966211076337282,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": "REFUND",
+        "model_top_category": "REFUND",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.713019585946701,
+        "scope_score": 0.9966211076337282,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "outside_fragment_bounds"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "cancel-05",
+      "text": "Before I call off my purchase, I need to know whether doing so costs anything.",
+      "expected_category": "CANCEL",
+      "before": {
+        "suggested_category": null,
+        "model_top_category": "DELIVERY",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.28046132969775767,
+        "scope_score": 0.9930014172828112,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "The experimental category cutoff withheld the suggestion; choose manually.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": null,
+        "model_top_category": "DELIVERY",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.28046132969775767,
+        "scope_score": 0.9930014172828112,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "The experimental category cutoff withheld the suggestion; choose manually.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "conditional_alternative_causal_or_quoted_skipped"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "cancel-06",
+      "text": "Would withdrawing my purchase leave me owing a fee?",
+      "expected_category": "CANCEL",
+      "before": {
+        "suggested_category": "CANCEL",
+        "model_top_category": "CANCEL",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.7998993889316663,
+        "scope_score": 0.9880318192829745,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": "CANCEL",
+        "model_top_category": "CANCEL",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.7998993889316663,
+        "scope_score": 0.9880318192829745,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "outside_fragment_bounds"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "contact-01",
+      "text": "Please provide your customer service email address.",
+      "expected_category": "CONTACT",
+      "before": {
+        "suggested_category": "CONTACT",
+        "model_top_category": "CONTACT",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.6704520542523605,
+        "scope_score": 0.9852262111230264,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": "CONTACT",
+        "model_top_category": "CONTACT",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.6704520542523605,
+        "scope_score": 0.9852262111230264,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "outside_fragment_bounds"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "contact-02",
+      "text": "How can I reach your support department by telephone?",
+      "expected_category": "CONTACT",
+      "before": {
+        "suggested_category": "CONTACT",
+        "model_top_category": "CONTACT",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.9464194684266264,
+        "scope_score": 0.9992698326189181,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": "CONTACT",
+        "model_top_category": "CONTACT",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.9464194684266264,
+        "scope_score": 0.9992698326189181,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "outside_fragment_bounds"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "contact-03",
+      "text": "need to speek to a suport agnet",
+      "expected_category": "CONTACT",
+      "before": {
+        "suggested_category": null,
+        "model_top_category": "CONTACT",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.4756089229426483,
+        "scope_score": 0.9973035524297701,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "The experimental category cutoff withheld the suggestion; choose manually.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": null,
+        "model_top_category": "CONTACT",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.4756089229426483,
+        "scope_score": 0.9973035524297701,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "The experimental category cutoff withheld the suggestion; choose manually.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "outside_fragment_bounds"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "contact-04",
+      "text": "whats ur custmer servce number",
+      "expected_category": "CONTACT",
+      "before": {
+        "suggested_category": null,
+        "model_top_category": "CONTACT",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.47636385561281996,
+        "scope_score": 0.9941636482504373,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "The experimental category cutoff withheld the suggestion; choose manually.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": null,
+        "model_top_category": "CONTACT",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.47636385561281996,
+        "scope_score": 0.9941636482504373,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "The experimental category cutoff withheld the suggestion; choose manually.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "outside_fragment_bounds"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "contact-05",
+      "text": "I would rather discuss this with someone who works for your company.",
+      "expected_category": "CONTACT",
+      "before": {
+        "suggested_category": "FEEDBACK",
+        "model_top_category": "FEEDBACK",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.9014643700410189,
+        "scope_score": 0.982864279377561,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": "FEEDBACK",
+        "model_top_category": "FEEDBACK",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.9014643700410189,
+        "scope_score": 0.982864279377561,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "outside_fragment_bounds"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "contact-06",
+      "text": "Can a member of your customer care team take over this conversation?",
+      "expected_category": "CONTACT",
+      "before": {
+        "suggested_category": "CONTACT",
+        "model_top_category": "CONTACT",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.951570014299048,
+        "scope_score": 0.7743625583277979,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": "CONTACT",
+        "model_top_category": "CONTACT",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.951570014299048,
+        "scope_score": 0.7743625583277979,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "outside_fragment_bounds"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "delivery-01",
+      "text": "Is weekend delivery available?",
+      "expected_category": "DELIVERY",
+      "before": {
+        "suggested_category": "DELIVERY",
+        "model_top_category": "DELIVERY",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.9635566279919718,
+        "scope_score": 0.8757212793553589,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": "DELIVERY",
+        "model_top_category": "DELIVERY",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.9635566279919718,
+        "scope_score": 0.8757212793553589,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "outside_fragment_bounds"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "delivery-02",
+      "text": "What is the estimated delivery time for the express option?",
+      "expected_category": "DELIVERY",
+      "before": {
+        "suggested_category": "DELIVERY",
+        "model_top_category": "DELIVERY",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.9855907719175137,
+        "scope_score": 0.9743158939127057,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": "DELIVERY",
+        "model_top_category": "DELIVERY",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.9855907719175137,
+        "scope_score": 0.9743158939127057,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "outside_fragment_bounds"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "delivery-03",
+      "text": "do u ofer same day delivry",
+      "expected_category": "DELIVERY",
+      "before": {
+        "suggested_category": null,
+        "model_top_category": "ORDER",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.27237351746446065,
+        "scope_score": 0.6917725083021402,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "The experimental category cutoff withheld the suggestion; choose manually.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": null,
+        "model_top_category": "ORDER",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.27237351746446065,
+        "scope_score": 0.6917725083021402,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "The experimental category cutoff withheld the suggestion; choose manually.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "outside_fragment_bounds"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "delivery-04",
+      "text": "how long dose standard delivry take",
+      "expected_category": "DELIVERY",
+      "before": {
+        "suggested_category": "DELIVERY",
+        "model_top_category": "DELIVERY",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.5197216053355549,
+        "scope_score": 0.9882193983224394,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": "DELIVERY",
+        "model_top_category": "DELIVERY",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.5197216053355549,
+        "scope_score": 0.9882193983224394,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "outside_fragment_bounds"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "delivery-05",
+      "text": "I need something to arrive tomorrow; is there a service level that can do that?",
+      "expected_category": "DELIVERY",
+      "before": {
+        "suggested_category": "DELIVERY",
+        "model_top_category": "DELIVERY",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.9037011304944472,
+        "scope_score": 0.9896452356211993,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": "DELIVERY",
+        "model_top_category": "DELIVERY",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.9037011304944472,
+        "scope_score": 0.9896452356211993,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "unrecognized_fragment"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "delivery-06",
+      "text": "Before choosing how it arrives, can you explain your available delivery speeds?",
+      "expected_category": "DELIVERY",
+      "before": {
+        "suggested_category": "DELIVERY",
+        "model_top_category": "DELIVERY",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.9967481300679081,
+        "scope_score": 0.7481065463308978,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": "DELIVERY",
+        "model_top_category": "DELIVERY",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.9967481300679081,
+        "scope_score": 0.7481065463308978,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "conditional_alternative_causal_or_quoted_skipped"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "feedback-01",
+      "text": "How do I submit a complaint about your service?",
+      "expected_category": "FEEDBACK",
+      "before": {
+        "suggested_category": "FEEDBACK",
+        "model_top_category": "FEEDBACK",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.980652177848281,
+        "scope_score": 0.9953179486215822,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": "FEEDBACK",
+        "model_top_category": "FEEDBACK",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.980652177848281,
+        "scope_score": 0.9953179486215822,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "outside_fragment_bounds"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "feedback-02",
+      "text": "I want to leave positive feedback about your helpful staff.",
+      "expected_category": "FEEDBACK",
+      "before": {
+        "suggested_category": "FEEDBACK",
+        "model_top_category": "FEEDBACK",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.9765571030131261,
+        "scope_score": 0.9521250041416462,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": "FEEDBACK",
+        "model_top_category": "FEEDBACK",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.9765571030131261,
+        "scope_score": 0.9521250041416462,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "outside_fragment_bounds"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "feedback-03",
+      "text": "i wana file a complant about ur servce",
+      "expected_category": "FEEDBACK",
+      "before": {
+        "suggested_category": "FEEDBACK",
+        "model_top_category": "FEEDBACK",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.7450965665272463,
+        "scope_score": 0.8795689105571612,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": "FEEDBACK",
+        "model_top_category": "FEEDBACK",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.7450965665272463,
+        "scope_score": 0.8795689105571612,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "outside_fragment_bounds"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "feedback-04",
+      "text": "where can i leav a reveiw of this shop",
+      "expected_category": "FEEDBACK",
+      "before": {
+        "suggested_category": "ORDER",
+        "model_top_category": "ORDER",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.7242755249073485,
+        "scope_score": 0.9934624733603931,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": "ORDER",
+        "model_top_category": "ORDER",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.7242755249073485,
+        "scope_score": 0.9934624733603931,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "outside_fragment_bounds"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "feedback-05",
+      "text": "Your colleague was exceptionally helpful and I want that praise recorded.",
+      "expected_category": "FEEDBACK",
+      "before": {
+        "suggested_category": "FEEDBACK",
+        "model_top_category": "FEEDBACK",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.6556421134902141,
+        "scope_score": 0.7067620001070412,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": "FEEDBACK",
+        "model_top_category": "FEEDBACK",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.6556421134902141,
+        "scope_score": 0.7067620001070412,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "unrecognized_fragment"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "feedback-06",
+      "text": "The way your staff treated me was unacceptable; where can I report my experience?",
+      "expected_category": "FEEDBACK",
+      "before": {
+        "suggested_category": "FEEDBACK",
+        "model_top_category": "FEEDBACK",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.8798439699138277,
+        "scope_score": 0.9878478293894473,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": "FEEDBACK",
+        "model_top_category": "FEEDBACK",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.8798439699138277,
+        "scope_score": 0.9878478293894473,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "unrecognized_fragment"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "invoice-01",
+      "text": "Can I download a PDF invoice for my purchase?",
+      "expected_category": "INVOICE",
+      "before": {
+        "suggested_category": "INVOICE",
+        "model_top_category": "INVOICE",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.9126207948539039,
+        "scope_score": 0.9695471854490517,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": "INVOICE",
+        "model_top_category": "INVOICE",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.9126207948539039,
+        "scope_score": 0.9695471854490517,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "outside_fragment_bounds"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "invoice-02",
+      "text": "The invoice is missing from my confirmation email.",
+      "expected_category": "INVOICE",
+      "before": {
+        "suggested_category": "INVOICE",
+        "model_top_category": "INVOICE",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.9176697279012714,
+        "scope_score": 0.9957230818717753,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": "INVOICE",
+        "model_top_category": "INVOICE",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.9176697279012714,
+        "scope_score": 0.9957230818717753,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "outside_fragment_bounds"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "invoice-03",
+      "text": "pls send my invioce again",
+      "expected_category": "INVOICE",
+      "before": {
+        "suggested_category": null,
+        "model_top_category": "FEEDBACK",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.370383695477159,
+        "scope_score": 0.9625478508517425,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "The experimental category cutoff withheld the suggestion; choose manually.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": null,
+        "model_top_category": "FEEDBACK",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.370383695477159,
+        "scope_score": 0.9625478508517425,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "The experimental category cutoff withheld the suggestion; choose manually.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "outside_fragment_bounds"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "invoice-04",
+      "text": "where is the invoce for last weeks purchse",
+      "expected_category": "INVOICE",
+      "before": {
+        "suggested_category": null,
+        "model_top_category": "DELIVERY",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.26215057594650015,
+        "scope_score": 0.9053624480555988,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "The experimental category cutoff withheld the suggestion; choose manually.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": null,
+        "model_top_category": "DELIVERY",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.26215057594650015,
+        "scope_score": 0.9053624480555988,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "The experimental category cutoff withheld the suggestion; choose manually.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "outside_fragment_bounds"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "invoice-05",
+      "text": "My accountant needs the itemized billing document for this purchase.",
+      "expected_category": "INVOICE",
+      "before": {
+        "suggested_category": "INVOICE",
+        "model_top_category": "INVOICE",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.8594391600902671,
+        "scope_score": 0.9883852938045485,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": "INVOICE",
+        "model_top_category": "INVOICE",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.8594391600902671,
+        "scope_score": 0.9883852938045485,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "outside_fragment_bounds"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "invoice-06",
+      "text": "I need the document showing what you billed me so I can submit my expenses.",
+      "expected_category": "INVOICE",
+      "before": {
+        "suggested_category": "INVOICE",
+        "model_top_category": "INVOICE",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.8111307873783448,
+        "scope_score": 0.9973490359026657,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": "INVOICE",
+        "model_top_category": "INVOICE",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.8111307873783448,
+        "scope_score": 0.9973490359026657,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "outside_fragment_bounds"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "order-01",
+      "text": "Please remove one item from my existing order.",
+      "expected_category": "ORDER",
+      "before": {
+        "suggested_category": "ORDER",
+        "model_top_category": "ORDER",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.9605076472121001,
+        "scope_score": 0.9991328918274329,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": "ORDER",
+        "model_top_category": "ORDER",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.9605076472121001,
+        "scope_score": 0.9991328918274329,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "outside_fragment_bounds"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "order-02",
+      "text": "How can I see the status of an order I already placed?",
+      "expected_category": "ORDER",
+      "before": {
+        "suggested_category": "ORDER",
+        "model_top_category": "ORDER",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.6494143172318736,
+        "scope_score": 0.9992452177435114,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": "ORDER",
+        "model_top_category": "ORDER",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.6494143172318736,
+        "scope_score": 0.9992452177435114,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "outside_fragment_bounds"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "order-03",
+      "text": "wanna cancle my ordar before it ships",
+      "expected_category": "ORDER",
+      "before": {
+        "suggested_category": null,
+        "model_top_category": "ORDER",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.36213488435377517,
+        "scope_score": 0.9729760317658259,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "The experimental category cutoff withheld the suggestion; choose manually.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": null,
+        "model_top_category": "ORDER",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.36213488435377517,
+        "scope_score": 0.9729760317658259,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "The experimental category cutoff withheld the suggestion; choose manually.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "conditional_alternative_causal_or_quoted_skipped"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "order-04",
+      "text": "can i add an itme to my oder",
+      "expected_category": "ORDER",
+      "before": {
+        "suggested_category": null,
+        "model_top_category": "FEEDBACK",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.4426119581209505,
+        "scope_score": 0.9356575442216685,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "The experimental category cutoff withheld the suggestion; choose manually.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": null,
+        "model_top_category": "FEEDBACK",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.4426119581209505,
+        "scope_score": 0.9356575442216685,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "The experimental category cutoff withheld the suggestion; choose manually.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "outside_fragment_bounds"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "order-05",
+      "text": "I bought two of the same item by mistake; can you amend the purchase to just one?",
+      "expected_category": "ORDER",
+      "before": {
+        "suggested_category": "ORDER",
+        "model_top_category": "ORDER",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.6154701531093121,
+        "scope_score": 0.9957915086919014,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": "ORDER",
+        "model_top_category": "ORDER",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.6154701531093121,
+        "scope_score": 0.9957915086919014,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "unrecognized_fragment"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "order-06",
+      "text": "I placed a purchase this morning and now need to track its progress.",
+      "expected_category": "ORDER",
+      "before": {
+        "suggested_category": null,
+        "model_top_category": "ORDER",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.4385522777966355,
+        "scope_score": 0.9946014316047038,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "The experimental category cutoff withheld the suggestion; choose manually.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": null,
+        "model_top_category": "ORDER",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.4385522777966355,
+        "scope_score": 0.9946014316047038,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "The experimental category cutoff withheld the suggestion; choose manually.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "unrecognized_fragment"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "payment-01",
+      "text": "Can I pay using a debit card?",
+      "expected_category": "PAYMENT",
+      "before": {
+        "suggested_category": "PAYMENT",
+        "model_top_category": "PAYMENT",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.6900391594033833,
+        "scope_score": 0.9650412386648548,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": "PAYMENT",
+        "model_top_category": "PAYMENT",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.6900391594033833,
+        "scope_score": 0.9650412386648548,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "outside_fragment_bounds"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "payment-02",
+      "text": "My card was rejected when I tried to complete checkout.",
+      "expected_category": "PAYMENT",
+      "before": {
+        "suggested_category": "PAYMENT",
+        "model_top_category": "PAYMENT",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.5341979452035066,
+        "scope_score": 0.9929859655558457,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": "PAYMENT",
+        "model_top_category": "PAYMENT",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.5341979452035066,
+        "scope_score": 0.9929859655558457,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "conditional_alternative_causal_or_quoted_skipped"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "payment-03",
+      "text": "paymnt keeps failng at chekout",
+      "expected_category": "PAYMENT",
+      "before": {
+        "suggested_category": "PAYMENT",
+        "model_top_category": "PAYMENT",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.7850905045152371,
+        "scope_score": 0.9229575582324372,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": "PAYMENT",
+        "model_top_category": "PAYMENT",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.7850905045152371,
+        "scope_score": 0.9229575582324372,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "outside_fragment_bounds"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "payment-04",
+      "text": "do u acept bank tranfers as paymnt",
+      "expected_category": "PAYMENT",
+      "before": {
+        "suggested_category": "PAYMENT",
+        "model_top_category": "PAYMENT",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.7330453729764305,
+        "scope_score": 0.9845006988926436,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": "PAYMENT",
+        "model_top_category": "PAYMENT",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.7330453729764305,
+        "scope_score": 0.9845006988926436,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "outside_fragment_bounds"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "payment-05",
+      "text": "I have tried three times to pay for the basket, but the transaction will not go through.",
+      "expected_category": "PAYMENT",
+      "before": {
+        "suggested_category": null,
+        "model_top_category": "PAYMENT",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.41144259700769903,
+        "scope_score": 0.9946782755606671,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "The experimental category cutoff withheld the suggestion; choose manually.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": null,
+        "model_top_category": "PAYMENT",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.41144259700769903,
+        "scope_score": 0.9946782755606671,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "The experimental category cutoff withheld the suggestion; choose manually.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "unrecognized_fragment"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "payment-06",
+      "text": "The same purchase appears twice on my bank statement; please investigate the duplicate charge.",
+      "expected_category": "PAYMENT",
+      "before": {
+        "suggested_category": null,
+        "model_top_category": "ACCOUNT",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.23252597272623635,
+        "scope_score": 0.9349807270103418,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "The experimental category cutoff withheld the suggestion; choose manually.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": null,
+        "model_top_category": "ACCOUNT",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.23252597272623635,
+        "scope_score": 0.9349807270103418,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "The experimental category cutoff withheld the suggestion; choose manually.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "unrecognized_fragment"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "refund-01",
+      "text": "Where can I check the progress of my refund?",
+      "expected_category": "REFUND",
+      "before": {
+        "suggested_category": "REFUND",
+        "model_top_category": "REFUND",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.9888251002283011,
+        "scope_score": 0.9981085594094127,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": "REFUND",
+        "model_top_category": "REFUND",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.9888251002283011,
+        "scope_score": 0.9981085594094127,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "outside_fragment_bounds"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "refund-02",
+      "text": "Am I eligible for a refund on a damaged purchase?",
+      "expected_category": "REFUND",
+      "before": {
+        "suggested_category": "REFUND",
+        "model_top_category": "REFUND",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.9784727074881404,
+        "scope_score": 0.9924459722583316,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": "REFUND",
+        "model_top_category": "REFUND",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.9784727074881404,
+        "scope_score": 0.9924459722583316,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "outside_fragment_bounds"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "refund-03",
+      "text": "my refnd hasnt arived yet",
+      "expected_category": "REFUND",
+      "before": {
+        "suggested_category": "REFUND",
+        "model_top_category": "REFUND",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.7139365371419528,
+        "scope_score": 0.9977330705123238,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": "REFUND",
+        "model_top_category": "REFUND",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.7139365371419528,
+        "scope_score": 0.9977330705123238,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "outside_fragment_bounds"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "refund-04",
+      "text": "how do i requst my mony back",
+      "expected_category": "REFUND",
+      "before": {
+        "suggested_category": "REFUND",
+        "model_top_category": "REFUND",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.9207337176095941,
+        "scope_score": 0.9985664255247533,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": "REFUND",
+        "model_top_category": "REFUND",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.9207337176095941,
+        "scope_score": 0.9985664255247533,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "outside_fragment_bounds"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "refund-05",
+      "text": "You approved returning my money last week, but nothing has reached my bank.",
+      "expected_category": "REFUND",
+      "before": {
+        "suggested_category": "REFUND",
+        "model_top_category": "REFUND",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.6526327033436214,
+        "scope_score": 0.9981442694538784,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": "REFUND",
+        "model_top_category": "REFUND",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.6526327033436214,
+        "scope_score": 0.9981442694538784,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "unrecognized_fragment"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "refund-06",
+      "text": "The product arrived broken and I would like the amount I paid returned.",
+      "expected_category": "REFUND",
+      "before": {
+        "suggested_category": null,
+        "model_top_category": "REFUND",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.39636247768042004,
+        "scope_score": 0.5943601355026322,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "The experimental category cutoff withheld the suggestion; choose manually.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": null,
+        "model_top_category": "REFUND",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.39636247768042004,
+        "scope_score": 0.5943601355026322,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "The experimental category cutoff withheld the suggestion; choose manually.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "unrecognized_fragment"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "shipping-01",
+      "text": "Can I edit the postal code in my shipping address?",
+      "expected_category": "SHIPPING",
+      "before": {
+        "suggested_category": "SHIPPING",
+        "model_top_category": "SHIPPING",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.9768812065451292,
+        "scope_score": 0.971062886703359,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": "SHIPPING",
+        "model_top_category": "SHIPPING",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.9768812065451292,
+        "scope_score": 0.971062886703359,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "outside_fragment_bounds"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "shipping-02",
+      "text": "How do I add a second shipping address to my profile?",
+      "expected_category": "SHIPPING",
+      "before": {
+        "suggested_category": "SHIPPING",
+        "model_top_category": "SHIPPING",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.9735498931643497,
+        "scope_score": 0.983087788271532,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": "SHIPPING",
+        "model_top_category": "SHIPPING",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.9735498931643497,
+        "scope_score": 0.983087788271532,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "outside_fragment_bounds"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "shipping-03",
+      "text": "need to corect my shiping adress",
+      "expected_category": "SHIPPING",
+      "before": {
+        "suggested_category": "SHIPPING",
+        "model_top_category": "SHIPPING",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.8917657743572169,
+        "scope_score": 0.9987337346160157,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": "SHIPPING",
+        "model_top_category": "SHIPPING",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.8917657743572169,
+        "scope_score": 0.9987337346160157,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "outside_fragment_bounds"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "shipping-04",
+      "text": "wrong zip in delivry adress pls fix",
+      "expected_category": "SHIPPING",
+      "before": {
+        "suggested_category": "SHIPPING",
+        "model_top_category": "SHIPPING",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.7163259570500472,
+        "scope_score": 0.9836587257389214,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": "SHIPPING",
+        "model_top_category": "SHIPPING",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.7163259570500472,
+        "scope_score": 0.9836587257389214,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "outside_fragment_bounds"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "shipping-05",
+      "text": "I moved house; where do I replace the address used for my parcels?",
+      "expected_category": "SHIPPING",
+      "before": {
+        "suggested_category": "SHIPPING",
+        "model_top_category": "SHIPPING",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.981881803498538,
+        "scope_score": 0.9701812624643835,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": "SHIPPING",
+        "model_top_category": "SHIPPING",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.981881803498538,
+        "scope_score": 0.9701812624643835,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "unrecognized_fragment"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "shipping-06",
+      "text": "The destination has apartment 12 instead of 21; can you correct that address?",
+      "expected_category": "SHIPPING",
+      "before": {
+        "suggested_category": "SHIPPING",
+        "model_top_category": "SHIPPING",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.956886756096211,
+        "scope_score": 0.9443597098672768,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": "SHIPPING",
+        "model_top_category": "SHIPPING",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.956886756096211,
+        "scope_score": 0.9443597098672768,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "conditional_alternative_causal_or_quoted_skipped"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "subscription-01",
+      "text": "Please remove me from your marketing newsletter.",
+      "expected_category": "SUBSCRIPTION",
+      "before": {
+        "suggested_category": "SUBSCRIPTION",
+        "model_top_category": "SUBSCRIPTION",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.7829619336732475,
+        "scope_score": 0.8867332389751675,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": "SUBSCRIPTION",
+        "model_top_category": "SUBSCRIPTION",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.7829619336732475,
+        "scope_score": 0.8867332389751675,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "outside_fragment_bounds"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "subscription-02",
+      "text": "Where do I sign up for your email newsletter?",
+      "expected_category": "SUBSCRIPTION",
+      "before": {
+        "suggested_category": "SUBSCRIPTION",
+        "model_top_category": "SUBSCRIPTION",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.9526964541952756,
+        "scope_score": 0.919303944627695,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": "SUBSCRIPTION",
+        "model_top_category": "SUBSCRIPTION",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.9526964541952756,
+        "scope_score": 0.919303944627695,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "outside_fragment_bounds"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "subscription-03",
+      "text": "unsubscrbe me frm ur newslter",
+      "expected_category": "SUBSCRIPTION",
+      "before": {
+        "suggested_category": "SUBSCRIPTION",
+        "model_top_category": "SUBSCRIPTION",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.5682621750244241,
+        "scope_score": 0.9178938622729471,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": "SUBSCRIPTION",
+        "model_top_category": "SUBSCRIPTION",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.5682621750244241,
+        "scope_score": 0.9178938622729471,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "outside_fragment_bounds"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "subscription-04",
+      "text": "i wana subcribe to the newsleter",
+      "expected_category": "SUBSCRIPTION",
+      "before": {
+        "suggested_category": null,
+        "model_top_category": "SUBSCRIPTION",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.6425138830057637,
+        "scope_score": 0.29646097519524994,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "The experimental scope gate withheld this request; review its intent manually.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": null,
+        "model_top_category": "SUBSCRIPTION",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.6425138830057637,
+        "scope_score": 0.29646097519524994,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "The experimental scope gate withheld this request; review its intent manually.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "outside_fragment_bounds"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "subscription-05",
+      "text": "I would like your store announcements to arrive in my inbox regularly.",
+      "expected_category": "SUBSCRIPTION",
+      "before": {
+        "suggested_category": null,
+        "model_top_category": "DELIVERY",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.34323356100597346,
+        "scope_score": 0.8165672245213554,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "The experimental category cutoff withheld the suggestion; choose manually.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": null,
+        "model_top_category": "DELIVERY",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.34323356100597346,
+        "scope_score": 0.8165672245213554,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "The experimental category cutoff withheld the suggestion; choose manually.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "outside_fragment_bounds"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "subscription-06",
+      "text": "I no longer want the promotional emails your company keeps sending.",
+      "expected_category": "SUBSCRIPTION",
+      "before": {
+        "suggested_category": "SUBSCRIPTION",
+        "model_top_category": "SUBSCRIPTION",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.5592795108800378,
+        "scope_score": 0.9826804161693593,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": "SUBSCRIPTION",
+        "model_top_category": "SUBSCRIPTION",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.5592795108800378,
+        "scope_score": 0.9826804161693593,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "outside_fragment_bounds"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "general_knowledge-01",
+      "text": "Why does ice float on water?",
+      "expected_category": "UNSUPPORTED",
+      "before": {
+        "suggested_category": null,
+        "model_top_category": "ACCOUNT",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.7196362025954156,
+        "scope_score": 0.00883945255653551,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "The experimental scope gate withheld this request; review its intent manually.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": null,
+        "model_top_category": "ACCOUNT",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.7196362025954156,
+        "scope_score": 0.00883945255653551,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "The experimental scope gate withheld this request; review its intent manually.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "outside_fragment_bounds"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "general_knowledge-02",
+      "text": "Explain how a rainbow forms.",
+      "expected_category": "UNSUPPORTED",
+      "before": {
+        "suggested_category": null,
+        "model_top_category": "ACCOUNT",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.5973547514006343,
+        "scope_score": 0.007956881076786049,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "The experimental scope gate withheld this request; review its intent manually.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": null,
+        "model_top_category": "ACCOUNT",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.5973547514006343,
+        "scope_score": 0.007956881076786049,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "The experimental scope gate withheld this request; review its intent manually.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "outside_fragment_bounds"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "general_knowledge-03",
+      "text": "Who invented the telescope?",
+      "expected_category": "UNSUPPORTED",
+      "before": {
+        "suggested_category": null,
+        "model_top_category": "ORDER",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.44593298645731944,
+        "scope_score": 0.06596485595656931,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "The experimental scope gate withheld this request; review its intent manually.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": null,
+        "model_top_category": "ORDER",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.44593298645731944,
+        "scope_score": 0.06596485595656931,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "The experimental scope gate withheld this request; review its intent manually.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "outside_fragment_bounds"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "general_knowledge-04",
+      "text": "How many sides does a hexagon have?",
+      "expected_category": "UNSUPPORTED",
+      "before": {
+        "suggested_category": null,
+        "model_top_category": "ACCOUNT",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.304146313895285,
+        "scope_score": 0.028942924026102212,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "The experimental scope gate withheld this request; review its intent manually.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": null,
+        "model_top_category": "ACCOUNT",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.304146313895285,
+        "scope_score": 0.028942924026102212,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "The experimental scope gate withheld this request; review its intent manually.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "outside_fragment_bounds"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "general_knowledge-05",
+      "text": "What causes the seasons?",
+      "expected_category": "UNSUPPORTED",
+      "before": {
+        "suggested_category": null,
+        "model_top_category": "ACCOUNT",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.3096625474356092,
+        "scope_score": 0.008104944051797625,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "The experimental scope gate withheld this request; review its intent manually.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": null,
+        "model_top_category": "ACCOUNT",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.3096625474356092,
+        "scope_score": 0.008104944051797625,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "The experimental scope gate withheld this request; review its intent manually.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "outside_fragment_bounds"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "general_knowledge-06",
+      "text": "Describe the life cycle of a butterfly.",
+      "expected_category": "UNSUPPORTED",
+      "before": {
+        "suggested_category": null,
+        "model_top_category": "ORDER",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.3114023645488267,
+        "scope_score": 0.015124427326056678,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "The experimental scope gate withheld this request; review its intent manually.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": null,
+        "model_top_category": "ORDER",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.3114023645488267,
+        "scope_score": 0.015124427326056678,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "The experimental scope gate withheld this request; review its intent manually.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "outside_fragment_bounds"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "general_knowledge-07",
+      "text": "How do volcanoes erupt?",
+      "expected_category": "UNSUPPORTED",
+      "before": {
+        "suggested_category": null,
+        "model_top_category": "ACCOUNT",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.3420035508028257,
+        "scope_score": 0.060388413316062595,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "The experimental scope gate withheld this request; review its intent manually.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": null,
+        "model_top_category": "ACCOUNT",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.3420035508028257,
+        "scope_score": 0.060388413316062595,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "The experimental scope gate withheld this request; review its intent manually.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "outside_fragment_bounds"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "general_knowledge-08",
+      "text": "What is the difference between a comet and an asteroid?",
+      "expected_category": "UNSUPPORTED",
+      "before": {
+        "suggested_category": null,
+        "model_top_category": "DELIVERY",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.26551221945084574,
+        "scope_score": 0.04585952665315507,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "The experimental scope gate withheld this request; review its intent manually.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": null,
+        "model_top_category": "DELIVERY",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.26551221945084574,
+        "scope_score": 0.04585952665315507,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "The experimental scope gate withheld this request; review its intent manually.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "unrecognized_fragment"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "keyword_trap-01",
+      "text": "Write a limerick about an unpaid invoice.",
+      "expected_category": "UNSUPPORTED",
+      "before": {
+        "suggested_category": null,
+        "model_top_category": "INVOICE",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.383413988153147,
+        "scope_score": 0.019814774590596773,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "The experimental scope gate withheld this request; review its intent manually.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": null,
+        "model_top_category": "INVOICE",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.383413988153147,
+        "scope_score": 0.019814774590596773,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "The experimental scope gate withheld this request; review its intent manually.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "outside_fragment_bounds"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "keyword_trap-02",
+      "text": "Explain subscription pricing in an economics lecture.",
+      "expected_category": "UNSUPPORTED",
+      "before": {
+        "suggested_category": null,
+        "model_top_category": "ORDER",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.4225126017672297,
+        "scope_score": 0.05703521238815712,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "The experimental scope gate withheld this request; review its intent manually.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": null,
+        "model_top_category": "ORDER",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.4225126017672297,
+        "scope_score": 0.05703521238815712,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "The experimental scope gate withheld this request; review its intent manually.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "outside_fragment_bounds"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "keyword_trap-03",
+      "text": "Translate the phrase shipping address into Italian.",
+      "expected_category": "UNSUPPORTED",
+      "before": {
+        "suggested_category": null,
+        "model_top_category": "SHIPPING",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.6850660804535625,
+        "scope_score": 0.011884175510668116,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "The experimental scope gate withheld this request; review its intent manually.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": null,
+        "model_top_category": "SHIPPING",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.6850660804535625,
+        "scope_score": 0.011884175510668116,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "The experimental scope gate withheld this request; review its intent manually.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "outside_fragment_bounds"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "keyword_trap-04",
+      "text": "Make a crossword clue whose answer is refund.",
+      "expected_category": "UNSUPPORTED",
+      "before": {
+        "suggested_category": null,
+        "model_top_category": "REFUND",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.767785733611524,
+        "scope_score": 0.06869881136006162,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "The experimental scope gate withheld this request; review its intent manually.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": null,
+        "model_top_category": "REFUND",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.767785733611524,
+        "scope_score": 0.06869881136006162,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "The experimental scope gate withheld this request; review its intent manually.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "outside_fragment_bounds"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "keyword_trap-05",
+      "text": "Write a fantasy tale about a cancelled royal order.",
+      "expected_category": "UNSUPPORTED",
+      "before": {
+        "suggested_category": null,
+        "model_top_category": "ORDER",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.9275803580615696,
+        "scope_score": 0.022381524026411248,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "The experimental scope gate withheld this request; review its intent manually.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": null,
+        "model_top_category": "ORDER",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.9275803580615696,
+        "scope_score": 0.022381524026411248,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "The experimental scope gate withheld this request; review its intent manually.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "outside_fragment_bounds"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "keyword_trap-06",
+      "text": "Create a poem about a delivery robot falling in love.",
+      "expected_category": "UNSUPPORTED",
+      "before": {
+        "suggested_category": null,
+        "model_top_category": "DELIVERY",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.403738181827661,
+        "scope_score": 0.0027321060440818057,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "The experimental scope gate withheld this request; review its intent manually.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": null,
+        "model_top_category": "DELIVERY",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.403738181827661,
+        "scope_score": 0.0027321060440818057,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "The experimental scope gate withheld this request; review its intent manually.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "outside_fragment_bounds"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "keyword_trap-07",
+      "text": "Explain the history of credit card payment networks.",
+      "expected_category": "UNSUPPORTED",
+      "before": {
+        "suggested_category": null,
+        "model_top_category": "PAYMENT",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.9149093409107095,
+        "scope_score": 0.18957212590810102,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "The experimental scope gate withheld this request; review its intent manually.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": null,
+        "model_top_category": "PAYMENT",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.9149093409107095,
+        "scope_score": 0.18957212590810102,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "The experimental scope gate withheld this request; review its intent manually.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "outside_fragment_bounds"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "keyword_trap-08",
+      "text": "Invent dialogue for a fictional customer support agent.",
+      "expected_category": "UNSUPPORTED",
+      "before": {
+        "suggested_category": null,
+        "model_top_category": "CONTACT",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.9487700022218184,
+        "scope_score": 0.004792718482734881,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "The experimental scope gate withheld this request; review its intent manually.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": null,
+        "model_top_category": "CONTACT",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.9487700022218184,
+        "scope_score": 0.004792718482734881,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "The experimental scope gate withheld this request; review its intent manually.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "outside_fragment_bounds"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "other_task-01",
+      "text": "Debug this Python loop: for x in range(4) print(x).",
+      "expected_category": "UNSUPPORTED",
+      "before": {
+        "suggested_category": null,
+        "model_top_category": "ACCOUNT",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.39198160224182776,
+        "scope_score": 0.034233409983380536,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "The experimental scope gate withheld this request; review its intent manually.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": null,
+        "model_top_category": "ACCOUNT",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.39198160224182776,
+        "scope_score": 0.034233409983380536,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "The experimental scope gate withheld this request; review its intent manually.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "outside_fragment_bounds"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "other_task-02",
+      "text": "Summarize a scientific paper about solar panels.",
+      "expected_category": "UNSUPPORTED",
+      "before": {
+        "suggested_category": null,
+        "model_top_category": "FEEDBACK",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.8220149852276887,
+        "scope_score": 0.04236123711055151,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "The experimental scope gate withheld this request; review its intent manually.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": null,
+        "model_top_category": "FEEDBACK",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.8220149852276887,
+        "scope_score": 0.04236123711055151,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "The experimental scope gate withheld this request; review its intent manually.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "outside_fragment_bounds"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "other_task-03",
+      "text": "Plan a three day sightseeing trip to Rome.",
+      "expected_category": "UNSUPPORTED",
+      "before": {
+        "suggested_category": null,
+        "model_top_category": "DELIVERY",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.5031026294533869,
+        "scope_score": 0.035267892666739575,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "The experimental scope gate withheld this request; review its intent manually.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": null,
+        "model_top_category": "DELIVERY",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.5031026294533869,
+        "scope_score": 0.035267892666739575,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "The experimental scope gate withheld this request; review its intent manually.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "outside_fragment_bounds"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "other_task-04",
+      "text": "Generate ten names for a fictional spaceship.",
+      "expected_category": "UNSUPPORTED",
+      "before": {
+        "suggested_category": null,
+        "model_top_category": "ORDER",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.28680664774437814,
+        "scope_score": 0.0006292418080793283,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "The experimental scope gate withheld this request; review its intent manually.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": null,
+        "model_top_category": "ORDER",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.28680664774437814,
+        "scope_score": 0.0006292418080793283,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "The experimental scope gate withheld this request; review its intent manually.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "outside_fragment_bounds"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "other_task-05",
+      "text": "Teach me to play a C major chord.",
+      "expected_category": "UNSUPPORTED",
+      "before": {
+        "suggested_category": null,
+        "model_top_category": "ORDER",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.3133918394751802,
+        "scope_score": 0.01737466696648471,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "The experimental scope gate withheld this request; review its intent manually.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": null,
+        "model_top_category": "ORDER",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.3133918394751802,
+        "scope_score": 0.01737466696648471,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "The experimental scope gate withheld this request; review its intent manually.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "outside_fragment_bounds"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "other_task-06",
+      "text": "Convert 45 degrees Celsius into Fahrenheit.",
+      "expected_category": "UNSUPPORTED",
+      "before": {
+        "suggested_category": null,
+        "model_top_category": "ACCOUNT",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.3914622055835549,
+        "scope_score": 0.0994330024627561,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "The experimental scope gate withheld this request; review its intent manually.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": null,
+        "model_top_category": "ACCOUNT",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.3914622055835549,
+        "scope_score": 0.0994330024627561,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "The experimental scope gate withheld this request; review its intent manually.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "outside_fragment_bounds"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "other_task-07",
+      "text": "Suggest exercises for learning French verbs.",
+      "expected_category": "UNSUPPORTED",
+      "before": {
+        "suggested_category": null,
+        "model_top_category": "ORDER",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.41883352670841767,
+        "scope_score": 0.01826302157184967,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "The experimental scope gate withheld this request; review its intent manually.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": null,
+        "model_top_category": "ORDER",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.41883352670841767,
+        "scope_score": 0.01826302157184967,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "The experimental scope gate withheld this request; review its intent manually.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "outside_fragment_bounds"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "other_task-08",
+      "text": "Write a cover letter for an imaginary librarian.",
+      "expected_category": "UNSUPPORTED",
+      "before": {
+        "suggested_category": null,
+        "model_top_category": "ORDER",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.2597441750694005,
+        "scope_score": 0.005368472039380623,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "The experimental scope gate withheld this request; review its intent manually.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": null,
+        "model_top_category": "ORDER",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.2597441750694005,
+        "scope_score": 0.005368472039380623,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "The experimental scope gate withheld this request; review its intent manually.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "outside_fragment_bounds"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "ambiguous-01",
+      "text": "It does not work.",
+      "expected_category": "REVIEW",
+      "before": {
+        "suggested_category": null,
+        "model_top_category": "ACCOUNT",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.5202608300688983,
+        "scope_score": 0.9810477112540904,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "The generic failure statement needs more context. Ask the proposed clarification question.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": null,
+        "model_top_category": "ACCOUNT",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.5202608300688983,
+        "scope_score": 0.9810477112540904,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "The generic failure statement needs more context. Ask the proposed clarification question.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "outside_fragment_bounds"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "ambiguous-02",
+      "text": "Please fix the problem from yesterday.",
+      "expected_category": "REVIEW",
+      "before": {
+        "suggested_category": null,
+        "model_top_category": "ACCOUNT",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.23505135959073684,
+        "scope_score": 0.9882540493094567,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "The experimental category cutoff withheld the suggestion; choose manually.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": null,
+        "model_top_category": "ACCOUNT",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.23505135959073684,
+        "scope_score": 0.9882540493094567,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "The experimental category cutoff withheld the suggestion; choose manually.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "outside_fragment_bounds"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "ambiguous-03",
+      "text": "I need help with that thing.",
+      "expected_category": "REVIEW",
+      "before": {
+        "suggested_category": null,
+        "model_top_category": "ORDER",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.42511310866048546,
+        "scope_score": 0.5078673775842071,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "The experimental category cutoff withheld the suggestion; choose manually.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": null,
+        "model_top_category": "ORDER",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.42511310866048546,
+        "scope_score": 0.5078673775842071,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "The experimental category cutoff withheld the suggestion; choose manually.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "outside_fragment_bounds"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "ambiguous-04",
+      "text": "Something is wrong with what I bought.",
+      "expected_category": "REVIEW",
+      "before": {
+        "suggested_category": null,
+        "model_top_category": "ORDER",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.6106912466066188,
+        "scope_score": 0.9957387026952613,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "The generic failure statement needs more context. Ask the proposed clarification question.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": null,
+        "model_top_category": "ORDER",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.6106912466066188,
+        "scope_score": 0.9957387026952613,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "The generic failure statement needs more context. Ask the proposed clarification question.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "outside_fragment_bounds"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "ambiguous-05",
+      "text": "I want my invoice and I also want to cancel my order.",
+      "expected_category": "REVIEW",
+      "before": {
+        "suggested_category": null,
+        "model_top_category": "INVOICE",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.47353711049009733,
+        "scope_score": 0.9949283477802598,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "The experimental category cutoff withheld the suggestion; choose manually.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": null,
+        "model_top_category": "INVOICE",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.47353711049009733,
+        "scope_score": 0.9949283477802598,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "The experimental category cutoff withheld the suggestion; choose manually.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "unrecognized_fragment"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "ambiguous-06",
+      "text": "Change my account email and refund my last purchase.",
+      "expected_category": "REVIEW",
+      "before": {
+        "suggested_category": null,
+        "model_top_category": "ACCOUNT",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.6622314340571827,
+        "scope_score": 0.9956074829820264,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental clause check found separate requests in different categories. Review the full message.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": null,
+        "model_top_category": "ACCOUNT",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.6622314340571827,
+        "scope_score": 0.9956074829820264,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental clause check found separate requests in different categories. Review the full message.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "unrecognized_fragment"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "ambiguous-07",
+      "text": "Stop the newsletter and update the shipping address.",
+      "expected_category": "REVIEW",
+      "before": {
+        "suggested_category": null,
+        "model_top_category": "SUBSCRIPTION",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.5739212424782896,
+        "scope_score": 0.9901658567971088,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental clause check found separate requests in different categories. Review the full message.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": null,
+        "model_top_category": "SUBSCRIPTION",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.5739212424782896,
+        "scope_score": 0.9901658567971088,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental clause check found separate requests in different categories. Review the full message.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "unrecognized_fragment"
+      },
+      "newly_withheld": false
+    },
+    {
+      "case_id": "ambiguous-08",
+      "text": "I cannot log in and my checkout payment was rejected.",
+      "expected_category": "REVIEW",
+      "before": {
+        "suggested_category": "PAYMENT",
+        "model_top_category": "PAYMENT",
+        "decision": "suggestion",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.7661376214553465,
+        "scope_score": 0.9970742431663737,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Experimental semantic suggestion. Confirm the category; multiple or unclear intents may still pass.",
+        "model_sha256": null
+      },
+      "after": {
+        "suggested_category": null,
+        "model_top_category": "PAYMENT",
+        "decision": "abstain",
+        "abstention_threshold": 0.5,
+        "uncalibrated_probability": 0.7661376214553465,
+        "scope_score": 0.9970742431663737,
+        "scope_threshold": 0.5,
+        "input_truncated": false,
+        "requires_human_review": true,
+        "review_reason": "Account-access and payment problem statements matched the offline rules. Ask which issue to address first.",
+        "model_sha256": null
+      },
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": true,
+        "category_hints": [
+          "ACCOUNT",
+          "PAYMENT"
+        ],
+        "evidence": [
+          {
+            "start": 0,
+            "end": 15,
+            "text": "I cannot log in",
+            "category_hint": "ACCOUNT"
+          },
+          {
+            "start": 20,
+            "end": 52,
+            "text": "my checkout payment was rejected",
+            "category_hint": "PAYMENT"
+          }
+        ],
+        "question": "You mentioned account access and a payment issue. Which would you like help with first?",
+        "status": "account_and_payment_problem_patterns"
+      },
+      "newly_withheld": true
+    }
+  ],
+  "contrasts": [
+    {
+      "case_id": "problem-01",
+      "text": "I cannot sign in and my card was declined.",
+      "expected_multiple_problem": true,
+      "label_status": "provisional",
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": true,
+        "category_hints": [
+          "ACCOUNT",
+          "PAYMENT"
+        ],
+        "evidence": [
+          {
+            "start": 0,
+            "end": 16,
+            "text": "I cannot sign in",
+            "category_hint": "ACCOUNT"
+          },
+          {
+            "start": 21,
+            "end": 41,
+            "text": "my card was declined",
+            "category_hint": "PAYMENT"
+          }
+        ],
+        "question": "You mentioned account access and a payment issue. Which would you like help with first?",
+        "status": "account_and_payment_problem_patterns"
+      },
+      "matches_authored_expectation": true
+    },
+    {
+      "case_id": "problem-02",
+      "text": "My payment failed; my account is locked.",
+      "expected_multiple_problem": true,
+      "label_status": "provisional",
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": true,
+        "category_hints": [
+          "ACCOUNT",
+          "PAYMENT"
+        ],
+        "evidence": [
+          {
+            "start": 0,
+            "end": 17,
+            "text": "My payment failed",
+            "category_hint": "PAYMENT"
+          },
+          {
+            "start": 19,
+            "end": 39,
+            "text": "my account is locked",
+            "category_hint": "ACCOUNT"
+          }
+        ],
+        "question": "You mentioned account access and a payment issue. Which would you like help with first?",
+        "status": "account_and_payment_problem_patterns"
+      },
+      "matches_authored_expectation": true
+    },
+    {
+      "case_id": "problem-03",
+      "text": "I have been charged twice and I am unable to access my account.",
+      "expected_multiple_problem": true,
+      "label_status": "provisional",
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": true,
+        "category_hints": [
+          "ACCOUNT",
+          "PAYMENT"
+        ],
+        "evidence": [
+          {
+            "start": 0,
+            "end": 25,
+            "text": "I have been charged twice",
+            "category_hint": "PAYMENT"
+          },
+          {
+            "start": 30,
+            "end": 62,
+            "text": "I am unable to access my account",
+            "category_hint": "ACCOUNT"
+          }
+        ],
+        "question": "You mentioned account access and a payment issue. Which would you like help with first?",
+        "status": "account_and_payment_problem_patterns"
+      },
+      "matches_authored_expectation": true
+    },
+    {
+      "case_id": "problem-04",
+      "text": "My account was locked. My checkout payment was rejected.",
+      "expected_multiple_problem": true,
+      "label_status": "provisional",
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": true,
+        "category_hints": [
+          "ACCOUNT",
+          "PAYMENT"
+        ],
+        "evidence": [
+          {
+            "start": 0,
+            "end": 21,
+            "text": "My account was locked",
+            "category_hint": "ACCOUNT"
+          },
+          {
+            "start": 23,
+            "end": 55,
+            "text": "My checkout payment was rejected",
+            "category_hint": "PAYMENT"
+          }
+        ],
+        "question": "You mentioned account access and a payment issue. Which would you like help with first?",
+        "status": "account_and_payment_problem_patterns"
+      },
+      "matches_authored_expectation": true
+    },
+    {
+      "case_id": "problem-05",
+      "text": "I can\u2019t log in and my payment is declined.",
+      "expected_multiple_problem": true,
+      "label_status": "provisional",
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": true,
+        "category_hints": [
+          "ACCOUNT",
+          "PAYMENT"
+        ],
+        "evidence": [
+          {
+            "start": 0,
+            "end": 14,
+            "text": "I can\u2019t log in",
+            "category_hint": "ACCOUNT"
+          },
+          {
+            "start": 19,
+            "end": 41,
+            "text": "my payment is declined",
+            "category_hint": "PAYMENT"
+          }
+        ],
+        "question": "You mentioned account access and a payment issue. Which would you like help with first?",
+        "status": "account_and_payment_problem_patterns"
+      },
+      "matches_authored_expectation": true
+    },
+    {
+      "case_id": "problem-06",
+      "text": "I cannot log in; my account is locked; my payment failed.",
+      "expected_multiple_problem": true,
+      "label_status": "provisional",
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": true,
+        "category_hints": [
+          "ACCOUNT",
+          "PAYMENT"
+        ],
+        "evidence": [
+          {
+            "start": 0,
+            "end": 15,
+            "text": "I cannot log in",
+            "category_hint": "ACCOUNT"
+          },
+          {
+            "start": 17,
+            "end": 37,
+            "text": "my account is locked",
+            "category_hint": "ACCOUNT"
+          },
+          {
+            "start": 39,
+            "end": 56,
+            "text": "my payment failed",
+            "category_hint": "PAYMENT"
+          }
+        ],
+        "question": "You mentioned account access and a payment issue. Which would you like help with first?",
+        "status": "account_and_payment_problem_patterns"
+      },
+      "matches_authored_expectation": true
+    },
+    {
+      "case_id": "problem-07",
+      "text": "I cannot log in.",
+      "expected_multiple_problem": false,
+      "label_status": "provisional",
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "outside_fragment_bounds"
+      },
+      "matches_authored_expectation": true
+    },
+    {
+      "case_id": "problem-08",
+      "text": "My payment failed.",
+      "expected_multiple_problem": false,
+      "label_status": "provisional",
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "outside_fragment_bounds"
+      },
+      "matches_authored_expectation": true
+    },
+    {
+      "case_id": "problem-09",
+      "text": "My account is locked and I cannot log in.",
+      "expected_multiple_problem": false,
+      "label_status": "provisional",
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "one_problem_category_only"
+      },
+      "matches_authored_expectation": true
+    },
+    {
+      "case_id": "problem-10",
+      "text": "My card was declined and I was charged twice.",
+      "expected_multiple_problem": false,
+      "label_status": "provisional",
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "one_problem_category_only"
+      },
+      "matches_authored_expectation": true
+    },
+    {
+      "case_id": "problem-11",
+      "text": "If I cannot log in and my payment failed, what should I do?",
+      "expected_multiple_problem": false,
+      "label_status": "provisional",
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "conditional_alternative_causal_or_quoted_skipped"
+      },
+      "matches_authored_expectation": true
+    },
+    {
+      "case_id": "problem-12",
+      "text": "I cannot log in or my payment failed.",
+      "expected_multiple_problem": false,
+      "label_status": "provisional",
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "conditional_alternative_causal_or_quoted_skipped"
+      },
+      "matches_authored_expectation": true
+    },
+    {
+      "case_id": "problem-13",
+      "text": "I cannot log in because my payment failed.",
+      "expected_multiple_problem": false,
+      "label_status": "provisional",
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "conditional_alternative_causal_or_quoted_skipped"
+      },
+      "matches_authored_expectation": true
+    },
+    {
+      "case_id": "problem-14",
+      "text": "I cannot log in after my payment failed.",
+      "expected_multiple_problem": false,
+      "label_status": "provisional",
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "conditional_alternative_causal_or_quoted_skipped"
+      },
+      "matches_authored_expectation": true
+    },
+    {
+      "case_id": "problem-15",
+      "text": "The example says \"I cannot log in and my payment failed\".",
+      "expected_multiple_problem": false,
+      "label_status": "provisional",
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "conditional_alternative_causal_or_quoted_skipped"
+      },
+      "matches_authored_expectation": true
+    },
+    {
+      "case_id": "problem-16",
+      "text": "I can log in and my payment failed.",
+      "expected_multiple_problem": false,
+      "label_status": "provisional",
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "unrecognized_fragment"
+      },
+      "matches_authored_expectation": true
+    },
+    {
+      "case_id": "problem-17",
+      "text": "I cannot log in and my payment was not rejected.",
+      "expected_multiple_problem": false,
+      "label_status": "provisional",
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "unrecognized_fragment"
+      },
+      "matches_authored_expectation": true
+    },
+    {
+      "case_id": "problem-18",
+      "text": "My payment did not fail and my account is locked.",
+      "expected_multiple_problem": false,
+      "label_status": "provisional",
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "unrecognized_fragment"
+      },
+      "matches_authored_expectation": true
+    },
+    {
+      "case_id": "problem-19",
+      "text": "My account is not locked and my card was declined.",
+      "expected_multiple_problem": false,
+      "label_status": "provisional",
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "unrecognized_fragment"
+      },
+      "matches_authored_expectation": true
+    },
+    {
+      "case_id": "problem-20",
+      "text": "My purchase arrived broken and I want a refund.",
+      "expected_multiple_problem": false,
+      "label_status": "provisional",
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "unrecognized_fragment"
+      },
+      "matches_authored_expectation": true
+    },
+    {
+      "case_id": "problem-21",
+      "text": "I cannot log in and I want to reset my password.",
+      "expected_multiple_problem": false,
+      "label_status": "provisional",
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "unrecognized_fragment"
+      },
+      "matches_authored_expectation": true
+    },
+    {
+      "case_id": "problem-22",
+      "text": "I cannot log in and please send my invoice.",
+      "expected_multiple_problem": false,
+      "label_status": "provisional",
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "unrecognized_fragment"
+      },
+      "matches_authored_expectation": true
+    },
+    {
+      "case_id": "problem-23",
+      "text": "I cannot log in and I fixed the payment problem.",
+      "expected_multiple_problem": false,
+      "label_status": "provisional",
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "unrecognized_fragment"
+      },
+      "matches_authored_expectation": true
+    },
+    {
+      "case_id": "problem-24",
+      "text": "I cannot log in and the payment failure is hypothetical.",
+      "expected_multiple_problem": false,
+      "label_status": "provisional",
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "unrecognized_fragment"
+      },
+      "matches_authored_expectation": true
+    },
+    {
+      "case_id": "problem-25",
+      "text": "Either my account is locked or my payment failed.",
+      "expected_multiple_problem": false,
+      "label_status": "provisional",
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "conditional_alternative_causal_or_quoted_skipped"
+      },
+      "matches_authored_expectation": true
+    },
+    {
+      "case_id": "problem-26",
+      "text": "When my account is locked and my payment failed, I called support.",
+      "expected_multiple_problem": false,
+      "label_status": "provisional",
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "conditional_alternative_causal_or_quoted_skipped"
+      },
+      "matches_authored_expectation": true
+    },
+    {
+      "case_id": "problem-27",
+      "text": "I cannot log in unless my payment is accepted.",
+      "expected_multiple_problem": false,
+      "label_status": "provisional",
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "conditional_alternative_causal_or_quoted_skipped"
+      },
+      "matches_authored_expectation": true
+    },
+    {
+      "case_id": "problem-28",
+      "text": "I cannot log in and my card was declined but now both work.",
+      "expected_multiple_problem": false,
+      "label_status": "provisional",
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "unrecognized_fragment"
+      },
+      "matches_authored_expectation": true
+    },
+    {
+      "case_id": "problem-29",
+      "text": "Explain the phrase 'I cannot log in and my payment failed'.",
+      "expected_multiple_problem": false,
+      "label_status": "provisional",
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "unrecognized_fragment"
+      },
+      "matches_authored_expectation": true
+    },
+    {
+      "case_id": "problem-30",
+      "text": "I cannot log in and my payment failed and I was charged twice and my account is locked and my card was declined.",
+      "expected_multiple_problem": false,
+      "label_status": "provisional",
+      "inspection": {
+        "version": 1,
+        "multiple_problem_hypothesis": false,
+        "category_hints": [],
+        "evidence": [],
+        "question": null,
+        "status": "outside_fragment_bounds"
+      },
+      "matches_authored_expectation": true
+    }
+  ],
+  "model_retrained": false,
+  "new_model_scores_computed": false,
+  "live_model_changed": false,
+  "browser_integrated": false,
+  "test_evaluated": false,
+  "limitations": [
+    "Designed after inspecting the known account/payment development miss; no independent improvement estimate.",
+    "New contrasts are authored provisional regression checks, not adjudicated or held-out data.",
+    "Only fixed English account-access and payment problem patterns; hints are lexical hypotheses, not verified intents.",
+    "Two stated issues can share a cause or describe one desired outcome; no independence claim.",
+    "Unknown fragments, quotations, alternatives, conditionals and causal/temporal markers are skipped, not resolved.",
+    "Single-message context only. Question usefulness and user follow-up outcomes are untested.",
+    "No private/pending reviews, validation, calibration or held-out tests opened; every suggestion requires human review.",
+    "Offline gate only; no automatic deployment or action execution."
+  ]
+}

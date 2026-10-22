@@ -25,6 +25,8 @@ The [error analysis](docs/33-error-analysis.md) traces the remaining wrong sugge
 
 The [offline clarification prototype](docs/34-clarification-prototype.md) proposes a follow-up question for narrowly recognized generic failure statements. Replaying the known development results with the existing optional guard increases REVIEW withholding from 5/8 to 7/8 while preserving 52/66 supported suggestions. The rules were designed after inspecting these failures; this is a development regression result, not an independent accuracy estimate or browser update. Package 0.11.0 includes the replay command and 24 provisional contrast checks.
 
+The [offline problem-statement check](docs/35-problem-statements.md) catches the known login-plus-payment miss and proposes which issue to address first. Its fixed English rules preserve supported suggestion counts in the replay and pass 30 authored contrast checks. These are targeted development regressions, not independent performance evidence; the browser stays unchanged. Package 0.12.0 adds the replay command and exact source-text evidence spans.
+
 **Optional semantic browser mode is now available:** [setup and launch guide](docs/21-semantic-browser-mode.md). The word model remains the default; semantic mode requires a separately built bundle and optional CPU dependencies. Every prediction requires human review.
 
 Semantic mode also offers an unchecked [experimental separate-request check](docs/24-separate-request-check.md). On known development probes it withholds two additional multi-intent requests without changing supported-request coverage. It is a bounded rule-based option, not a trained general ambiguity detector; the guide documents remaining misses. Existing semantic bundles need no rebuild.
