@@ -1,0 +1,20 @@
+{
+  "experiment": "clarification-rules-v1",
+  "rule_version": 1,
+  "rules": {
+    "unspecified_failure": "(?:it|this|that|something|everything|(?:the|my) thing|what i bought) (?:does not work|doesn\\'t work|is not working|isn\\'t working|stopped working|failed|is broken)",
+    "unspecified_problem": "(?:something|everything) is wrong(?: with (?:it|this|that|something|everything|(?:the|my) thing|what i bought))?"
+  },
+  "question": "What were you trying to do, and what happened?",
+  "source_report_sha256": "3deab97ad11da9c38afbb40de15a4ee52ef8da43c1801792c89e6b53f83050aa",
+  "contrast_sha256": "9ea9b140dc237bbc42775f39f81bed91104a0d0144b98e297b0ebc8b6de26a4e",
+  "rule_application": "Entire normalized single message; preserve other clauses, quotes and concrete task context. Existing guarded abstentions cannot be reversed.",
+  "gate": "Supported accepted and correct accepted counts cannot decrease; incorrect accepted and unsupported suggestions cannot increase. REVIEW withheld must increase. All authored contrast expectations must match. Passing is offline only, not a deployment decision.",
+  "boundaries": [
+    "Designed after inspecting existing 98 provisional development cases.",
+    "24 new contrasts are authored examples, not independent labels or a held-out benchmark.",
+    "Freeze rules and contrasts before running; do not revise from this run.",
+    "Replay only saved guarded control predictions; no training, threshold selection, encoder, private/pending review, validation or test access.",
+    "No browser integration, bundle export or calibrated-confidence claim."
+  ]
+}

@@ -1,0 +1,146 @@
+[
+  {
+    "case_id": "context-01",
+    "text": "This stopped working.",
+    "expected_clarification": true,
+    "label_status": "provisional"
+  },
+  {
+    "case_id": "context-02",
+    "text": "That is broken.",
+    "expected_clarification": true,
+    "label_status": "provisional"
+  },
+  {
+    "case_id": "context-03",
+    "text": "Everything is wrong.",
+    "expected_clarification": true,
+    "label_status": "provisional"
+  },
+  {
+    "case_id": "context-04",
+    "text": "Something is wrong with my thing.",
+    "expected_clarification": true,
+    "label_status": "provisional"
+  },
+  {
+    "case_id": "context-05",
+    "text": "It isn’t working!",
+    "expected_clarification": true,
+    "label_status": "provisional"
+  },
+  {
+    "case_id": "context-06",
+    "text": "What I bought failed.",
+    "expected_clarification": true,
+    "label_status": "provisional"
+  },
+  {
+    "case_id": "context-07",
+    "text": "Refund please.",
+    "expected_clarification": false,
+    "label_status": "provisional"
+  },
+  {
+    "case_id": "context-08",
+    "text": "Send my invoice.",
+    "expected_clarification": false,
+    "label_status": "provisional"
+  },
+  {
+    "case_id": "context-09",
+    "text": "Cancel my order.",
+    "expected_clarification": false,
+    "label_status": "provisional"
+  },
+  {
+    "case_id": "context-10",
+    "text": "My payment failed.",
+    "expected_clarification": false,
+    "label_status": "provisional"
+  },
+  {
+    "case_id": "context-11",
+    "text": "My account is not working.",
+    "expected_clarification": false,
+    "label_status": "provisional"
+  },
+  {
+    "case_id": "context-12",
+    "text": "It does not work when I log in.",
+    "expected_clarification": false,
+    "label_status": "provisional"
+  },
+  {
+    "case_id": "context-13",
+    "text": "Something is wrong with my invoice.",
+    "expected_clarification": false,
+    "label_status": "provisional"
+  },
+  {
+    "case_id": "context-14",
+    "text": "It does not work. Please reset my password.",
+    "expected_clarification": false,
+    "label_status": "provisional"
+  },
+  {
+    "case_id": "context-15",
+    "text": "If it does not work, refund me.",
+    "expected_clarification": false,
+    "label_status": "provisional"
+  },
+  {
+    "case_id": "context-16",
+    "text": "It does not work or my account is locked.",
+    "expected_clarification": false,
+    "label_status": "provisional"
+  },
+  {
+    "case_id": "context-17",
+    "text": "The instructions say \"it does not work\".",
+    "expected_clarification": false,
+    "label_status": "provisional"
+  },
+  {
+    "case_id": "context-18",
+    "text": "Explain the sentence \"something is wrong\".",
+    "expected_clarification": false,
+    "label_status": "provisional"
+  },
+  {
+    "case_id": "context-19",
+    "text": "It is not broken.",
+    "expected_clarification": false,
+    "label_status": "provisional"
+  },
+  {
+    "case_id": "context-20",
+    "text": "I cannot log in and my payment was rejected.",
+    "expected_clarification": false,
+    "label_status": "provisional"
+  },
+  {
+    "case_id": "context-21",
+    "text": "My purchase arrived broken and I want a refund.",
+    "expected_clarification": false,
+    "label_status": "provisional"
+  },
+  {
+    "case_id": "context-22",
+    "text": "Change my account name and reset my password.",
+    "expected_clarification": false,
+    "label_status": "provisional"
+  },
+  {
+    "case_id": "context-23",
+    "text": "It works.",
+    "expected_clarification": false,
+    "label_status": "provisional"
+  },
+  {
+    "case_id": "context-24",
+    "text": "It does not work because the reset link expired.",
+    "expected_clarification": false,
+    "label_status": "provisional"
+  }
+]
