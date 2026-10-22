@@ -14,9 +14,9 @@
   </head>
   <body>
     <p id="workspace-announcement" class="sr-only" role="status" aria-live="polite"></p>
-    <a class="skip-link" href="#ticket">Skip to ticket form</a>
+    <a class="skip-link" href="#workspace">Skip to workspace</a>
     <aside class="sidebar" aria-label="Workspace navigation">
-      <a class="brand" href="/" aria-label="Support Ticket AI home">
+      <a class="brand" href="#new" aria-label="Support Ticket AI home">
         <span class="brand-mark" aria-hidden="true"
           ><svg viewBox="0 0 24 24">
             <path d="M5 5h14v10H10l-5 4V5Z" />
@@ -29,14 +29,12 @@
       </a>
       <div class="nav-label">YOUR WORKSPACE</div>
       <nav>
-        <a class="nav-item active" href="#workspace" aria-current="page"
-          ><svg viewBox="0 0 24 24" aria-hidden="true">
-            <rect x="4" y="4" width="6" height="6" rx="1" />
-            <rect x="14" y="4" width="6" height="6" rx="1" />
-            <rect x="4" y="14" width="6" height="6" rx="1" />
-            <rect x="14" y="14" width="6" height="6" rx="1" /></svg
-          >Ticket workspace</a
-        >
+        <a class="nav-item active" href="#new" data-view="new" aria-current="page">+ New request</a>
+        <a class="nav-item" href="#requests" data-view="requests">All requests</a>
+        <a class="nav-item" href="#review" data-view="review">Review queue</a>
+        <a class="nav-item" href="#in-progress" data-view="in-progress">In progress</a>
+        <a class="nav-item" href="#resolved" data-view="resolved">Resolved requests</a>
+        <a class="nav-item" href="#overview" data-view="overview">Overview</a>
         <a class="nav-item" href="#how-it-works"
           ><svg viewBox="0 0 24 24" aria-hidden="true">
             <circle cx="12" cy="12" r="8" />
@@ -61,10 +59,13 @@
       <header class="topbar">
         <span
           ><span class="breadcrumb">Workspace</span
-          ><span class="slash">/</span>Ticket classification</span
+          ><span class="slash">/</span><span id="breadcrumb-current">New request</span></span
         ><div class="topbar-actions"><span class="local-badge"><span></span>Local demo</span><button id="theme-toggle" class="icon-button" type="button" aria-label="Switch to dark theme" aria-pressed="false">Dark theme</button></div>
       </header>
-      <main id="workspace">
+      <div class="mobile-navigation"><label for="workspace-view">Workspace section</label><select id="workspace-view"><option value="new">New request</option><option value="requests">All requests</option><option value="review">Review queue</option><option value="in-progress">In progress</option><option value="resolved">Resolved requests</option><option value="overview">Overview</option></select></div>
+      <main id="workspace" tabindex="-1">
+        <p id="storage-notice" class="storage-notice" role="status">Checking local request storage…</p>
+        <section id="classification-view" aria-label="New request">
         <div class="page-heading">
           <div>
             <p class="eyebrow">YOUR SUPPORT, WITH MORE CLARITY</p>
@@ -184,13 +185,19 @@
                 </button><span class="keyboard-hint"><kbd>Ctrl</kbd> + <kbd>Enter</kbd></span>
               </div>
             </form>
+            <section class="save-section" aria-labelledby="save-title">
+              <h3 id="save-title">Keep this request for review</h3>
+              <label class="checkbox-label" for="save-with-prediction"><input id="save-with-prediction" type="checkbox" checked />Include a fresh model prediction when saving</label>
+              <p>Uncheck to save for manual review without a model. Saved requests remain open until you handle and resolve them.</p>
+              <button id="save-request" type="button" class="secondary-button" disabled>Save to review queue</button>
+              <p id="save-feedback" role="status" class="save-feedback"></p>
+            </section>
             <div class="composer-footer">
               <svg viewBox="0 0 24 24" aria-hidden="true">
                 <rect x="6" y="10" width="12" height="10" rx="2" />
                 <path d="M8 10V7a4 4 0 0 1 8 0v3" /></svg
               ><span
-                >This interface sends the message to your local server. It keeps
-                no ticket history.</span
+                >Suggestions are not saved automatically. Save to review queue stores the message and any requested prediction locally.</span
               >
             </div>
           </section>
@@ -314,6 +321,44 @@
               </div>
             </article>
           </div>
+        </section>
+        </section>
+        <section id="records-view" class="records-view" aria-labelledby="records-title" hidden>
+          <div class="records-heading"><div><p class="eyebrow">YOUR REQUESTS</p><h1 id="records-title" tabindex="-1">All requests</h1><p id="records-description" class="intro"></p></div><a class="secondary-button" href="#new">+ New request</a></div>
+          <form id="request-filters" class="request-filters">
+            <div><label for="request-search">Search message, ID or latest note</label><input id="request-search" type="search" maxlength="200" placeholder="Find a saved request…" /></div>
+            <div id="status-filter-control"><label for="status-filter">Handling status</label><select id="status-filter"><option value="">Any status</option><option value="open">Open</option><option value="needs_clarification">Needs clarification</option><option value="in_progress">In progress</option><option value="resolved">Resolved</option></select></div>
+            <div><label for="category-filter">Human-confirmed category</label><select id="category-filter"><option value="">Any category</option></select></div>
+            <button type="submit" class="secondary-button">Search</button>
+          </form>
+          <p id="records-error" class="form-error" role="alert" hidden></p>
+          <div id="request-list" class="request-list" aria-live="polite" aria-busy="false"></div>
+          <div class="pagination"><button id="previous-page" class="secondary-button" type="button" disabled>Previous</button><span id="page-summary"></span><button id="next-page" class="secondary-button" type="button" disabled>Next</button></div>
+        </section>
+        <section id="request-detail-view" aria-labelledby="request-detail-title" hidden>
+          <div class="records-heading"><div><p class="eyebrow">SAVED REQUEST</p><h1 id="request-detail-title" tabindex="-1">Request details</h1><p id="detail-metadata" class="intro"></p></div><a class="secondary-button" href="#requests">All requests</a></div>
+          <p id="detail-error" class="form-error" role="alert" hidden></p>
+          <p id="detail-feedback" class="storage-notice" role="status" hidden></p>
+          <div id="request-detail-content" hidden>
+            <div class="detail-grid">
+              <article class="card detail-card"><div class="detail-status"><span id="detail-status" class="status-pill"></span><span id="detail-review-state" class="quiet-tag"></span></div><h2>Original customer message</h2><p id="saved-message" class="saved-message"></p><p class="technical-note">Original message and model snapshot are preserved. Notes and human decisions appear in the history below.</p><h3>Original model prediction</h3><p id="saved-prediction-summary"></p><details class="response-details"><summary>Original prediction details</summary><pre id="saved-prediction-json" tabindex="0"></pre></details><h3>Current human-confirmed category</h3><p id="confirmed-category" class="confirmed-category">Not reviewed</p><h3>Resolution note</h3><p id="resolution-note" class="saved-message"></p></article>
+              <article class="card detail-card"><h2>Review and handling</h2><p class="section-description">Reviewing a category does not resolve the request.</p>
+                <form id="request-review-form">
+                  <label for="reviewer-name">Reviewer label</label><input id="reviewer-name" name="actor" required maxlength="80" placeholder="Your name or local reviewer label" autocomplete="off" /><p class="technical-note">A self-reported label for this local prototype, not an authenticated identity.</p>
+                  <label for="review-category">Human category</label><select id="review-category"><option value="">Choose a category…</option></select><p id="category-contract" class="technical-note"></p>
+                  <label for="review-note">Review / handling note</label><textarea id="review-note" rows="4" placeholder="Record a correction, clarification question, handling update or resolution." aria-describedby="review-note-help"></textarea><p id="review-note-help" class="technical-note">Required for clarification, resolution, reopening and note-only actions. Maximum 2,000 characters.</p>
+                  <div class="review-actions"><button id="confirm-review" class="primary-button" type="submit">Confirm category</button><button id="needs-clarification" class="secondary-button" type="button" data-action="clarify">Needs clarification</button><button id="add-review-note" class="secondary-button" type="button" data-action="note">Add note</button></div>
+                </form>
+                <div class="handling-actions"><h3>Handling status</h3><p class="technical-note">Confirm a category → start handling → resolve with a note. Reopening sends the request back for review.</p><button id="start-handling" class="secondary-button" type="button" data-action="start">Start handling</button><button id="resolve-request" class="primary-button" type="button" data-action="resolve">Mark resolved</button><button id="reopen-request" class="secondary-button" type="button" data-action="reopen">Reopen for review</button></div>
+                <button id="reload-request" class="text-button" type="button">Reload saved request</button>
+              </article>
+            </div>
+            <section class="card history-card" aria-labelledby="history-title"><h2 id="history-title">Request history</h2><p class="technical-note">Original predictions and every recorded human decision remain inspectable. Reviewer labels are self-reported.</p><ol id="request-history" class="request-history"></ol></section>
+          </div>
+        </section>
+        <section id="overview-view" aria-labelledby="overview-title" hidden>
+          <div class="records-heading"><div><p class="eyebrow">WORKSPACE OVERVIEW</p><h1 id="overview-title" tabindex="-1">Work in view.</h1><p class="intro">Live counts from your saved local requests.</p></div><button id="refresh-overview" class="secondary-button" type="button">Refresh overview</button></div>
+          <p id="overview-error" class="form-error" role="alert" hidden></p><div id="overview-content" aria-busy="false"><div id="overview-metrics" class="overview-metrics"></div><div class="detail-grid"><section class="card detail-card"><h2>Human-confirmed categories</h2><p class="technical-note">Current human decisions, not model accuracy measurements.</p><div id="overview-categories"></div></section><section class="card detail-card"><h2>Recent activity</h2><div id="overview-activity"></div></section></div></div>
         </section>
         <footer class="page-footer">
           <span class="footer-mark" aria-hidden="true">✳</span>

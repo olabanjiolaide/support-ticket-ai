@@ -1,3 +1,5 @@
+> The [saved-request workspace](38-request-management.md) now adds explicit persistence and human review/handling. The classification card described here remains available for unsaved predictions.
+
 # A result card built around the review decision
 
 Package **0.14.0** organizes every completed result around three questions: **What was returned? Why was a category withheld, if applicable? What should I do next?** This improves the presentation of existing predictions; the API contract, model weights and cutoffs stay the same.

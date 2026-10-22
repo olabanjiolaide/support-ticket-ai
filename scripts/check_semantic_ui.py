@@ -26,7 +26,7 @@ def main():
     base = f'http://127.0.0.1:{port}'
     with (args.artifacts / 'server.log').open('w') as log:
         server = subprocess.Popen([sys.executable, '-m', 'support_ticket_ai.serve', '--model-dir', str(args.word_model.resolve()),
-                                   '--semantic-model-dir', str(args.semantic_model.resolve()), '--port', str(port)],
+                                   '--semantic-model-dir', str(args.semantic_model.resolve()), '--port', str(port), '--requests-db', str(args.artifacts.resolve() / 'requests.sqlite3')],
                                   stdout=log, stderr=subprocess.STDOUT, env=dict(os.environ, HF_HUB_OFFLINE='1'))
         try:
             deadline = time.monotonic() + 45

@@ -1,4 +1,5 @@
 import { describeResult, technicalFacts } from "./result-view.js";
+import { initWorkspace } from "./workspace.js";
 
 "use strict";
 
@@ -19,6 +20,7 @@ import { describeResult, technicalFacts } from "./result-view.js";
   };
   let ready = false;
   let busy = false;
+  let savingRequest = false;
   let checking = false;
   let supportsRequestCheck = false;
   let activePrediction = null;
@@ -58,6 +60,7 @@ import { describeResult, technicalFacts } from "./result-view.js";
   }
 
   function updateControls() {
+    const locked = busy || savingRequest;
     const count = Array.from(input.value).length;
     const overLimit = count > maxLength;
     byId("character-count").textContent =
@@ -69,19 +72,20 @@ import { describeResult, technicalFacts } from "./result-view.js";
     byId("retry-prediction").disabled = busy || !ready || !input.value.trim() || overLimit;
     input.setCustomValidity(overLimit ? "Use 2,000 characters or fewer." : "");
     input.setAttribute("aria-invalid", String(overLimit));
-    submit.disabled = busy || !ready || !input.value.trim() || overLimit;
-    clear.disabled = busy || !input.value;
-    modelMode.disabled = busy;
-    requestCheck.disabled = busy || modelMode.value !== "semantic" || !supportsRequestCheck;
-    input.disabled = busy;
+    submit.disabled = locked || !ready || !input.value.trim() || overLimit;
+    clear.disabled = locked || !input.value;
+    modelMode.disabled = locked;
+    requestCheck.disabled = locked || modelMode.value !== "semantic" || !supportsRequestCheck;
+    input.disabled = locked;
     examples.forEach((button) => {
-      button.disabled = busy;
+      button.disabled = locked;
     });
     byId("submit-label").textContent = busy
       ? "Reading request…"
       : "Suggest category";
     byId("submit-arrow").hidden = busy;
     byId("submit-spinner").hidden = !busy;
+    document.dispatchEvent(new CustomEvent("draft-controls-changed"));
   }
 
   function clearError() {
@@ -99,6 +103,7 @@ import { describeResult, technicalFacts } from "./result-view.js";
     byId("json-response").textContent = "";
     document.querySelector(".response-details").open = false;
     updateControls();
+    document.dispatchEvent(new CustomEvent("ticket-edited"));
   }
 
   function setService(available, message = "") {
@@ -244,7 +249,7 @@ import { describeResult, technicalFacts } from "./result-view.js";
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
     if (
-      busy ||
+      busy || savingRequest ||
       !ready ||
       !input.value.trim() ||
       Array.from(input.value).length > maxLength
@@ -373,6 +378,11 @@ import { describeResult, technicalFacts } from "./result-view.js";
     }
   });
 
+  initWorkspace({
+    getDraft: () => ({text: input.value, mode: modelMode.value, check_multiple_requests: modelMode.value === "semantic" && requestCheck.checked, ready, blocked: busy || savingRequest}),
+    setSaving: (value) => { savingRequest = value; updateControls(); },
+    onSaved: () => { input.value = ""; resizeInput(); edit(); },
+  });
   showModel();
   updateControls();
   checkReadiness();

@@ -2,6 +2,8 @@
 
 A Python portfolio project for classifying support requests and routing uncertain predictions to human review.
 
+The [saved-request workspace](docs/38-request-management.md) adds SQLite persistence, six working sections, human review/corrections, clarification, handling, resolution notes, history and an overview. Saving is explicit; predictions alone are not stored.
+
 The [decision-first result card](docs/37-decision-first-results.md) now separates suggested categories from manual-classification decisions, shows recorded withholding reasons and next review steps, and keeps scores/JSON in expandable details. Retry and cancellation have dedicated states.
 
 The [responsive workspace refresh](docs/36-responsive-workspace.md) adds light/dark themes, phone-to-desktop layouts, keyboard submission, cancellable requests, and copyable review summaries. See the guide for screenshots and the update commands.

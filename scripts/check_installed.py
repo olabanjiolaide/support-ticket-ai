@@ -59,7 +59,7 @@ def api_checks(model: Path):
         assert client.get('/healthz').status_code == 200
         assert client.get('/readyz').status_code == 200
         assert 'ticket-form' in client.get('/').text
-        for asset in ('styles.css', 'app.js', 'result-view.js'):
+        for asset in ('styles.css', 'app.js', 'result-view.js', 'workspace.js'):
             assert client.get('/assets/' + asset).status_code == 200
         response = client.post('/predict', json={'text': 'password reset account login'})
         assert response.status_code == 200
@@ -83,7 +83,7 @@ def browser_checks(model: Path, artifacts: Path, executable: str | None):
     with (artifacts / 'server.log').open('w') as log:
         server = subprocess.Popen([sys.executable, '-m', 'uvicorn', 'support_ticket_ai.api:app',
                                    '--host', '127.0.0.1', '--port', str(port)],
-                                  env=dict(os.environ, SUPPORT_TICKET_MODEL_DIR=str(model)),
+                                  env=dict(os.environ, SUPPORT_TICKET_MODEL_DIR=str(model), SUPPORT_TICKET_REQUESTS_DB=str(model.parent / "requests.sqlite3")),
                                   stdout=log, stderr=subprocess.STDOUT)
         try:
             deadline = time.monotonic() + 20

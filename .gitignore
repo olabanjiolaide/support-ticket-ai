@@ -7,3 +7,9 @@ artifacts/
 build/
 dist/
 *.egg-info/
+
+# Saved local requests must never be committed.
+*.sqlite3
+*.sqlite3-*
+*.db
+*.db-*

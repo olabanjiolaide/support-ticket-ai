@@ -10,6 +10,7 @@ on:
       - reports/**
       - scripts/check_installed.py
       - scripts/check_workspace_ui.py
+      - scripts/check_request_workflow.py
       - .github/workflows/package.yml
   pull_request:
     paths:
@@ -20,6 +21,7 @@ on:
       - reports/**
       - scripts/check_installed.py
       - scripts/check_workspace_ui.py
+      - scripts/check_request_workflow.py
       - .github/workflows/package.yml
 permissions:
   contents: read
@@ -56,6 +58,11 @@ jobs:
         run: |
           cd "$RUNNER_TEMP"
           "$RUNNER_TEMP/ticket-wheel-env/bin/python" "$GITHUB_WORKSPACE/scripts/check_workspace_ui.py" --artifacts "$GITHUB_WORKSPACE/artifacts/workspace-ui-checks"
+      - name: Check saved-request workflow and persistence
+        shell: bash
+        run: |
+          cd "$RUNNER_TEMP"
+          "$RUNNER_TEMP/ticket-wheel-env/bin/python" "$GITHUB_WORKSPACE/scripts/check_request_workflow.py" --artifacts "$GITHUB_WORKSPACE/artifacts/request-workflow-checks"
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -66,3 +73,4 @@ jobs:
             artifacts/dist/
             artifacts/package-checks/
             artifacts/workspace-ui-checks/
+            artifacts/request-workflow-checks/

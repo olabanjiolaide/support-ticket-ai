@@ -107,7 +107,8 @@ class ApiTests(unittest.TestCase):
             self.assertIn('type="module"', response.text)
             for path, media_type in [("/assets/styles.css", "text/css"),
                                      ("/assets/app.js", "javascript"),
-                                     ("/assets/result-view.js", "javascript")]:
+                                     ("/assets/result-view.js", "javascript"),
+                                     ("/assets/workspace.js", "javascript")]:
                 asset = client.get(path)
                 self.assertEqual(asset.status_code, 200)
                 self.assertIn(media_type, asset.headers["content-type"])

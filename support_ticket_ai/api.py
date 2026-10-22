@@ -57,11 +57,19 @@ class PredictionResponse(BaseModel):
     request_check_version: int | None = None
 
 
-def create_app(model_dir: Path | None = None, semantic_model_dir: Path | None = None) -> FastAPI:
+def create_app(model_dir: Path | None = None, semantic_model_dir: Path | None = None, requests_db: Path | None = None) -> FastAPI:
     """Load one trusted bundle per worker at startup, not per request."""
 
     @asynccontextmanager
     async def lifespan(application: FastAPI):
+        application.state.request_store = None
+        database = requests_db if requests_db is not None else os.environ.get("SUPPORT_TICKET_REQUESTS_DB")
+        if database:
+            try:
+                from .request_store import RequestStore
+                application.state.request_store = RequestStore(Path(database))
+            except Exception as error:
+                logger.error("Request storage initialization failed (%s)", type(error).__name__)
         application.state.predictor = None
         application.state.semantic_predictor = None
         configured = model_dir if model_dir is not None else os.environ.get("SUPPORT_TICKET_MODEL_DIR")
@@ -80,12 +88,13 @@ def create_app(model_dir: Path | None = None, semantic_model_dir: Path | None = 
             except Exception as error:
                 logger.error("Semantic initialization failed (%s)", type(error).__name__)
         yield
+        application.state.request_store = None
         application.state.predictor = None
         application.state.semantic_predictor = None
 
     application = FastAPI(
         title="Support Ticket AI",
-        version="0.4.0",
+        version="0.5.0",
         description="Category suggestions requiring human review; scores are not calibrated.",
         lifespan=lifespan,
     )
@@ -146,6 +155,8 @@ def create_app(model_dir: Path | None = None, semantic_model_dir: Path | None = 
             logger.error("Prediction failed (%s)", type(error).__name__)
             raise HTTPException(status_code=500, detail="Prediction could not be completed.") from error
 
+    from .request_api import register_request_routes
+    register_request_routes(application, predict, PredictionRequest, PredictionResponse)
     return application
 
 

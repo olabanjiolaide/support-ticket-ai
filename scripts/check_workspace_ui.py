@@ -209,6 +209,8 @@ def main():
     args = parser.parse_args()
     temporary = tempfile.TemporaryDirectory(prefix='workspace-ui-fixture-')
     if args.word_model is None:
+        if Path.cwd() == Path(__file__).resolve().parents[1]:
+            sys.path.insert(0, str(Path.cwd()))
         from check_installed import fixture
         args.word_model = fixture(Path(temporary.name))
     out = args.artifacts.resolve()
@@ -219,7 +221,7 @@ def main():
     base = f'http://127.0.0.1:{port}'
     with (out / 'server.log').open('w') as log:
         server = subprocess.Popen([sys.executable, '-m', 'support_ticket_ai.serve', '--model-dir',
-            str(args.word_model.resolve()), '--port', str(port)], stdout=log, stderr=log)
+            str(args.word_model.resolve()), '--port', str(port), '--requests-db', str(Path(temporary.name) / 'requests.sqlite3')], stdout=log, stderr=log)
         try:
             deadline = time.monotonic() + 30
             while True:
