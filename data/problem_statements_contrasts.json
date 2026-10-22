@@ -1,0 +1,182 @@
+[
+  {
+    "case_id": "problem-01",
+    "text": "I cannot sign in and my card was declined.",
+    "expected_multiple_problem": true,
+    "label_status": "provisional"
+  },
+  {
+    "case_id": "problem-02",
+    "text": "My payment failed; my account is locked.",
+    "expected_multiple_problem": true,
+    "label_status": "provisional"
+  },
+  {
+    "case_id": "problem-03",
+    "text": "I have been charged twice and I am unable to access my account.",
+    "expected_multiple_problem": true,
+    "label_status": "provisional"
+  },
+  {
+    "case_id": "problem-04",
+    "text": "My account was locked. My checkout payment was rejected.",
+    "expected_multiple_problem": true,
+    "label_status": "provisional"
+  },
+  {
+    "case_id": "problem-05",
+    "text": "I can’t log in and my payment is declined.",
+    "expected_multiple_problem": true,
+    "label_status": "provisional"
+  },
+  {
+    "case_id": "problem-06",
+    "text": "I cannot log in; my account is locked; my payment failed.",
+    "expected_multiple_problem": true,
+    "label_status": "provisional"
+  },
+  {
+    "case_id": "problem-07",
+    "text": "I cannot log in.",
+    "expected_multiple_problem": false,
+    "label_status": "provisional"
+  },
+  {
+    "case_id": "problem-08",
+    "text": "My payment failed.",
+    "expected_multiple_problem": false,
+    "label_status": "provisional"
+  },
+  {
+    "case_id": "problem-09",
+    "text": "My account is locked and I cannot log in.",
+    "expected_multiple_problem": false,
+    "label_status": "provisional"
+  },
+  {
+    "case_id": "problem-10",
+    "text": "My card was declined and I was charged twice.",
+    "expected_multiple_problem": false,
+    "label_status": "provisional"
+  },
+  {
+    "case_id": "problem-11",
+    "text": "If I cannot log in and my payment failed, what should I do?",
+    "expected_multiple_problem": false,
+    "label_status": "provisional"
+  },
+  {
+    "case_id": "problem-12",
+    "text": "I cannot log in or my payment failed.",
+    "expected_multiple_problem": false,
+    "label_status": "provisional"
+  },
+  {
+    "case_id": "problem-13",
+    "text": "I cannot log in because my payment failed.",
+    "expected_multiple_problem": false,
+    "label_status": "provisional"
+  },
+  {
+    "case_id": "problem-14",
+    "text": "I cannot log in after my payment failed.",
+    "expected_multiple_problem": false,
+    "label_status": "provisional"
+  },
+  {
+    "case_id": "problem-15",
+    "text": "The example says \"I cannot log in and my payment failed\".",
+    "expected_multiple_problem": false,
+    "label_status": "provisional"
+  },
+  {
+    "case_id": "problem-16",
+    "text": "I can log in and my payment failed.",
+    "expected_multiple_problem": false,
+    "label_status": "provisional"
+  },
+  {
+    "case_id": "problem-17",
+    "text": "I cannot log in and my payment was not rejected.",
+    "expected_multiple_problem": false,
+    "label_status": "provisional"
+  },
+  {
+    "case_id": "problem-18",
+    "text": "My payment did not fail and my account is locked.",
+    "expected_multiple_problem": false,
+    "label_status": "provisional"
+  },
+  {
+    "case_id": "problem-19",
+    "text": "My account is not locked and my card was declined.",
+    "expected_multiple_problem": false,
+    "label_status": "provisional"
+  },
+  {
+    "case_id": "problem-20",
+    "text": "My purchase arrived broken and I want a refund.",
+    "expected_multiple_problem": false,
+    "label_status": "provisional"
+  },
+  {
+    "case_id": "problem-21",
+    "text": "I cannot log in and I want to reset my password.",
+    "expected_multiple_problem": false,
+    "label_status": "provisional"
+  },
+  {
+    "case_id": "problem-22",
+    "text": "I cannot log in and please send my invoice.",
+    "expected_multiple_problem": false,
+    "label_status": "provisional"
+  },
+  {
+    "case_id": "problem-23",
+    "text": "I cannot log in and I fixed the payment problem.",
+    "expected_multiple_problem": false,
+    "label_status": "provisional"
+  },
+  {
+    "case_id": "problem-24",
+    "text": "I cannot log in and the payment failure is hypothetical.",
+    "expected_multiple_problem": false,
+    "label_status": "provisional"
+  },
+  {
+    "case_id": "problem-25",
+    "text": "Either my account is locked or my payment failed.",
+    "expected_multiple_problem": false,
+    "label_status": "provisional"
+  },
+  {
+    "case_id": "problem-26",
+    "text": "When my account is locked and my payment failed, I called support.",
+    "expected_multiple_problem": false,
+    "label_status": "provisional"
+  },
+  {
+    "case_id": "problem-27",
+    "text": "I cannot log in unless my payment is accepted.",
+    "expected_multiple_problem": false,
+    "label_status": "provisional"
+  },
+  {
+    "case_id": "problem-28",
+    "text": "I cannot log in and my card was declined but now both work.",
+    "expected_multiple_problem": false,
+    "label_status": "provisional"
+  },
+  {
+    "case_id": "problem-29",
+    "text": "Explain the phrase 'I cannot log in and my payment failed'.",
+    "expected_multiple_problem": false,
+    "label_status": "provisional"
+  },
+  {
+    "case_id": "problem-30",
+    "text": "I cannot log in and my payment failed and I was charged twice and my account is locked and my card was declined.",
+    "expected_multiple_problem": false,
+    "label_status": "provisional"
+  }
+]

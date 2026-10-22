@@ -1,0 +1,25 @@
+{
+  "experiment": "problem-statements-v1",
+  "source_report_sha256": "d4961f7101160614ba4c8c09aa8ef67912536632f856d53585b696c1346c0ab1",
+  "contrast_sha256": "b83937c723aac76a0065a4f98dc68386945316fd8e9e55f26463e379be1237b9",
+  "configuration": {
+    "version": 1,
+    "max_segments": 4,
+    "rules": {
+      "ACCOUNT": "(?:i (?:cannot|can't|am unable to) (?:log in|sign in|access my account)|my account (?:is|was) locked)",
+      "PAYMENT": "(?:my (?:checkout )?payment (?:was |is )?(?:rejected|declined|failed)|my card (?:was |is )?declined|i (?:was|have been) charged twice)"
+    },
+    "boundary": "(?:\\s*,?\\s+\\b(?:and|also|plus|but)\\b\\s+|[;\\n]+|[.!?]\\s+)",
+    "skip": "\\b(?:if|unless|either|or|instead|rather than|because|when|after|before)\\b|[\"\u201c\u201d]",
+    "question": "You mentioned account access and a payment issue. Which would you like help with first?",
+    "match": "Entire trimmed fragment; all fragments must match, with both ACCOUNT and PAYMENT present."
+  },
+  "gate": "Preserve supported accepted and correct accepted counts; no increase in incorrect accepted or unsupported suggestions; REVIEW withheld must improve and every authored contrast expectation must match. Offline only.",
+  "boundaries": [
+    "Designed after inspecting the remaining known ACCOUNT/PAYMENT problem-description miss.",
+    "Freeze configuration and 30 provisional contrast cases before replay; no revisions from these results.",
+    "Replay only prior offline clarification outputs, preserving all existing abstentions.",
+    "Category hints are lexical hypotheses, not independent adjudication, calibrated scores or automated actions.",
+    "No browser or API integration, training, threshold selection, private/pending reviews, validation, calibration or held-out tests."
+  ]
+}
