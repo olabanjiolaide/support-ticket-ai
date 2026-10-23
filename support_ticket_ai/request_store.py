@@ -40,7 +40,7 @@ class RequestStore:
         self.path.parent.mkdir(parents=True, exist_ok=True)
         with closing(self.connect()) as db:
             version = db.execute('PRAGMA user_version').fetchone()[0]
-            if version not in (0, 1):
+            if version not in (0, 1, 2):
                 raise ValueError('Unsupported request database schema.')
             if version == 0:
                 with db:
@@ -69,6 +69,18 @@ class RequestStore:
                     PRAGMA user_version=1;
                     COMMIT;
                     ''')
+            if version < 2:
+                with db:
+                    db.executescript("""
+                    BEGIN IMMEDIATE;
+                    CREATE TABLE IF NOT EXISTS request_need_reviews (
+                      request_id TEXT PRIMARY KEY REFERENCES requests(id),
+                      reviewed_at TEXT NOT NULL, actor TEXT NOT NULL,
+                      request_version INTEGER NOT NULL, review_json TEXT NOT NULL
+                    );
+                    PRAGMA user_version=2;
+                    COMMIT;
+                    """)
             db.execute('SELECT id,version FROM requests LIMIT 0')
 
     def connect(self):
@@ -117,7 +129,9 @@ class RequestStore:
             return self.record(row)
 
     def get(self, request_id):
-        with closing(self.connect()) as db:
+        with closing(self.connect()) as db, db:
+            # Keep version, history and the latest grouped review in one read snapshot.
+            db.execute('BEGIN')
             row = db.execute('SELECT * FROM requests WHERE id=?', (request_id,)).fetchone()
             if row is None:
                 raise RequestMissing('Saved request not found.')
@@ -130,6 +144,11 @@ class RequestStore:
                 item['after'] = json.loads(item.pop('after_json'))
                 events.append(item)
             result['history'] = events
+            review = db.execute('SELECT * FROM request_need_reviews WHERE request_id=?', (request_id,)).fetchone()
+            result['need_review'] = None
+            if review:
+                result['need_review'] = {**dict(review), 'review': json.loads(review['review_json'])}
+                result['need_review'].pop('review_json')
             return result
 
     def list(self, *, q='', status=None, category=None, review_state=None, queue=None, limit=20, offset=0):
@@ -198,6 +217,37 @@ class RequestStore:
                        (after['status'], after['review_state'], after['confirmed_category'], after['resolution_note'],
                         after['resolved_at'], after['version'], timestamp, note if note else row['latest_note'], request_id))
             self.event(db, request_id, actor.strip(), action, note.strip(), before, after, timestamp)
+        return self.get(request_id)
+
+    def save_need_review(self, request_id, *, version, actor, review):
+        from .need_review import NeedReview
+        # Revalidate at the persistence boundary, including direct store callers.
+        document = NeedReview.model_validate(review).model_dump(mode='json')
+        if type(version) is not int or version < 1 or not actor.strip() or len(actor) > 80:
+            raise ValueError('Use an expected version and reviewer label.')
+        with closing(self.connect()) as db, db:
+            db.execute('BEGIN IMMEDIATE')
+            row = db.execute('SELECT * FROM requests WHERE id=?', (request_id,)).fetchone()
+            if row is None:
+                raise RequestMissing('Saved request not found.')
+            if row['version'] != version:
+                raise StoreConflict('This request changed in another tab. Reload it before saving your changes.')
+            if row['status'] == 'resolved':
+                raise StoreConflict('Reopen the resolved request before changing its needs review.')
+            if document['source_text'] != row['message']:
+                raise StoreConflict('The review source does not match the saved original message.')
+            timestamp = now()
+            old = db.execute('SELECT review_json FROM request_need_reviews WHERE request_id=?', (request_id,)).fetchone()
+            before = {**lifecycle(row), 'need_review': json.loads(old[0]) if old else None}
+            db.execute('UPDATE requests SET version=version+1,updated_at=? WHERE id=?', (timestamp,request_id))
+            db.execute("""INSERT INTO request_need_reviews(request_id,reviewed_at,actor,request_version,review_json)
+                          VALUES(?,?,?,?,?) ON CONFLICT(request_id) DO UPDATE SET
+                          reviewed_at=excluded.reviewed_at, actor=excluded.actor,
+                          request_version=excluded.request_version, review_json=excluded.review_json""",
+                       (request_id,timestamp,actor.strip(),version+1,json.dumps(document,ensure_ascii=False)))
+            after_row = db.execute('SELECT * FROM requests WHERE id=?', (request_id,)).fetchone()
+            after = {**lifecycle(after_row), 'need_review': document}
+            self.event(db,request_id,actor.strip(),'needs_review','',before,after,timestamp)
         return self.get(request_id)
 
     def overview(self):

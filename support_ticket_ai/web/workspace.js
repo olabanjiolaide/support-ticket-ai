@@ -12,7 +12,7 @@ const date = (value) => new Date(value).toLocaleString();
 const statusLabel = (r) => r.status === 'resolved' ? 'Resolved' : r.status === 'in_progress' ? 'In progress'
   : r.status === 'needs_clarification' ? 'Needs clarification' : r.review_state === 'reviewed' ? 'Ready to handle' : 'Awaiting review';
 const titles = {new: 'New request', requests: 'All requests', review: 'Review queue', 'in-progress': 'In progress', resolved: 'Resolved requests', overview: 'Overview'};
-const actionLabels = {created: 'Request saved', review: 'Category reviewed', clarify: 'Clarification needed', start: 'Handling started', resolve: 'Request resolved', reopen: 'Reopened for review', note: 'Note added'};
+const actionLabels = {created: 'Request saved', review: 'Category reviewed', clarify: 'Clarification needed', start: 'Handling started', resolve: 'Request resolved', reopen: 'Reopened for review', note: 'Note added', needs_review: 'Customer needs reviewed'};
 
 async function api(path, options = {}) {
   const controller = new AbortController();
@@ -42,7 +42,17 @@ export function initWorkspace({getDraft, setSaving, onSaved}) {
       const combined = [field.value.trim(), text].filter(Boolean).join('\n\n');
       if (Array.from(combined).length > 2000) return 'The combined note exceeds 2,000 characters. Save your existing note separately or shorten the clarification.';
       field.value = combined; field.focus(); return null;
-    });
+    }, {save: async (review) => {
+      if (!current || actionPending) throw new Error('Wait for the current operation to complete.');
+      const actor = byId('reviewer-name').value.trim();
+      if (!actor) { byId('reviewer-name').focus(); throw new Error('Enter a reviewer label above before saving.'); }
+      const id = current.id, version = current.version;
+      ++detailSequence; actionPending = true; updateActions();
+      try {
+        const record = await api(`/requests/${id}/needs-review`, {method:'POST',body:JSON.stringify({version,actor,review})});
+        if (detailId === id) { renderDetail(record, true); showError('detail-feedback', 'Grouped needs review saved locally. Handling status and overall category are unchanged.'); }
+      } finally { actionPending = false; updateActions(); }
+    }});
   const saveButton = byId('save-request');
   const savePrediction = byId('save-with-prediction');
 
@@ -160,6 +170,7 @@ export function initWorkspace({getDraft, setSaving, onSaved}) {
   function renderDetail(record, preserveDraft = false) {
     savedBreakdown.reset();
     current = record;
+    savedBreakdown.restore(record.need_review?.review);
     byId('request-detail-content').hidden = false;
     byId('request-detail-title').textContent = shortId(record.id);
     byId('breadcrumb-current').textContent = `Requests / ${shortId(record.id)}`;
@@ -179,6 +190,11 @@ export function initWorkspace({getDraft, setSaving, onSaved}) {
       const item = element('li');
       item.append(element('strong', actionLabels[event.action] || event.action), element('p', `${date(event.happened_at)} · ${event.actor} · Version ${event.after.version}`, 'history-meta'));
       if (event.note) item.append(element('p', event.note, 'saved-message'));
+      if (event.action === 'needs_review') {
+        const details = element('details', '', 'response-details');
+        details.append(element('summary','Grouped review before / after'), element('pre',JSON.stringify({before:event.before?.need_review,after:event.after?.need_review},null,2)));
+        item.append(element('p',`${event.after.need_review.groups.length} human-authored need(s) recorded. Handling status was not changed.`,'technical-note'),details);
+      }
       const changes = [];
       for (const key of ['status','review_state','confirmed_category']) {
         const previous = event.before?.[key] ?? '—', next = event.after[key] ?? '—';

@@ -133,3 +133,7 @@ Read [the first learning guide](docs/01-data-contract.md), inspect `support_tick
 ### Individual needs in a message
 
 Use **Break down message** on New request or a saved request to review exact text fragments, distinguish requests from context, and ask for separate category hypotheses. Saved-request breakdowns can be staged into a note and saved explicitly. This is a human-assisted review tool, not a new semantic model; see [the walkthrough and limitations](docs/39-request-breakdown-preview.md).
+
+### Group related fragments into one customer need
+
+Add a human-authored need, attach current request fragments and supporting background, and review one category for the combined goal. Saved requests support explicit structured reviews with revision history and reload/restart persistence. This does not infer needs automatically or create handling tasks. See [the grouping walkthrough](docs/40-grouped-customer-needs.md).

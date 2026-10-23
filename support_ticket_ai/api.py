@@ -95,7 +95,7 @@ def create_app(model_dir: Path | None = None, semantic_model_dir: Path | None = 
 
     application = FastAPI(
         title="Support Ticket AI",
-        version="0.6.0",
+        version="0.7.0",
         description="Category suggestions requiring human review; scores are not calibrated.",
         lifespan=lifespan,
     )
