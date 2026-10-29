@@ -1,6 +1,7 @@
+import { initProposals } from './proposal-view.js';
 import { describeResult } from './result-view.js';
 
-const roles = [['unconfirmed','Not reviewed'],['request','Current request'],['context','Background / context'],
+const roles = [['unconfirmed','Not reviewed'],['request','Current request'],['obstacle','Current obstacle'],['context','Background / context'],
   ['unclear','Unclear — ask customer'],['conditional','Conditional request'],['alternative','Alternative request'],
   ['negated','Not requested'],['resolved','Already resolved']];
 const categories = ['ACCOUNT','CANCEL','CONTACT','DELIVERY','FEEDBACK','INVOICE','ORDER','PAYMENT','REFUND','SHIPPING','SUBSCRIPTION'];
@@ -26,7 +27,8 @@ export function initBreakdown(host, getSource, stageNote = null, persistence = n
   const heading = el('h2', 'Understand the individual needs');
   heading.tabIndex = -1;
   const intro = el('p', 'Human-assisted preview · group related fragments under one customer goal, attach background, and review one category for each need.', 'section-description');
-  const caution = el('p', 'Read the complete message when grouping fragments. You decide what they mean; the preview does not infer needs or change handling status.', 'technical-note');
+  const caution = el('p', 'Read the complete message when grouping fragments. Manual fragments are text boundaries; optional language-model proposals are unverified interpretations. You make the final decision.', 'technical-note');
+  const proposalHost = el('section');
   const build = el('button', 'Break down message', 'secondary-button'); build.type = 'button';
   const feedback = el('p', '', 'technical-note'); feedback.setAttribute('role','status');
   const compact = el('p', 'No customer needs grouped yet.', 'need-summary'); compact.setAttribute('role','status');
@@ -42,17 +44,22 @@ export function initBreakdown(host, getSource, stageNote = null, persistence = n
   footer.append(questionLabel, el('p', 'Categories describe routing only. Offers, eligibility, account facts and approved actions require separate evidence. SUBSCRIPTION means newsletter preferences; actual order cancellation is ORDER.', 'technical-note'));
   const transfer = el('button', 'Add reviewed breakdown to note draft', 'secondary-button'); transfer.type = 'button';
   if (stageNote) footer.append(transfer, el('p','This fills the review note. Use Add note to save it explicitly. It creates no tasks and confirms no overall category.','technical-note'));
+  const confirmation = el('label','I reviewed the proposed evidence, roles, categories and relationships against the complete message.');
+  const confirmed = el('input'); confirmed.type='checkbox'; confirmation.prepend(confirmed); confirmation.className='proposal-confirmation'; confirmation.hidden=true; footer.append(confirmation);
+  const relationPanel = el('div'); relationPanel.className='need-relations';
   const saveGroups = el('button', 'Save grouped review', 'primary-button'); saveGroups.type = 'button';
   if (persistence) footer.append(saveGroups, el('p', 'Explicitly saves your roles, need groups, categories and clarification. It does not confirm the overall category, change status or create tasks. Reviewer label above is required.', 'technical-note'));
-  host.replaceChildren(heading, intro, caution, build, feedback, compact, groupPanel, addGroup, details, footer);
+  host.replaceChildren(heading, intro, caution, proposalHost, build, feedback, compact, groupPanel, relationPanel, addGroup, details, footer);
   let generation = 0, currentKey = null, records = [], preview = null;
-  let groups = [];
+  let groups = [], relations = [], modelDraft = false;
+  const proposalsUI = initProposals(proposalHost, getSource, document => restore(document, true));
   const controllers = new Set();
   const sourceKey = (source) => JSON.stringify([source?.key, source?.text, source?.mode]);
   const makeController = () => { const controller = new AbortController(); controllers.add(controller); return controller; };
   function reset() {
+    proposalsUI.reset();
     ++generation; for (const controller of controllers) controller.abort(); controllers.clear();
-    currentKey = null; preview = null; records = []; groups = []; results.replaceChildren(); groupPanel.replaceChildren(); addGroup.hidden = true; details.open = true; compact.textContent = 'No customer needs grouped yet.'; footer.hidden = true; question.value = '';
+    currentKey = null; preview = null; records = []; groups = []; relations = []; modelDraft=false; confirmation.hidden=true; confirmed.checked=false; relationPanel.replaceChildren(); results.replaceChildren(); groupPanel.replaceChildren(); addGroup.hidden = true; details.open = true; compact.textContent = 'No customer needs grouped yet.'; footer.hidden = true; question.value = '';
     build.disabled = false; build.textContent = 'Break down message'; feedback.textContent = '';
     host.removeAttribute('aria-busy');
   }
@@ -77,10 +84,11 @@ export function initBreakdown(host, getSource, stageNote = null, persistence = n
     for (const group of groups) {
       const members = records.filter(r => r.group.value === group.id);
       const requestCount = members.filter(r => r.role.value === 'request').length;
+      const obstacleCount = members.filter(r => r.role.value === 'obstacle').length;
       const background = members.filter(r => r.role.value === 'context').length;
-      group.members.textContent = `${requestCount} current request fragment(s) · ${background} background fragment(s) · ${members.length} total assigned`;
+      group.members.textContent = `${requestCount} current request fragment(s)${obstacleCount ? ` · ${obstacleCount} obstacle fragment(s)` : ''} · ${background} background fragment(s) · ${members.length} total assigned`;
       if (invalidate) { ++group.call; group.pending = false; group.result.textContent = 'Optional suggestion uses the selected original evidence. Your category remains your choice.'; }
-      group.assess.disabled = group.pending || !requestCount || members.some(r => !['request','context'].includes(r.role.value));
+      group.assess.disabled = group.pending || !(requestCount + obstacleCount) || members.some(r => !['request','obstacle','context'].includes(r.role.value));
     }
     compact.textContent = `${groups.length} customer need(s) drafted by you · ${records.filter(r => r.role.value === 'context').length} background fragment(s) · ${records.filter(r => r.role.value !== 'unconfirmed').length}/${records.length} fragments reviewed`;
     addGroup.disabled = groups.length >= 12;
@@ -93,17 +101,19 @@ export function initBreakdown(host, getSource, stageNote = null, persistence = n
     title.type = 'text'; title.maxLength = 160; title.placeholder = 'Describe one current customer goal'; title.value = saved?.title || ''; titleLabel.append(title);
     const [categoryLabel, category] = select('Your category for this need', [['','Choose a category'],...categories.map(c => [c,c]),['OUTSIDE_SCOPE','Outside current categories'],['UNCLEAR','Unclear']]);
     category.value = saved?.category || '';
+    const [kindLabel, kind] = select('Need type', [['goal','Goal'],['obstacle','Obstacle'],['unclear','Unclear']]);
+    kind.value = saved?.kind || 'goal';
     const members = el('p', '', 'technical-note');
     const assess = el('button', 'Suggest category using need evidence', 'secondary-button'); assess.type = 'button';
     const result = el('p', '', 'technical-note'); result.setAttribute('role','status');
     const remove = el('button', 'Remove need', 'text-button'); remove.type = 'button';
     const groupHeading = el('h3', saved?.title || `Your need ${id.slice(5)}`);
-    const group = {id, title, category, card, members, assess, result, call:0, pending:false}; groups.push(group);
-    card.append(groupHeading, titleLabel, categoryLabel, members, assess, result, remove);
+    const group = {id, title, kind, category, card, members, assess, result, call:0, pending:false}; groups.push(group);
+    card.append(groupHeading, titleLabel, kindLabel, categoryLabel, members, assess, result, remove);
     groupPanel.append(card);
     title.addEventListener('input', () => { groupHeading.textContent = title.value.trim() || `Your need ${id.slice(5)}`; syncGroups(false); });
     category.addEventListener('change', () => syncGroups(false));
-    remove.addEventListener('click', () => { ++group.call; groups = groups.filter(g => g !== group); card.remove(); syncGroups(); });
+    remove.addEventListener('click', () => { ++group.call; groups = groups.filter(g => g !== group); relations = relations.filter(r => r.source !== group.id && r.target !== group.id); card.remove(); renderRelations(); syncGroups(); });
     assess.addEventListener('click', async () => {
       if (assess.disabled) return;
       const source = getSource(), token = generation, key = sourceKey(source), attempt = ++group.call;
@@ -124,18 +134,34 @@ export function initBreakdown(host, getSource, stageNote = null, persistence = n
     syncGroups(); return group;
   }
   addGroup.addEventListener('click', () => { const group = addNeed(); if (group) group.title.focus(); });
+  function renderRelations() {
+    relationPanel.replaceChildren();
+    for (const relation of relations) {
+      const card=el('article','','need-relation');
+      card.append(el('strong',`Review hypothesis: ${relation.source} → ${relation.target}`));
+      const [kindLabel,kind]=select('Relationship type',[['may_block','May block'],['depends_on','Depends on'],['alternative_to','Alternative to']]);kind.value=relation.kind;
+      kind.addEventListener('change',()=>{relation.kind=kind.value;});
+      const label=el('label','Relationship note'), note=el('textarea');note.rows=2;note.maxLength=300;note.value=relation.note;label.append(note);
+      note.addEventListener('input',()=>{relation.note=note.value;});
+      const evidence=el('details');evidence.append(el('summary','Supporting original evidence'));
+      for(const id of relation.evidence_parts){const part=records.find(r=>r.part.id===id);if(part)evidence.append(el('blockquote',`${id}: ${part.part.text}`));}
+      const remove=el('button','Remove relationship','text-button');remove.type='button';remove.addEventListener('click',()=>{relations=relations.filter(r=>r!==relation);renderRelations();});
+      card.append(kindLabel,label,evidence,remove);relationPanel.append(card);
+    }
+  }
   function reviewedDocument() {
     if (!preview || currentKey !== sourceKey(getSource())) throw new Error('Generate a fresh preview for this message first.');
+    if (modelDraft && !confirmed.checked) throw new Error('Confirm that you reviewed the model draft before saving or staging it.');
     if (records.some(r => r.role.value === 'unconfirmed')) throw new Error('Review the interpretation of every fragment first.');
-    if (records.some(r => ['request','unclear','conditional','alternative'].includes(r.role.value) && !r.group.value)) throw new Error('Assign each current or unresolved request to a customer need.');
+    if (records.some(r => ['request','obstacle','unclear','conditional','alternative'].includes(r.role.value) && !r.group.value)) throw new Error('Assign each current or unresolved request to a customer need.');
     for (const group of groups) {
       if (!group.title.value.trim() || !group.category.value) throw new Error('Give each need a title and human category (or choose Outside current categories / Unclear).');
-      if (!records.some(r => r.group.value === group.id && ['request','unclear','conditional','alternative'].includes(r.role.value))) throw new Error('Background alone is not a current need. Assign a current or unresolved request, or remove the empty need.');
+      if (!records.some(r => r.group.value === group.id && ['request','obstacle','unclear','conditional','alternative'].includes(r.role.value))) throw new Error('Background alone is not a current need. Assign a current or unresolved request, or remove the empty need.');
     }
-    if ((records.some(r => ['unclear','conditional','alternative'].includes(r.role.value)) || groups.some(g => g.category.value === 'UNCLEAR')) && !question.value.trim()) throw new Error('Add a clarification question or relationship note for unresolved requests.');
-    return {schema_version:1, source_text:preview.source_text,
+    if ((records.some(r => ['unclear','conditional','alternative'].includes(r.role.value)) || groups.some(g => g.category.value === 'UNCLEAR' || g.kind.value === 'unclear') || relations.length) && !question.value.trim()) throw new Error('Add a clarification question or relationship note for unresolved requests.');
+    return {schema_version:2, source_text:preview.source_text,
       parts:records.map(r => ({id:r.part.id,start:r.part.start,end:r.part.end,text:r.part.text,role:r.role.value,group_id:r.group.value || null,category:r.category.value || null})),
-      groups:groups.map(g => ({id:g.id,title:g.title.value.trim(),category:g.category.value})), clarification:question.value.trim()};
+      groups:groups.map(g => ({id:g.id,title:g.title.value.trim(),category:g.category.value,kind:g.kind.value})), relations:structuredClone(relations), clarification:question.value.trim()};
   }
   saveGroups.addEventListener('click', async () => {
     let document;
@@ -223,6 +249,7 @@ export function initBreakdown(host, getSource, stageNote = null, persistence = n
       lines.push(`[${r.part.start}:${r.part.end}] Human: ${r.role.value}${r.category.value ? ' / '+r.category.value : ''}.${p ? ` Model hypothesis (${p.model_mode}): ${p.suggested_category ?? 'withheld'}; sha256=${p.model_sha256}.` : ''}`);
     }
     for (const g of groups) lines.push(`Human need ${g.id}: ${g.title.value.trim() || 'Untitled'} / ${g.category.value || 'Unclassified'}; evidence fragments: ${records.filter(r => r.group.value === g.id).map(r => r.part.id).join(', ')}.`);
+    for (const relation of relations) lines.push(`Relationship hypothesis: ${relation.source} ${relation.kind} ${relation.target}; evidence: ${relation.evidence_parts.join(', ')}; ${relation.note}`);
     if (question.value.trim()) lines.push('Clarification / coordination: '+question.value.trim());
     const error = stageNote(lines.join('\n'));
     feedback.textContent = error || 'Added to the note draft. Review it and use Add note to save; status and overall category are unchanged.';
@@ -233,7 +260,7 @@ export function initBreakdown(host, getSource, stageNote = null, persistence = n
     heading.focus({preventScroll:true});
     host.scrollIntoView({block:'start', behavior:'instant'});
   }
-  function restore(document) {
+  function restore(document, fromProposal = false) {
     reset(); if (!document) return;
     const source = getSource(); if (document.source_text !== source?.text) return;
     currentKey = sourceKey(source); preview = {source_text:document.source_text,parts:document.parts};
@@ -244,8 +271,11 @@ export function initBreakdown(host, getSource, stageNote = null, persistence = n
       record.role.value = saved.role; record.role.dispatchEvent(new Event('change'));
       record.group.value = saved.group_id || ''; record.category.value = saved.category || '';
     }
+    relations = structuredClone(document.relations || []); renderRelations();
+    modelDraft = fromProposal; confirmation.hidden = !fromProposal; confirmed.checked = false;
     question.value = document.clarification; footer.hidden = false; addGroup.hidden = false; details.open = false; syncGroups();
-    feedback.textContent = 'Loaded the last saved human review. Model hypotheses are not restored as human decisions.';
+    details.open = fromProposal;
+    feedback.textContent = fromProposal ? 'Model proposals loaded as an unsaved draft. Review and confirm them before saving.' : 'Loaded the last saved human review. Model hypotheses are not restored as human decisions.';
   }
   return {reset, open, restore};
 }

@@ -375,3 +375,12 @@ pre { max-height: 240px; overflow: auto; background: var(--soft); color: var(--i
 .customer-need:only-child { grid-column: 1 / -1; }
 .breakdown-details > summary::after { content: '+'; margin-left: 12px; }
 .breakdown-details[open] > summary::after { content: '−'; }
+
+.proposal-panel { border: 1px solid var(--border); border-radius: 12px; padding: 18px; margin: 18px 0; background: var(--soft); }
+.proposal-panel h3 { font-size: 15px; margin: 0 0 10px; }
+.proposal-panel button, .proposal-panel > a { margin: 8px 10px 8px 0; }
+.proposal-panel pre { max-width: 100%; overflow: auto; font-size: 11px; }
+.proposal-need, .need-relation { border: 1px solid var(--border); border-radius: 10px; padding: 16px; margin: 12px 0; min-width: 0; }
+.proposal-need blockquote, .need-relation blockquote { margin: 10px 0; padding-left: 10px; border-left: 2px solid var(--accent); white-space: pre-wrap; }
+.breakdown-card .proposal-confirmation { display: flex; align-items: flex-start; gap: 10px; font-weight: 500; line-height: 1.6; margin: 20px 0; }
+.breakdown-card .proposal-confirmation input[type="checkbox"] { width: 18px; min-height: 18px; height: 18px; margin: 3px 0 0; padding: 0; flex-shrink: 0; accent-color: var(--accent); }

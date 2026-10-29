@@ -137,3 +137,7 @@ Use **Break down message** on New request or a saved request to review exact tex
 ### Group related fragments into one customer need
 
 Add a human-authored need, attach current request fragments and supporting background, and review one category for the combined goal. Saved requests support explicit structured reviews with revision history and reload/restart persistence. This does not infer needs automatically or create handling tasks. See [the grouping walkthrough](docs/40-grouped-customer-needs.md).
+
+### Experimental automatic needs proposals
+
+An optional local Ollama language model can propose finer evidence spans, goals, obstacles, categories and reviewable relationships. Proposals stay separate until explicitly adopted and reviewed. No live-model accuracy improvement is claimed; setup, limitations and a small development pilot are in [the local proposal guide](docs/41-local-needs-proposals.md).

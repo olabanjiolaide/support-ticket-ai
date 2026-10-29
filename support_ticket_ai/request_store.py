@@ -222,7 +222,7 @@ class RequestStore:
     def save_need_review(self, request_id, *, version, actor, review):
         from .need_review import NeedReview
         # Revalidate at the persistence boundary, including direct store callers.
-        document = NeedReview.model_validate(review).model_dump(mode='json')
+        document = NeedReview.model_validate(review).model_dump(mode='json', exclude_unset=True)
         if type(version) is not int or version < 1 or not actor.strip() or len(actor) > 80:
             raise ValueError('Use an expected version and reviewer label.')
         with closing(self.connect()) as db, db:

@@ -1,0 +1,280 @@
+{
+  "schema_version": 1,
+  "authored_on": "2026-10-29",
+  "purpose": "Provisional authored development cases, not independently adjudicated ground truth.",
+  "manual_review_pilot_used": false,
+  "locked_test_used": false,
+  "metrics_declared_before_live_run": [
+    "valid_structured_response",
+    "category_set_match",
+    "need_count_match",
+    "non_whitespace_role_character_agreement",
+    "relation_kind_set_match"
+  ],
+  "cases": [
+    {
+      "id": "goal-and-obstacle",
+      "text": "Please find my order number, but I cannot access my account.",
+      "expected_plan": {
+        "segments": [
+          {
+            "text": "Please find my order number,",
+            "role": "request",
+            "group_id": "need-1"
+          },
+          {
+            "text": "but I cannot access my account.",
+            "role": "obstacle",
+            "group_id": "need-2"
+          }
+        ],
+        "groups": [
+          {
+            "id": "need-1",
+            "title": "Retrieve the order number",
+            "category": "ORDER",
+            "kind": "goal"
+          },
+          {
+            "id": "need-2",
+            "title": "Restore account access",
+            "category": "ACCOUNT",
+            "kind": "obstacle"
+          }
+        ],
+        "relations": [
+          {
+            "source": "need-2",
+            "target": "need-1",
+            "kind": "may_block",
+            "evidence_parts": [
+              "part-1",
+              "part-2"
+            ],
+            "note": "Account access may be needed to retrieve the order number."
+          }
+        ],
+        "clarification": "What happens when you try to sign in?"
+      }
+    },
+    {
+      "id": "history-and-current-goal",
+      "text": "My earlier order was cancelled. I cannot find the item now. Is it still available?",
+      "expected_plan": {
+        "segments": [
+          {
+            "text": "My earlier order was cancelled.",
+            "role": "context",
+            "group_id": "need-1"
+          },
+          {
+            "text": "I cannot find the item now.",
+            "role": "request",
+            "group_id": "need-1"
+          },
+          {
+            "text": "Is it still available?",
+            "role": "request",
+            "group_id": "need-1"
+          }
+        ],
+        "groups": [
+          {
+            "id": "need-1",
+            "title": "Locate the item and check availability",
+            "category": "ORDER",
+            "kind": "goal"
+          }
+        ],
+        "relations": [],
+        "clarification": "Could you share the product name or link?"
+      }
+    },
+    {
+      "id": "independent-needs",
+      "text": "Please email my invoice. Also reset my account password.",
+      "expected_plan": {
+        "segments": [
+          {
+            "text": "Please email my invoice.",
+            "role": "request",
+            "group_id": "need-1"
+          },
+          {
+            "text": "Also reset my account password.",
+            "role": "request",
+            "group_id": "need-2"
+          }
+        ],
+        "groups": [
+          {
+            "id": "need-1",
+            "title": "Obtain the invoice",
+            "category": "INVOICE",
+            "kind": "goal"
+          },
+          {
+            "id": "need-2",
+            "title": "Reset the account password",
+            "category": "ACCOUNT",
+            "kind": "goal"
+          }
+        ],
+        "relations": [],
+        "clarification": ""
+      }
+    },
+    {
+      "id": "negated-cancellation",
+      "text": "Do not cancel my order. Please send my invoice.",
+      "expected_plan": {
+        "segments": [
+          {
+            "text": "Do not cancel my order.",
+            "role": "negated",
+            "group_id": null
+          },
+          {
+            "text": "Please send my invoice.",
+            "role": "request",
+            "group_id": "need-1"
+          }
+        ],
+        "groups": [
+          {
+            "id": "need-1",
+            "title": "Obtain the invoice",
+            "category": "INVOICE",
+            "kind": "goal"
+          }
+        ],
+        "relations": [],
+        "clarification": ""
+      }
+    },
+    {
+      "id": "insufficient-context",
+      "text": "It happened again.",
+      "expected_plan": {
+        "segments": [
+          {
+            "text": "It happened again.",
+            "role": "unclear",
+            "group_id": "need-1"
+          }
+        ],
+        "groups": [
+          {
+            "id": "need-1",
+            "title": "Clarify the reported problem",
+            "category": "UNCLEAR",
+            "kind": "unclear"
+          }
+        ],
+        "relations": [],
+        "clarification": "What were you trying to do, and what happened?"
+      }
+    },
+    {
+      "id": "outside-support",
+      "text": "Write a poem using the word invoice.",
+      "expected_plan": {
+        "segments": [
+          {
+            "text": "Write a poem using the word invoice.",
+            "role": "request",
+            "group_id": "need-1"
+          }
+        ],
+        "groups": [
+          {
+            "id": "need-1",
+            "title": "Creative writing request",
+            "category": "OUTSIDE_SCOPE",
+            "kind": "goal"
+          }
+        ],
+        "relations": [],
+        "clarification": ""
+      }
+    },
+    {
+      "id": "conditional-alternatives",
+      "text": "If delivery is impossible, cancel my order or refund my payment.",
+      "expected_plan": {
+        "segments": [
+          {
+            "text": "If delivery is impossible,",
+            "role": "conditional",
+            "group_id": "need-1"
+          },
+          {
+            "text": "cancel my order",
+            "role": "conditional",
+            "group_id": "need-1"
+          },
+          {
+            "text": "or refund my payment.",
+            "role": "alternative",
+            "group_id": "need-2"
+          }
+        ],
+        "groups": [
+          {
+            "id": "need-1",
+            "title": "Consider order cancellation",
+            "category": "ORDER",
+            "kind": "goal"
+          },
+          {
+            "id": "need-2",
+            "title": "Consider a refund",
+            "category": "REFUND",
+            "kind": "goal"
+          }
+        ],
+        "relations": [
+          {
+            "source": "need-1",
+            "target": "need-2",
+            "kind": "alternative_to",
+            "evidence_parts": [
+              "part-2",
+              "part-3"
+            ],
+            "note": "The customer gives alternatives rather than requesting both actions."
+          }
+        ],
+        "clarification": "Which option would you prefer if delivery is impossible?"
+      }
+    },
+    {
+      "id": "resolved-background",
+      "text": "The password reset worked. Please resend my invoice.",
+      "expected_plan": {
+        "segments": [
+          {
+            "text": "The password reset worked.",
+            "role": "resolved",
+            "group_id": null
+          },
+          {
+            "text": "Please resend my invoice.",
+            "role": "request",
+            "group_id": "need-1"
+          }
+        ],
+        "groups": [
+          {
+            "id": "need-1",
+            "title": "Resend the invoice",
+            "category": "INVOICE",
+            "kind": "goal"
+          }
+        ],
+        "relations": [],
+        "clarification": ""
+      }
+    }
+  ]
+}

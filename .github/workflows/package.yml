@@ -13,6 +13,7 @@ on:
       - scripts/check_request_workflow.py
       - scripts/check_breakdown_ui.py
       - scripts/check_need_groups_ui.py
+      - scripts/check_proposals_ui.py
       - .github/workflows/package.yml
   pull_request:
     paths:
@@ -26,6 +27,7 @@ on:
       - scripts/check_request_workflow.py
       - scripts/check_breakdown_ui.py
       - scripts/check_need_groups_ui.py
+      - scripts/check_proposals_ui.py
       - .github/workflows/package.yml
 permissions:
   contents: read
@@ -77,6 +79,11 @@ jobs:
         run: |
           cd "$RUNNER_TEMP"
           "$RUNNER_TEMP/ticket-wheel-env/bin/python" "$GITHUB_WORKSPACE/scripts/check_need_groups_ui.py" --artifacts "$GITHUB_WORKSPACE/artifacts/need-group-checks"
+      - name: Check proposal draft integration (authored model stubs)
+        shell: bash
+        run: |
+          cd "$RUNNER_TEMP"
+          "$RUNNER_TEMP/ticket-wheel-env/bin/python" "$GITHUB_WORKSPACE/scripts/check_proposals_ui.py" --artifacts "$GITHUB_WORKSPACE/artifacts/proposal-checks"
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -90,3 +97,4 @@ jobs:
             artifacts/request-workflow-checks/
             artifacts/breakdown-checks/
             artifacts/need-group-checks/
+            artifacts/proposal-checks/

@@ -58,11 +58,19 @@ class PredictionResponse(BaseModel):
     request_check_version: int | None = None
 
 
-def create_app(model_dir: Path | None = None, semantic_model_dir: Path | None = None, requests_db: Path | None = None) -> FastAPI:
+def create_app(model_dir: Path | None = None, semantic_model_dir: Path | None = None, requests_db: Path | None = None, proposal_model: str | None = None) -> FastAPI:
     """Load one trusted bundle per worker at startup, not per request."""
 
     @asynccontextmanager
     async def lifespan(application: FastAPI):
+        application.state.proposer = None
+        configured_proposal = proposal_model if proposal_model is not None else os.environ.get('SUPPORT_TICKET_PROPOSAL_MODEL')
+        if configured_proposal:
+            try:
+                from .proposals import OllamaProposer
+                application.state.proposer = OllamaProposer(configured_proposal)
+            except ValueError:
+                logger.error('Invalid local proposal model configuration')
         application.state.request_store = None
         database = requests_db if requests_db is not None else os.environ.get("SUPPORT_TICKET_REQUESTS_DB")
         if database:
@@ -95,7 +103,7 @@ def create_app(model_dir: Path | None = None, semantic_model_dir: Path | None = 
 
     application = FastAPI(
         title="Support Ticket AI",
-        version="0.7.0",
+        version="0.8.0",
         description="Category suggestions requiring human review; scores are not calibrated.",
         lifespan=lifespan,
     )
@@ -137,6 +145,25 @@ def create_app(model_dir: Path | None = None, semantic_model_dir: Path | None = 
     def readiness(mode: Literal["word", "semantic"] = "word"):
         predictor = predictor_or_unavailable(mode)
         return {"status": "ready", "model_sha256": predictor.metadata["model_sha256"], "model_mode": mode}
+
+    @application.get('/proposals/status')
+    def proposal_status():
+        proposer = application.state.proposer
+        return proposer.status() if proposer else {'configured':False,'available':False,
+            'detail':'Optional local language-model proposals are not configured.'}
+
+    @application.post('/proposals')
+    def propose_needs(body: BreakdownRequest):
+        from .proposals import ProposalFailure
+        if application.state.proposer is None:
+            raise HTTPException(status_code=503,detail='Configure a local proposal model to generate needs.')
+        try:
+            return application.state.proposer.propose(body.text)
+        except ProposalFailure as error:
+            raise HTTPException(status_code=error.status,detail=str(error)) from error
+        except Exception as error:
+            logger.error('Proposal generation failed (%s)',type(error).__name__)
+            raise HTTPException(status_code=500,detail='The proposal could not be generated. No draft was applied.') from error
 
     @application.post("/breakdown")
     def breakdown(body: BreakdownRequest):
