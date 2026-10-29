@@ -77,6 +77,7 @@ import { initWorkspace } from "./workspace.js";
     input.setCustomValidity(overLimit ? "Use 2,000 characters or fewer." : "");
     input.setAttribute("aria-invalid", String(overLimit));
     submit.disabled = locked || !ready || !input.value.trim() || overLimit;
+    byId("generate-needs-shortcut").disabled = locked || !input.value.trim() || overLimit;
     clear.disabled = locked || !input.value;
     modelMode.disabled = locked;
     requestCheck.disabled = locked || modelMode.value !== "semantic" || !supportsRequestCheck;
@@ -387,6 +388,7 @@ import { initWorkspace } from "./workspace.js";
   });
 
   const draftBreakdown = initBreakdown(byId('draft-breakdown'), () => ({text: input.value, mode: modelMode.value}));
+  byId('generate-needs-shortcut').addEventListener('click',()=>draftBreakdown.generate());
   byId('review-needs').addEventListener('click', () => { if (lastResult) draftBreakdown.open(); });
   document.addEventListener('ticket-edited', () => draftBreakdown.reset());
   modelMode.addEventListener('change', () => draftBreakdown.reset());

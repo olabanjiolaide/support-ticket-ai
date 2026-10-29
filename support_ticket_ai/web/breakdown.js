@@ -387,5 +387,5 @@ export function initBreakdown(host, getSource, stageNote = null, persistence = n
     details.open = fromProposal;
     feedback.textContent = fromProposal ? 'Model proposals loaded as an unsaved draft. Review and confirm them before saving.' : 'Loaded the last saved human review. Model hypotheses are not restored as human decisions.';
   }
-  return {reset, open, restore};
+  return {reset, open, restore, generate:()=>proposalsUI.generate()};
 }

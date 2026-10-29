@@ -531,3 +531,33 @@ body[data-density="compact"] .customer-needs, body[data-density="compact"] .brea
 #need-handling { padding: 22px; }
 .need-handling-card textarea { min-height: 88px; }
 .need-contract textarea { min-height: 88px; }
+/* Clear primary AI action, separated from category classification and manual review. */
+.proposal-launch { margin: 20px 0; padding: 18px; border: 2px solid var(--accent); border-radius: 14px; background: var(--tint); }
+.proposal-launch .eyebrow { margin: 0 0 12px; font-size: 10px; }
+.proposal-launch p:last-child { margin: 10px 0 0; color: var(--muted); font-size: 12px; }
+.proposal-launch-button { width: 100%; min-height: 54px; font-size: 14px; }
+.proposal-panel { border: 2px solid var(--accent); padding: 22px; background: var(--surface); box-shadow: var(--shadow); }
+.proposal-heading { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 12px; }
+.proposal-eyebrow { font-size: 10px; letter-spacing: .12em; font-weight: 700; color: var(--accent); margin: 0; }
+.proposal-state { border-radius: 20px; padding: 5px 10px; background: var(--tint); color: var(--accent); font-size: 11px; font-weight: 600; }
+.proposal-description { color: var(--muted); font-size: 12px; margin: 8px 0 14px; }
+.proposal-actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.proposal-panel .proposal-actions button { margin: 0; min-height: 50px; }
+.proposal-generate { flex: 1 1 240px; font-size: 14px; }
+.proposal-check { flex: 0 1 auto; }
+.proposal-progress { display: flex; gap: 10px; align-items: center; padding: 14px 0; font-size: 12px; }
+.proposal-spinner { width: 18px; height: 18px; border: 2px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 1s linear infinite; flex: 0 0 auto; }
+.proposal-timing { color: var(--muted); font-size: 12px; margin: 0 0 12px; }
+.proposal-panel[data-state="error"] { border-color: var(--error); }
+.proposal-panel[data-state="error"] .proposal-state { color: var(--error); background: var(--error-bg); }
+.proposal-recovery { padding: 16px; margin-top: 16px; border: 1px solid var(--error); border-radius: 12px; background: var(--error-bg); }
+.proposal-recovery h4 { margin: 0 0 8px; color: var(--error); font-size: 14px; }
+.proposal-recovery p { font-size: 12px; overflow-wrap: anywhere; }
+.proposal-error-details { white-space: pre-wrap; overflow-wrap: anywhere; padding: 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); }
+.proposal-setup { margin-top: 16px; border-top: 1px solid var(--border); padding-top: 12px; font-size: 12px; color: var(--muted); }
+.proposal-setup summary { cursor: pointer; }
+.proposal-panel[hidden],.proposal-progress[hidden],.proposal-recovery[hidden],.proposal-timing[hidden] { display: none; }
+@media(max-width:600px) { .proposal-panel { padding: 16px; } .proposal-actions { flex-direction: column; align-items: stretch; } .proposal-generate,.proposal-check { flex: initial; width: 100%; } .proposal-recovery button { width: 100%; } }
+@media(prefers-reduced-motion:reduce) { .proposal-spinner { animation: none; } }
+@media print { .proposal-launch,.proposal-actions,.proposal-progress,.proposal-timing,.proposal-setup,.proposal-recovery button { display: none !important; } .proposal-recovery { break-inside: avoid; } }
+@media(max-width:600px) { .proposal-recovery button { margin: 6px 0; } }

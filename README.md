@@ -2,6 +2,8 @@
 
 A Python portfolio project for classifying support requests and routing uncertain predictions to human review.
 
+The [proposal controls and recovery update](docs/45-visible-proposal-actions-and-recovery.md) puts generation beside the message composer, adds visible retry/error controls and specific validation diagnostics, and allows one bounded regeneration without relaxing evidence checks.
+
 The [interpretation contract and individual need workflow](docs/44-interpretation-contract-and-need-progress.md) adds reviewer-authored actions with exact target quotes, recorded unknowns, separate need outcomes and a guard against resolving requests with unfinished needs. Actions are descriptive; no customer operations are executed.
 
 The [diagnostics and evidence-editing milestone](docs/43-diagnostics-evidence-evaluation.md) adds application/model identities, consistent frontend builds, Unicode-safe manual split/merge/undo, and evidence-aligned proposal error reports. Model weights are unchanged; live proposal quality remains unevaluated.

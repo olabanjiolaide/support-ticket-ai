@@ -33,7 +33,7 @@ def main():
             result=proposer.propose(case['text'])
             rows.append({'id':case['id'],'valid_structured_response':True,'metrics':compare(expected,result['review']), 'proposal':result,'elapsed_seconds':perf_counter()-started})
         except ProposalFailure as error:
-            rows.append({'id':case['id'],'valid_structured_response':False,'failure_code':error.code,'metrics':None,'elapsed_seconds':perf_counter()-started})
+            rows.append({'id':case['id'],'valid_structured_response':False,'failure_code':error.code,'validation_code':error.validation_code,'generation_attempts':error.attempts,'metrics':None,'elapsed_seconds':perf_counter()-started})
         print(f"Completed {len(rows)}/{min(args.limit,len(fixture['cases']))}",flush=True)
     report={'live_model_evaluated':True,'evaluation_scope':'Authored development cases only; no independent generalization claim.',
             'manual_review_pilot_used':False,'locked_test_used':False,'model':status['model'],

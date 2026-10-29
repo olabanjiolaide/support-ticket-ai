@@ -185,13 +185,14 @@ def create_app(model_dir: Path | None = None, semantic_model_dir: Path | None = 
 
     @application.post('/proposals')
     def propose_needs(body: BreakdownRequest):
-        from .proposals import ProposalFailure
+        from .proposals import ProposalFailure, PROMPT_VERSION
         if application.state.proposer is None:
             raise HTTPException(status_code=503,detail='Configure a local proposal model to generate needs.')
         try:
             return application.state.proposer.propose(body.text)
         except ProposalFailure as error:
-            raise HTTPException(status_code=error.status,detail=str(error)) from error
+            return JSONResponse(status_code=error.status,content={'detail':str(error),'code':error.code,
+                'validation_code':error.validation_code,'attempts':error.attempts,'prompt_version':PROMPT_VERSION})
         except Exception as error:
             logger.error('Proposal generation failed (%s)',type(error).__name__)
             raise HTTPException(status_code=500,detail='The proposal could not be generated. No draft was applied.') from error
