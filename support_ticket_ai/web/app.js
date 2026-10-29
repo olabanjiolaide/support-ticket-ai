@@ -1,3 +1,4 @@
+import { initInteractions } from './interactions.js';
 import { initBreakdown } from './breakdown.js';
 import { describeResult, technicalFacts } from "./result-view.js";
 import { initWorkspace } from "./workspace.js";
@@ -393,6 +394,7 @@ import { initWorkspace } from "./workspace.js";
     setSaving: (value) => { savingRequest = value; updateControls(); },
     onSaved: () => { input.value = ""; resizeInput(); edit(); },
   });
+  initInteractions();
   showModel();
   updateControls();
   checkReadiness();

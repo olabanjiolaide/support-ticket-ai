@@ -32,11 +32,17 @@ export function initBreakdown(host, getSource, stageNote = null, persistence = n
   const build = el('button', 'Break down message', 'secondary-button'); build.type = 'button';
   const feedback = el('p', '', 'technical-note'); feedback.setAttribute('role','status');
   const compact = el('p', 'No customer needs grouped yet.', 'need-summary'); compact.setAttribute('role','status');
+  const reviewProgress=el('div','','review-progress');reviewProgress.hidden=true;reviewProgress.setAttribute('role','progressbar');reviewProgress.setAttribute('aria-label','Fragment review progress');reviewProgress.setAttribute('aria-valuemin','0');
+  const progressFill=el('span');reviewProgress.append(progressFill);
+  const nextReview=el('div','','next-review-action');nextReview.hidden=true;
+  const nextText=el('p'), nextButton=el('button','Review next fragment','secondary-button');nextButton.type='button';nextReview.append(nextText,nextButton);
   const groupPanel = el('div', '', 'customer-needs');
   const addGroup = el('button', '+ Add customer need', 'secondary-button'); addGroup.type = 'button'; addGroup.hidden = true;
-  const details = el('details', '', 'breakdown-details'); details.open = true;
+  const details = el('details', '', 'breakdown-details'); details.open = true; details.hidden = true;
   details.append(el('summary', 'Review fragments and assign them to needs'));
-  const results = el('div', '', 'breakdown-parts'); details.append(results);
+  const filters=el('div','','evidence-filters');filters.setAttribute('aria-label','Filter evidence by need');
+  const emptyFilter=el('p','No fragments assigned to this need yet. Choose All fragments to assign evidence.','technical-note');emptyFilter.hidden=true;
+  const results = el('div', '', 'breakdown-parts'); details.append(filters,emptyFilter,results);
   const footer = el('div'); footer.hidden = true;
   const questionLabel = el('label', 'Clarification question / coordination note');
   const question = el('textarea'); question.rows = 2; question.maxLength = 600;
@@ -49,9 +55,9 @@ export function initBreakdown(host, getSource, stageNote = null, persistence = n
   const relationPanel = el('div'); relationPanel.className='need-relations';
   const saveGroups = el('button', 'Save grouped review', 'primary-button'); saveGroups.type = 'button';
   if (persistence) footer.append(saveGroups, el('p', 'Explicitly saves your roles, need groups, categories and clarification. It does not confirm the overall category, change status or create tasks. Reviewer label above is required.', 'technical-note'));
-  host.replaceChildren(heading, intro, caution, proposalHost, build, feedback, compact, groupPanel, relationPanel, addGroup, details, footer);
+  host.replaceChildren(heading, intro, caution, proposalHost, build, feedback, compact, reviewProgress, nextReview, groupPanel, relationPanel, addGroup, details, footer);
   let generation = 0, currentKey = null, records = [], preview = null;
-  let groups = [], relations = [], modelDraft = false;
+  let groups = [], relations = [], modelDraft = false, selectedNeed = null;
   const proposalsUI = initProposals(proposalHost, getSource, document => restore(document, true));
   const controllers = new Set();
   const sourceKey = (source) => JSON.stringify([source?.key, source?.text, source?.mode]);
@@ -59,13 +65,56 @@ export function initBreakdown(host, getSource, stageNote = null, persistence = n
   function reset() {
     proposalsUI.reset();
     ++generation; for (const controller of controllers) controller.abort(); controllers.clear();
-    currentKey = null; preview = null; records = []; groups = []; relations = []; modelDraft=false; confirmation.hidden=true; confirmed.checked=false; relationPanel.replaceChildren(); results.replaceChildren(); groupPanel.replaceChildren(); addGroup.hidden = true; details.open = true; compact.textContent = 'No customer needs grouped yet.'; footer.hidden = true; question.value = '';
+    currentKey = null; preview = null; records = []; groups = []; relations = []; selectedNeed=null; reviewProgress.hidden=true; nextReview.hidden=true; filters.replaceChildren(); emptyFilter.hidden=true; modelDraft=false; confirmation.hidden=true; confirmed.checked=false; relationPanel.replaceChildren(); results.replaceChildren(); groupPanel.replaceChildren(); addGroup.hidden = true; details.open = true; details.hidden = true; compact.textContent = 'No customer needs grouped yet.'; footer.hidden = true; question.value = '';
     build.disabled = false; build.textContent = 'Break down message'; feedback.textContent = '';
     host.removeAttribute('aria-busy');
   }
   function valid(token, key) { return token === generation && key === sourceKey(getSource()); }
+  function filterEvidence(id) {
+    selectedNeed = id;
+    for(const record of records) record.card.hidden = Boolean(id && record.group.value !== id);
+    for(const group of groups) group.card.classList.toggle('selected-need',group.id===id);
+    filters.querySelectorAll('button').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.need === (id || 'all'))));
+    emptyFilter.hidden = !id || records.some(record=>record.group.value===id);
+  }
+  function updateReviewNavigation() {
+    const done=records.filter(record=>record.role.value!=='unconfirmed').length;
+    reviewProgress.hidden=!records.length;nextReview.hidden=!records.length;
+    reviewProgress.setAttribute('aria-valuemax',String(records.length));reviewProgress.setAttribute('aria-valuenow',String(done));progressFill.style.width=`${records.length ? done/records.length*100 : 0}%`;
+    const unreviewed=records.find(record=>record.role.value==='unconfirmed');
+    const unassigned=records.find(record=>['request','obstacle','unclear','conditional','alternative'].includes(record.role.value) && !record.group.value);
+    const pendingNeed=groups.find(group=>!group.title.value.trim() || !group.category.value);
+    const needsQuestion=!question.value.trim() && (relations.length || records.some(record=>['unclear','conditional','alternative'].includes(record.role.value)) || groups.some(group=>group.category.value==='UNCLEAR' || group.kind.value==='unclear'));
+    nextText.textContent=unreviewed ? `Next: decide what fragment ${records.indexOf(unreviewed)+1} means. ${records.length-done} left to review.`
+      : unassigned ? 'Next: attach each current or unresolved request to a customer need.'
+      : pendingNeed ? 'Next: give each customer need a title and category.'
+      : needsQuestion ? 'Next: add a clarification question or explain the relationship.'
+      : modelDraft && !confirmed.checked ? 'Next: confirm that you reviewed the model interpretations against the original message.'
+      : 'All fragment interpretations selected. Review the grouped needs before saving.';
+    nextButton.textContent=unreviewed?'Review next fragment':unassigned && !groups.length?'Create first need':unassigned?'Assign a need':pendingNeed?'Finish need details':needsQuestion?'Add clarification':modelDraft && !confirmed.checked?'Review model draft':'View need summary';
+    nextButton.onclick=()=>{
+      filterEvidence(null);details.open=true;
+      if(!unreviewed && unassigned && !groups.length){const group=addNeed();group?.title.focus();return;}
+      const record=unreviewed || unassigned;
+      if(record){const target=unreviewed?record.role:record.group;target.focus({preventScroll:true});record.card.scrollIntoView({block:'center',behavior:'instant'});}
+      else if(pendingNeed){const target=!pendingNeed.title.value.trim()?pendingNeed.title:pendingNeed.category;target.focus();}
+      else if(needsQuestion){question.focus();}
+      else if(modelDraft && !confirmed.checked){confirmed.focus();}
+      else{compact.tabIndex=-1;compact.focus({preventScroll:true});compact.scrollIntoView({block:'center',behavior:'instant'});}
+    };
+    filters.replaceChildren();
+    for(const [id,label] of [[null,'All fragments'],...groups.map(group=>[group.id,group.title.value.trim() || group.id])]){
+      const button=el('button',label,'evidence-filter');button.type='button';button.dataset.need=id || 'all';button.title=label;
+      button.addEventListener('click',()=>filterEvidence(id));filters.append(button);
+    }
+    if(selectedNeed && !groups.some(group=>group.id===selectedNeed))selectedNeed=null;
+    filterEvidence(selectedNeed);
+  }
   function syncGroups(invalidate = true) {
     for (const record of records) {
+      for(const radio of record.shortcuts)radio.checked=radio.value===record.role.value;
+      record.badge.textContent=roles.find(([value])=>value===record.role.value)?.[1] || 'Not reviewed';
+      record.badge.dataset.role=record.role.value;
       const previous = record.group.value;
       record.group.replaceChildren(new Option('Not assigned to a need', ''));
       for (const group of groups) record.group.add(new Option(group.title.value.trim() || group.id, group.id));
@@ -92,6 +141,7 @@ export function initBreakdown(host, getSource, stageNote = null, persistence = n
     }
     compact.textContent = `${groups.length} customer need(s) drafted by you · ${records.filter(r => r.role.value === 'context').length} background fragment(s) · ${records.filter(r => r.role.value !== 'unconfirmed').length}/${records.length} fragments reviewed`;
     addGroup.disabled = groups.length >= 12;
+    updateReviewNavigation();
   }
   function addNeed(saved = null) {
     if (groups.length >= 12) return;
@@ -109,10 +159,12 @@ export function initBreakdown(host, getSource, stageNote = null, persistence = n
     const remove = el('button', 'Remove need', 'text-button'); remove.type = 'button';
     const groupHeading = el('h3', saved?.title || `Your need ${id.slice(5)}`);
     const group = {id, title, kind, category, card, members, assess, result, call:0, pending:false}; groups.push(group);
-    card.append(groupHeading, titleLabel, kindLabel, categoryLabel, members, assess, result, remove);
+    const inspect=el('button','Inspect assigned evidence','text-button');inspect.type='button';inspect.addEventListener('click',()=>{details.open=true;filterEvidence(id);details.scrollIntoView({block:'start',behavior:'instant'});});
+    card.append(groupHeading, titleLabel, kindLabel, categoryLabel, members, assess, result, inspect, remove);
     groupPanel.append(card);
     title.addEventListener('input', () => { groupHeading.textContent = title.value.trim() || `Your need ${id.slice(5)}`; syncGroups(false); });
     category.addEventListener('change', () => syncGroups(false));
+    kind.addEventListener('change', () => syncGroups(false));
     remove.addEventListener('click', () => { ++group.call; groups = groups.filter(g => g !== group); relations = relations.filter(r => r.source !== group.id && r.target !== group.id); card.remove(); renderRelations(); syncGroups(); });
     assess.addEventListener('click', async () => {
       if (assess.disabled) return;
@@ -133,6 +185,8 @@ export function initBreakdown(host, getSource, stageNote = null, persistence = n
     });
     syncGroups(); return group;
   }
+  question.addEventListener('input',updateReviewNavigation);
+  confirmed.addEventListener('change',updateReviewNavigation);
   addGroup.addEventListener('click', () => { const group = addNeed(); if (group) group.title.focus(); });
   function renderRelations() {
     relationPanel.replaceChildren();
@@ -178,10 +232,20 @@ export function initBreakdown(host, getSource, stageNote = null, persistence = n
   });
   function drawPart(part, index, token, key, mode) {
     const card = el('article', '', 'breakdown-part');
-    card.append(el('h3', `Fragment ${index + 1}`), el('blockquote', part.text, 'saved-message'),
+    const badge=el('span','Not reviewed','role-badge');
+    const cardHeader=el('div','','fragment-heading');cardHeader.append(el('h3',`Fragment ${index+1}`),badge);
+    card.append(cardHeader, el('blockquote', part.text, 'saved-message'),
       el('p', `Original characters ${part.start}–${part.end} · boundaries need review`, 'technical-note'));
     if (part.coordination_cue) card.append(el('p', 'Possible condition or alternative. Confirm the relationship against the complete message.', 'technical-note'));
     const [roleLabel, role] = select('Your interpretation', roles);
+    const quick=el('fieldset','','role-shortcuts');quick.append(el('legend',`Quick interpretation for fragment ${index+1}`,'sr-only'));
+    const shortcuts=[], radioName=`role-${crypto.randomUUID()}`;
+    for(const [value,label] of [['request','Request'],['context','Context'],['unclear','Unclear']]){
+      const wrapper=el('label','','role-shortcut'), radio=el('input');radio.type='radio';radio.name=radioName;radio.value=value;
+      wrapper.append(radio,el('span',label));quick.append(wrapper);shortcuts.push(radio);
+      radio.addEventListener('change',()=>{if(radio.checked){role.value=value;role.dispatchEvent(new Event('change'));}});
+    }
+    card.append(quick);
     const [groupLabel, group] = select('Attach to customer need', [['','Not assigned to a need']]);
     const [categoryLabel, category] = select('Your category for this fragment', [['','Not classified'],...categories.map(c => [c,c]),['OUTSIDE_SCOPE','Outside current categories'],['UNCLEAR','Unclear']]);
     category.disabled = true;
@@ -189,7 +253,7 @@ export function initBreakdown(host, getSource, stageNote = null, persistence = n
     const assess = el('button', 'Suggest category for this request', 'secondary-button'); assess.type = 'button'; assess.disabled = true;
     const prediction = el('p', 'Confirm that this fragment is a current request before asking a model to classify it.', 'technical-note'); prediction.setAttribute('role','status');
     const ownership = el('p', '', 'technical-note'); ownership.hidden = true; controls.append(ownership);
-    const record = {part, role, group, category, categoryLabel, ownership, assess, prediction, result:null}; records.push(record);
+    const record = {part, card, badge, shortcuts, role, group, category, categoryLabel, ownership, assess, prediction, result:null}; records.push(record);
     group.addEventListener('change', () => syncGroups());
     let assessing = false, call = 0;
     role.addEventListener('change', () => {
@@ -227,7 +291,7 @@ export function initBreakdown(host, getSource, stageNote = null, persistence = n
       if (!valid(token,key)) return;
       preview = data;
       results.replaceChildren(...data.parts.map((part,index) => drawPart(part,index,token,key,source.mode)));
-      footer.hidden = false; addGroup.hidden = false; syncGroups();
+      footer.hidden = false; addGroup.hidden = false; details.hidden = false; syncGroups();
       feedback.textContent = `${data.parts.length} text fragment(s), not a verified count of needs. All interpretations start unconfirmed.${data.grouped_remainder ? ' The last fragment groups the remaining text; inspect it for additional needs.' : ''}`;
     } catch (error) { if (valid(token,key)) feedback.textContent = error.name === 'AbortError' ? 'Timed out. Retry the preview.' : error.message; }
     finally {
@@ -273,7 +337,7 @@ export function initBreakdown(host, getSource, stageNote = null, persistence = n
     }
     relations = structuredClone(document.relations || []); renderRelations();
     modelDraft = fromProposal; confirmation.hidden = !fromProposal; confirmed.checked = false;
-    question.value = document.clarification; footer.hidden = false; addGroup.hidden = false; details.open = false; syncGroups();
+    question.value = document.clarification; footer.hidden = false; addGroup.hidden = false; details.hidden = false; details.open = false; syncGroups();
     details.open = fromProposal;
     feedback.textContent = fromProposal ? 'Model proposals loaded as an unsaved draft. Review and confirm them before saving.' : 'Loaded the last saved human review. Model hypotheses are not restored as human decisions.';
   }

@@ -141,3 +141,7 @@ Add a human-authored need, attach current request fragments and supporting backg
 ### Experimental automatic needs proposals
 
 An optional local Ollama language model can propose finer evidence spans, goals, obstacles, categories and reviewable relationships. Proposals stay separate until explicitly adopted and reviewed. No live-model accuracy improvement is claimed; setup, limitations and a small development pilot are in [the local proposal guide](docs/41-local-needs-proposals.md).
+
+### Clickable review workspace
+
+Use the sticky section navigation, compact spacing option, mobile workspace menu, one-click role shortcuts and per-need evidence filters to move through a review. Real selection progress and a next-step prompt help locate unfinished work. See [the interaction guide](docs/42-interactive-workbench.md).

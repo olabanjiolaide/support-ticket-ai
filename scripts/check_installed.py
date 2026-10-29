@@ -59,7 +59,7 @@ def api_checks(model: Path):
         assert client.get('/healthz').status_code == 200
         assert client.get('/readyz').status_code == 200
         assert 'ticket-form' in client.get('/').text
-        for asset in ('styles.css', 'app.js', 'result-view.js', 'workspace.js', 'breakdown.js', 'proposal-view.js'):
+        for asset in ('styles.css', 'app.js', 'result-view.js', 'workspace.js', 'breakdown.js', 'proposal-view.js', 'interactions.js'):
             assert client.get('/assets/' + asset).status_code == 200
         response = client.post('/predict', json={'text': 'password reset account login'})
         assert response.status_code == 200
