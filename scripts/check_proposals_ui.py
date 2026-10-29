@@ -77,19 +77,19 @@ async def check(base,out):
         # Late replies after cancellation or source editing are discarded.
         await page.unroute('**/proposals')
         async def delayed(route):
-            await asyncio.sleep(.4)
+            await asyncio.sleep(2)
             try:await route.fulfill(json=proposal)
             except Exception:pass
         await page.route('**/proposals',delayed)
         await host.get_by_role('button',name='Generate needs proposals',exact=True).click()
         await host.get_by_role('button',name='Cancel generation',exact=True).click()
-        await page.wait_for_timeout(600)
+        await page.wait_for_timeout(2200)
         await expect(host.get_by_role('button',name='Use as editable draft',exact=True)).to_have_count(0)
         await expect(host.locator('.customer-need').first.get_by_label('Customer need / goal')).to_have_value('Keep my correction')
         await page.goto(base+'/#new');await page.locator('#ticket').fill(text)
         await draft.get_by_role('button',name='Generate needs proposals',exact=True).click()
         await page.locator('#ticket').fill('Different current message')
-        await page.wait_for_timeout(600)
+        await page.wait_for_timeout(2200)
         await expect(draft.get_by_role('button',name='Use as editable draft',exact=True)).to_have_count(0)
         assert not errors,errors
         await browser.close()

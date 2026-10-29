@@ -121,7 +121,7 @@ class NeedContractTests(unittest.TestCase):
         self.store=RequestStore(self.db)
         self.assertEqual(self.store.get(self.id)['need_review'],saved['need_review'])
         self.assertEqual(len(self.store.get(self.id)['need_progress']),2)
-        with sqlite3.connect(self.db) as db:self.assertEqual(db.execute('PRAGMA user_version').fetchone()[0],3)
+        with sqlite3.connect(self.db) as db:self.assertEqual(db.execute('PRAGMA user_version').fetchone()[0],4)
 
     def test_old_schema_cannot_silently_use_new_contract_fields(self):
         from pydantic import ValidationError

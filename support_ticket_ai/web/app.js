@@ -393,8 +393,8 @@ import { initWorkspace } from "./workspace.js";
   document.addEventListener('ticket-edited', () => draftBreakdown.reset());
   modelMode.addEventListener('change', () => draftBreakdown.reset());
   initWorkspace({
-    getDraft: () => ({text: input.value, mode: modelMode.value, check_multiple_requests: modelMode.value === "semantic" && requestCheck.checked, ready, blocked: busy || savingRequest}),
-    setSaving: (value) => { savingRequest = value; updateControls(); },
+    getDraft: () => ({text: input.value, mode: modelMode.value, check_multiple_requests: modelMode.value === "semantic" && requestCheck.checked, ready, blocked: busy || savingRequest || draftBreakdown.isBusy(), needs_draft:draftBreakdown.snapshot()}),
+    setSaving: (value) => { savingRequest = value;draftBreakdown.setLocked(value); updateControls(); },
     onSaved: () => { input.value = ""; resizeInput(); edit(); },
   });
   initInteractions();

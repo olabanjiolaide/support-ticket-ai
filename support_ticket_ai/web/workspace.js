@@ -61,9 +61,9 @@ export function initWorkspace({getDraft, setSaving, onSaved}) {
     const valid = Boolean(draft.text.trim()) && Array.from(draft.text).length <= 2000;
     saveButton.disabled = !config?.storage_available || saving || draft.blocked || !valid || (savePrediction.checked && !draft.ready);
     savePrediction.disabled = saving || draft.blocked;
-    saveButton.textContent = saving ? 'Saving request…' : 'Save to review queue';
+    saveButton.textContent = saving ? 'Saving request…' : draft.needs_draft?'Save request + needs draft':'Save to review queue';
     byId('save-feedback').textContent = saveMessage || (valid && savePrediction.checked && !draft.ready
-      ? 'The selected model is unavailable. Uncheck the prediction option to save for manual review.' : '');
+      ? 'The selected model is unavailable. Uncheck the prediction option to save for manual review.' : draft.needs_draft?'Includes the unreviewed analysis. Saving does not confirm its categories or resolve the request.':'');
   }
 
   async function configure() {
@@ -95,7 +95,7 @@ export function initWorkspace({getDraft, setSaving, onSaved}) {
     if (saveButton.disabled) return;
     const draft = getDraft();
     const payload = {text: draft.text, mode: draft.mode, check_multiple_requests: draft.check_multiple_requests,
-      include_prediction: savePrediction.checked};
+      include_prediction: savePrediction.checked, ...(draft.needs_draft?{needs_draft:draft.needs_draft}:{})};
     const signature = JSON.stringify(payload);
     if (!saveKey || saveKey.signature !== signature) saveKey = {signature, id: crypto.randomUUID()};
     saving = true; saveMessage = 'Saving locally…'; setSaving(true); updateSave();
@@ -170,7 +170,7 @@ export function initWorkspace({getDraft, setSaving, onSaved}) {
   function renderDetail(record, preserveDraft = false) {
     savedBreakdown.reset();
     current = record;
-    savedBreakdown.restore(record.need_review?.review);
+    if(record.needs_draft)savedBreakdown.restoreDraft(record.needs_draft);else savedBreakdown.restore(record.need_review?.review);
     renderNeedHandling(record);
     byId('request-detail-content').hidden = false;
     byId('request-detail-title').textContent = shortId(record.id);
@@ -191,6 +191,7 @@ export function initWorkspace({getDraft, setSaving, onSaved}) {
       const item = element('li');
       item.append(element('strong', actionLabels[event.action] || event.action), element('p', `${date(event.happened_at)} · ${event.actor} · Version ${event.after.version}`, 'history-meta'));
       if (event.note) item.append(element('p', event.note, 'saved-message'));
+      if(event.after.unreviewed_needs_draft_saved)item.append(element('p','Unreviewed analysis was saved with the request. It did not confirm a category or handling outcome.','technical-note'));
       if (event.action === 'need_progress') {
         const previous=event.before?.need_progress?.find(p=>p.need_id===event.after.changed_need);
         const next=event.after.need_progress?.find(p=>p.need_id===event.after.changed_need);
@@ -198,7 +199,7 @@ export function initWorkspace({getDraft, setSaving, onSaved}) {
       }
       if (event.action === 'needs_review') {
         const details = element('details', '', 'response-details');
-        details.append(element('summary','Grouped review before / after'), element('pre',JSON.stringify({before:event.before?.need_review,after:event.after?.need_review},null,2)));
+        details.append(element('summary','Grouped review before / after'), element('pre',JSON.stringify({unreviewed_draft_before:event.before?.unreviewed_needs_draft,before:event.before?.need_review,after:event.after?.need_review},null,2)));
         if(event.after.reset_need_progress?.length)item.append(element('p',`Interpretation changes reset need progress: ${event.after.reset_need_progress.join(', ')}. Earlier outcomes remain in history.`,'technical-note'));
         item.append(element('p',`${event.after.need_review.groups.length} human-authored need(s) recorded. Handling status was not changed.`,'technical-note'),details);
       }

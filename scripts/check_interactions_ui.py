@@ -34,7 +34,7 @@ async def check(base,out):
         host=page.locator('#draft-breakdown')
         await host.get_by_role('button',name='Break down message',exact=True).click()
         cards=host.locator('.breakdown-part');await expect(cards).to_have_count(2)
-        progress=host.get_by_role('progressbar',name='Fragment review progress')
+        progress=host.get_by_role('progressbar',name='Interpretation selection progress')
         await expect(progress).to_have_attribute('aria-valuenow','0')
         await cards.nth(0).get_by_role('radio',name='Request',exact=True).check()
         await expect(cards.nth(0).get_by_label('Your interpretation')).to_have_value('request')

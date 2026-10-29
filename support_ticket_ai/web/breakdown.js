@@ -33,8 +33,13 @@ export function initBreakdown(host, getSource, stageNote = null, persistence = n
   const proposalHost = el('section');
   const build = el('button', 'Break down message', 'secondary-button'); build.type = 'button';
   const feedback = el('p', '', 'technical-note'); feedback.setAttribute('role','status');
+  const workflow=el('section','','needs-workflow');workflow.setAttribute('aria-label','Needs workflow');
+  const workflowTitle=el('h3','Analysis to saved review'), stages=el('ol'), workflowMessage=el('p','','technical-note');workflowMessage.setAttribute('role','status');
+  const stageValues={};
+  for(const [name,label] of [['proposed','Proposed'],['adopted','Editable draft'],['reviewed','Human review'],['saved','Saved']]){const item=el('li');item.dataset.stage=name;const value=el('span');stageValues[name]=value;item.append(el('strong',label),value);stages.append(item);}
+  workflow.append(workflowTitle,stages,workflowMessage);
   const compact = el('p', 'No customer needs grouped yet.', 'need-summary'); compact.setAttribute('role','status');
-  const reviewProgress=el('div','','review-progress');reviewProgress.hidden=true;reviewProgress.setAttribute('role','progressbar');reviewProgress.setAttribute('aria-label','Fragment review progress');reviewProgress.setAttribute('aria-valuemin','0');
+  const reviewProgress=el('div','','review-progress');reviewProgress.hidden=true;reviewProgress.setAttribute('role','progressbar');reviewProgress.setAttribute('aria-label','Interpretation selection progress');reviewProgress.setAttribute('aria-valuemin','0');
   const progressFill=el('span');reviewProgress.append(progressFill);
   const nextReview=el('div','','next-review-action');nextReview.hidden=true;
   const nextText=el('p'), nextButton=el('button','Review next fragment','secondary-button');nextButton.type='button';nextReview.append(nextText,nextButton);
@@ -43,7 +48,7 @@ export function initBreakdown(host, getSource, stageNote = null, persistence = n
   const details = el('details', '', 'breakdown-details'); details.open = true; details.hidden = true;
   details.append(el('summary', 'Review fragments and assign them to needs'));
   const filters=el('div','','evidence-filters');filters.setAttribute('aria-label','Filter evidence by need');
-  const emptyFilter=el('p','No fragments assigned to this need yet. Choose All fragments to assign evidence.','technical-note');emptyFilter.hidden=true;
+  const emptyFilter=el('p','No fragments assigned to this need yet. Choose All fragments to assign evidence.','technical-note evidence-empty-hint');emptyFilter.hidden=true;
   const editor=el('details','','evidence-editor');
   editor.append(el('summary','Edit evidence boundaries'));
   const editHelp=el('p','Select a fragment. Place the cursor in the original message where it should split, or merge it with the following fragment. Changed fragments must be reviewed again. Undo restores the entire draft from before the last boundary edit, including its review choices. Nothing is saved automatically.','technical-note');
@@ -67,20 +72,25 @@ export function initBreakdown(host, getSource, stageNote = null, persistence = n
   const relationPanel = el('div'); relationPanel.className='need-relations';
   const saveGroups = el('button', 'Save grouped review', 'primary-button'); saveGroups.type = 'button';
   if (persistence) footer.append(saveGroups, el('p', 'Explicitly saves your roles, need groups, categories and clarification. It does not confirm the overall category, change status or create tasks. Reviewer label above is required.', 'technical-note'));
-  host.replaceChildren(heading, intro, caution, proposalHost, build, feedback, compact, reviewProgress, nextReview, groupPanel, relationPanel, addGroup, details, footer);
+  host.replaceChildren(heading, intro, caution, proposalHost, workflow, build, feedback, compact, reviewProgress, nextReview, groupPanel, relationPanel, addGroup, details, footer);
   let generation = 0, currentKey = null, records = [], preview = null;
   let groups = [], relations = [], modelDraft = false, selectedNeed = null, undoEdits = [];
-  const proposalsUI = initProposals(proposalHost, getSource, document => restore(document, true));
+  let proposedReview=null, proposalAdopted=false, pendingTransfer=false, savedReviewFingerprint=null, savedDraftFingerprint=null;
+  let lockedControls=null;
+  const proposalsUI = initProposals(proposalHost, getSource, document => {
+    const proposal=structuredClone(document), draftBaseline=savedDraftFingerprint, reviewBaseline=savedReviewFingerprint, transferred=pendingTransfer;
+    restore(document,true);savedDraftFingerprint=draftBaseline;savedReviewFingerprint=reviewBaseline;pendingTransfer=transferred;proposedReview=proposal;proposalAdopted=true;updateWorkflow();
+  },document=>{proposedReview=structuredClone(document);proposalAdopted=false;updateWorkflow();},()=>updateWorkflow());
   const controllers = new Set();
   const sourceKey = (source) => JSON.stringify([source?.key, source?.text, source?.mode]);
   const makeController = () => { const controller = new AbortController(); controllers.add(controller); return controller; };
   function reset(preserveEdits = false) {
-    if(!preserveEdits)undoEdits=[];
+    if(!preserveEdits){undoEdits=[];proposedReview=null;proposalAdopted=false;pendingTransfer=false;savedReviewFingerprint=null;savedDraftFingerprint=null;}
     proposalsUI.reset();
     ++generation; for (const controller of controllers) controller.abort(); controllers.clear();
     currentKey = null; preview = null; records = []; groups = []; relations = []; selectedNeed=null; reviewProgress.hidden=true; nextReview.hidden=true; filters.replaceChildren(); emptyFilter.hidden=true; modelDraft=false; confirmation.hidden=true; confirmed.checked=false; relationPanel.replaceChildren(); results.replaceChildren(); groupPanel.replaceChildren(); addGroup.hidden = true; details.open = true; details.hidden = true; compact.textContent = 'No customer needs grouped yet.'; footer.hidden = true; question.value = '';
     build.disabled = false; build.textContent = 'Break down message'; feedback.textContent = '';
-    host.removeAttribute('aria-busy');
+    host.removeAttribute('aria-busy');updateWorkflow();
   }
   function valid(token, key) { return token === generation && key === sourceKey(getSource()); }
   function filterEvidence(id) {
@@ -102,9 +112,9 @@ export function initBreakdown(host, getSource, stageNote = null, persistence = n
       : unassigned ? 'Next: attach each current or unresolved request to a customer need.'
       : pendingNeed ? 'Next: give each customer need a title and category.'
       : needsQuestion ? 'Next: add a clarification question or explain the relationship.'
-      : modelDraft && !confirmed.checked ? 'Next: confirm that you reviewed the model interpretations against the original message.'
+      : (modelDraft || pendingTransfer) && !confirmed.checked ? 'Next: confirm that you reviewed the model interpretations against the original message.'
       : 'All fragment interpretations selected. Review the grouped needs before saving.';
-    nextButton.textContent=unreviewed?'Review next fragment':unassigned && !groups.length?'Create first need':unassigned?'Assign a need':pendingNeed?'Finish need details':needsQuestion?'Add clarification':modelDraft && !confirmed.checked?'Review model draft':'View need summary';
+    nextButton.textContent=unreviewed?'Review next fragment':unassigned && !groups.length?'Create first need':unassigned?'Assign a need':pendingNeed?'Finish need details':needsQuestion?'Add clarification':(modelDraft || pendingTransfer) && !confirmed.checked?'Review model draft':'View need summary';
     nextButton.onclick=()=>{
       filterEvidence(null);details.open=true;
       if(!unreviewed && unassigned && !groups.length){const group=addNeed();group?.title.focus();return;}
@@ -112,7 +122,7 @@ export function initBreakdown(host, getSource, stageNote = null, persistence = n
       if(record){const target=unreviewed?record.role:record.group;target.focus({preventScroll:true});record.card.scrollIntoView({block:'center',behavior:'instant'});}
       else if(pendingNeed){const target=!pendingNeed.title.value.trim()?pendingNeed.title:pendingNeed.category;target.focus();}
       else if(needsQuestion){question.focus();}
-      else if(modelDraft && !confirmed.checked){confirmed.focus();}
+      else if((modelDraft || pendingTransfer) && !confirmed.checked){confirmed.focus();}
       else{compact.tabIndex=-1;compact.focus({preventScroll:true});compact.scrollIntoView({block:'center',behavior:'instant'});}
     };
     filters.replaceChildren();
@@ -122,6 +132,7 @@ export function initBreakdown(host, getSource, stageNote = null, persistence = n
     }
     if(selectedNeed && !groups.some(group=>group.id===selectedNeed))selectedNeed=null;
     filterEvidence(selectedNeed);
+    updateWorkflow();
     const previous=fragmentChoice.value;
     fragmentChoice.replaceChildren(...records.map((r,index)=>new Option(`Fragment ${index+1}: ${r.part.text.slice(0,60)}`,String(index))));
     fragmentChoice.value=records[Number(previous)]?previous:'0';
@@ -158,7 +169,7 @@ export function initBreakdown(host, getSource, stageNote = null, persistence = n
       if (invalidate) { ++group.call; group.pending = false; group.result.textContent = 'Optional suggestion uses the selected original evidence. Your category remains your choice.'; }
       group.assess.disabled = group.pending || !(requestCount + obstacleCount) || members.some(r => !['request','obstacle','context'].includes(r.role.value));
     }
-    compact.textContent = `${groups.length} customer need(s) drafted by you · ${records.filter(r => r.role.value === 'context').length} background fragment(s) · ${records.filter(r => r.role.value !== 'unconfirmed').length}/${records.length} fragments reviewed`;
+    compact.textContent = `${groups.length} customer need(s) in the editable draft · ${records.filter(r => r.role.value === 'context').length} background fragment(s) · ${records.filter(r => r.role.value !== 'unconfirmed').length}/${records.length} interpretations selected`;
     addGroup.disabled = groups.length >= 12;
     updateReviewNavigation();
   }
@@ -250,7 +261,7 @@ export function initBreakdown(host, getSource, stageNote = null, persistence = n
   undo.addEventListener('click',()=>{const previous=undoEdits.pop();if(!previous)return;restore(previous.document,previous.modelDraft,true);details.open=true;editor.open=true;feedback.textContent='Previous boundaries and review choices restored. Nothing saved.';undo.focus();});
   function reviewedDocument() {
     if (!preview || currentKey !== sourceKey(getSource())) throw new Error('Generate a fresh preview for this message first.');
-    if (modelDraft && !confirmed.checked) throw new Error('Confirm that you reviewed the model draft before saving or staging it.');
+    if ((modelDraft || pendingTransfer) && !confirmed.checked) throw new Error(modelDraft?'Confirm that you reviewed the model draft before saving or staging it.':'Confirm that you reviewed the transferred draft before saving or staging it.');
     if (records.some(r => r.role.value === 'unconfirmed')) throw new Error('Review the interpretation of every fragment first.');
     if (records.some(r => ['request','obstacle','unclear','conditional','alternative'].includes(r.role.value) && !r.group.value)) throw new Error('Assign each current or unresolved request to a customer need.');
     for (const group of groups) {
@@ -342,7 +353,7 @@ export function initBreakdown(host, getSource, stageNote = null, persistence = n
     } catch (error) { if (valid(token,key)) feedback.textContent = error.name === 'AbortError' ? 'Timed out. Retry the preview.' : error.message; }
     finally {
       clearTimeout(timer); controllers.delete(controller);
-      if (token === generation) { build.disabled = false; host.removeAttribute('aria-busy'); }
+      if (token === generation) { build.disabled = false; host.removeAttribute('aria-busy');updateWorkflow(); }
     }
   });
   transfer.addEventListener('click', () => {
@@ -370,7 +381,7 @@ export function initBreakdown(host, getSource, stageNote = null, persistence = n
     heading.focus({preventScroll:true});
     host.scrollIntoView({block:'start', behavior:'instant'});
   }
-  function restore(document, fromProposal = false, preserveEdits = false) {
+  function restore(document, fromProposal = false, preserveEdits = false, fromTransfer = false) {
     reset(preserveEdits); if (!document) return;
     const source = getSource(); if (document.source_text !== source?.text) return;
     currentKey = sourceKey(source); preview = {source_text:document.source_text,parts:document.parts};
@@ -382,10 +393,52 @@ export function initBreakdown(host, getSource, stageNote = null, persistence = n
       record.group.value = saved.group_id || ''; record.category.value = saved.category || '';
     }
     relations = structuredClone(document.relations || []); renderRelations();
-    modelDraft = fromProposal; confirmation.hidden = !fromProposal; confirmed.checked = false;
+    modelDraft = fromProposal;pendingTransfer=fromTransfer || pendingTransfer; confirmation.hidden = !(fromProposal || pendingTransfer); confirmed.checked = false;
     question.value = document.clarification; footer.hidden = false; addGroup.hidden = false; details.hidden = false; details.open = false; syncGroups();
-    details.open = fromProposal;
-    feedback.textContent = fromProposal ? 'Model proposals loaded as an unsaved draft. Review and confirm them before saving.' : 'Loaded the last saved human review. Model hypotheses are not restored as human decisions.';
+    details.open = fromProposal || pendingTransfer;
+    if(!fromProposal && !pendingTransfer && !preserveEdits)savedReviewFingerprint=JSON.stringify(editingDocument());
+    updateWorkflow();
+    feedback.textContent = pendingTransfer ? 'Loaded a saved unreviewed draft. Review and confirm it before saving a human review.' : fromProposal ? 'Model proposals loaded as an unsaved draft. Review and confirm them before saving.' : 'Loaded the last saved human review. Model hypotheses are not restored as human decisions.';
   }
-  return {reset, open, restore, generate:()=>proposalsUI.generate()};
+  function snapshot(){
+    const source=getSource();
+    const editable=preview && currentKey===sourceKey(source)?editingDocument():null;
+    const proposed=proposedReview?.source_text===source?.text?structuredClone(proposedReview):null;
+    return editable || proposed?{schema_version:1,editable,proposed,model_draft:Boolean(editable && modelDraft),proposal_adopted:Boolean(editable && proposed && proposalAdopted)}:null;
+  }
+  function restoreDraft(draft){
+    if(!draft)return;
+    if(draft.editable)restore(draft.editable,draft.model_draft,false,true);else reset();
+    proposedReview=draft.proposed?structuredClone(draft.proposed):null;proposalAdopted=draft.proposal_adopted===true;pendingTransfer=true;
+    if(proposedReview && !proposalAdopted)proposalsUI.restore(proposedReview);
+    savedDraftFingerprint=JSON.stringify(snapshot());
+    feedback.textContent='Unreviewed analysis restored from the saved request. Human confirmation and Save grouped review are still required.';
+    updateWorkflow();
+  }
+  function updateWorkflow(){
+    const draft=snapshot(), fingerprint=draft?JSON.stringify(draft):null;
+    const savedReview=savedReviewFingerprint!==null && preview && savedReviewFingerprint===JSON.stringify(editingDocument());
+    const savedDraft=savedDraftFingerprint!==null && fingerprint===savedDraftFingerprint;
+    const extraProposal=savedReview && proposedReview && !proposalAdopted;
+    let valid=false;try{reviewedDocument();valid=true;}catch{}
+    stageValues.proposed.textContent=proposedReview?`${proposedReview.groups.length} AI need(s)`:'No active AI proposal';
+    stageValues.adopted.textContent=groups.length?`${groups.length} editable need(s)${proposalAdopted?' · adopted':''}`:proposedReview?'Awaiting adoption':'No editable needs';
+    stageValues.reviewed.textContent=savedReview?'Confirmed':valid?'Ready for explicit save':(modelDraft || pendingTransfer)?'Confirmation required':'Review incomplete';
+    stageValues.saved.textContent=extraProposal?'Review saved · proposal unsaved':savedReview?'Human review saved':savedDraft?'Unreviewed draft saved':savedReviewFingerprint || savedDraftFingerprint?'Unsaved changes':'Not saved';
+    workflowMessage.textContent=extraProposal?'Your existing human review is saved. The new proposal is temporary until explicitly adopted and reviewed.':savedReview?'Your human review is saved. Classification and handling remain separate.':savedDraft?'The request retains this unreviewed analysis. Adopt and review it, then explicitly save the human review.':proposedReview && !proposalAdopted?'Next: Use as editable draft. Saving the request preserves these proposals without confirming them.':draft?'Review the editable needs. Saving a request carries the draft forward; Save grouped review records the human decision.':'Generate proposals or break down the message to begin.';
+    document.dispatchEvent(new Event('draft-controls-changed'));
+  }
+  function interpretationChanged(event){
+    const revoke=event.target!==confirmed && (modelDraft || pendingTransfer) && confirmed.checked;
+    if(revoke)confirmed.checked=false;
+    queueMicrotask(revoke?updateReviewNavigation:updateWorkflow);
+  }
+  host.addEventListener('input',interpretationChanged);
+  host.addEventListener('change',interpretationChanged);
+  function setLocked(value){
+    if(value && !lockedControls){lockedControls=[...host.querySelectorAll('button,input,select,textarea')].map(node=>[node,node.disabled]);lockedControls.forEach(([node])=>node.disabled=true);}
+    else if(!value && lockedControls){lockedControls.forEach(([node,disabled])=>node.disabled=disabled);lockedControls=null;}
+  }
+  updateWorkflow();
+  return {reset, open, restore, restoreDraft, snapshot, setLocked, isBusy:()=>build.disabled || proposalsUI.isBusy(), generate:()=>proposalsUI.generate()};
 }

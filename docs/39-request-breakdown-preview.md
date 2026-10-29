@@ -25,7 +25,7 @@ Rules propose boundaries after sentence punctuation/semicolons/newlines and befo
 
 Fragment classification is allowed only after the reviewer marks Current request. The full message may still change its interpretation; isolation can lose negation, alternatives, reference and scope. Current safeguards cannot prove independence or discount eligibility. A single fragment can contain multiple needs. No automatic semantic reconstruction or invented answers are produced.
 
-Notes store reviewer roles/categories by evidence range, any separately requested model hypothesis and its fingerprint, plus clarification text. They are inspectable narrative history, **not structured task records or training ground truth**. Previews and drafts do not survive navigation/reload; only explicitly saved notes persist. New-request preview edits do not transfer automatically when saving the request; generate a fresh preview on the saved detail page.
+Notes store reviewer roles/categories by evidence range, any separately requested model hypothesis and its fingerprint, plus clarification text. They are inspectable narrative history, **not structured task records or training ground truth**. New-request analysis can now be saved with the request as a separate unreviewed draft and restored after reload. Subsequent unsaved edits remain temporary until an explicit human review save; see [draft handoff](46-needs-draft-handoff.md).
 
 ## Validation and next research step
 

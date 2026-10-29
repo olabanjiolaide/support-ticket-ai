@@ -8,6 +8,7 @@ from uuid import UUID
 from fastapi import HTTPException, Query
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
+from .needs_draft import NeedsDraft
 from .need_review import SaveNeedReview, NeedProgress
 from .request_store import CATEGORIES, RequestMissing, StoreConflict, payload_hash
 
@@ -15,15 +16,23 @@ logger = logging.getLogger(__name__)
 
 
 class SaveRequest(BaseModel):
-    model_config = ConfigDict(extra='forbid', str_strip_whitespace=True)
+    model_config = ConfigDict(extra='forbid', str_strip_whitespace=False)
     text: Annotated[str, Field(strict=True, min_length=1, max_length=2000)]
     client_request_id: UUID
     include_prediction: Annotated[bool, Field(strict=True)] = True
     mode: Literal['word', 'semantic'] = 'word'
     check_multiple_requests: Annotated[bool, Field(strict=True)] = False
 
+    needs_draft: NeedsDraft | None = None
+
     @model_validator(mode='after')
     def check_mode(self):
+        if not self.text.strip():
+            raise ValueError('Enter a nonblank request.')
+        if self.needs_draft is None:
+            self.text=self.text.strip()
+        elif self.needs_draft.source_text != self.text:
+            raise ValueError('Needs draft must preserve this exact request message.')
         if self.check_multiple_requests and self.mode != 'semantic':
             raise ValueError('Separate-request checks require semantic mode.')
         return self
@@ -91,17 +100,19 @@ def register_request_routes(application, predict, prediction_request_type, predi
     @application.post('/requests', status_code=201)
     def save_request(body: SaveRequest):
         repository = store()
-        digest = payload_hash(body.model_dump(mode='json', exclude={'client_request_id'}))
+        digest = payload_hash(body.model_dump(mode='json', exclude={'client_request_id'}, exclude_none=True))
         key = str(body.client_request_id)
         existing = call(repository.existing, key, digest)
         if existing:
-            return existing
+            return call(repository.get, existing['id'])
         snapshot = None
         if body.include_prediction:
             request = prediction_request_type(text=body.text, mode=body.mode,
                                                check_multiple_requests=body.check_multiple_requests)
             snapshot = prediction_response_type.model_validate(predict(request)).model_dump(mode='json')
-        return call(repository.create, key, digest, body.text, snapshot)
+        created = call(repository.create, key, digest, body.text, snapshot,
+                       needs_draft=body.needs_draft.model_dump(mode='json') if body.needs_draft else None)
+        return call(repository.get, created['id'])
 
     @application.get('/requests/{request_id}')
     def get_request(request_id: UUID):

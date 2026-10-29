@@ -1,6 +1,6 @@
 const el = (tag,text='') => { const node=document.createElement(tag);node.textContent=text;return node; };
 
-export function initProposals(host,getSource,onAdopt) {
+export function initProposals(host,getSource,onAdopt,onReady=()=>{},onState=()=>{}) {
   host.className='proposal-panel';
   host.dataset.state='checking';
   const eyebrow=el('p','AI NEEDS ANALYSIS');eyebrow.className='proposal-eyebrow';
@@ -28,7 +28,7 @@ export function initProposals(host,getSource,onAdopt) {
   const more=el('details');more.className='proposal-setup';more.append(el('summary','Setup and local processing'),status,setup);
   host.append(header,title,description,actions,progress,timing,recovery,feedback,result,more);
   let available=false, configured=false, sequence=0, controller=null, ticker=null, model=null, lastError=null;
-  function state(name,label){host.dataset.state=name;badge.textContent=label;}
+  function state(name,label){host.dataset.state=name;badge.textContent=label;queueMicrotask(onState);}
   const sourceKey=()=>JSON.stringify([getSource()?.text,getSource()?.key]);
   function reset() {
     ++sequence;controller?.abort();controller=null;clearInterval(ticker);ticker=null;
@@ -40,12 +40,31 @@ export function initProposals(host,getSource,onAdopt) {
       const response=await fetch('/proposals/status',{cache:'no-store',signal:AbortSignal.timeout(5000)});
       if (!response.ok) throw new Error('unavailable');
       const data=await response.json();available=data.available===true;configured=data.configured===true;model=data.model || null;
-      if(!controller && recovery.hidden)state(available?'ready':'unavailable',available?'Model available':configured?'Model unavailable':'Setup required');
+      if(host.dataset.state!=='draft' && !controller && recovery.hidden)state(available?'ready':'unavailable',available?'Model available':configured?'Model unavailable':'Setup required');
       status.textContent=available ? `Local proposal model ready: ${data.model}. Generation sends this message to local Ollama at 127.0.0.1:11434.`
         : configured ? 'Local proposal model unavailable. Start Ollama and install the configured model. Manual breakdown is available.'
         : 'Optional language-model proposals are not configured. Manual breakdown is available; setup is separate from the semantic category encoder.';
     } catch { available=false;if(!controller && recovery.hidden)state('unavailable','Connection unavailable');status.textContent='Could not check the local proposal model. Manual breakdown is available.'; }
     finally {generate.disabled=!available || controller!==null;retry.disabled=!available || controller!==null;refresh.disabled=false;}
+  }
+  function renderProposal(data,token=sequence,key=sourceKey()){
+    const review=data.review;result.replaceChildren();
+      const warning=el('p','Model draft — evidence checks passed, but the meaning, categories and relationships still need your review.');warning.className='technical-note';result.append(warning);
+      for (const group of review.groups) {
+        const card=el('article');card.className='proposal-need';card.append(el('strong',group.title),el('p',`${group.kind} · proposed category: ${group.category}`));
+        for (const part of review.parts.filter(p=>p.group_id===group.id)) card.append(el('blockquote',`${part.role}: ${part.text}`));
+        result.append(card);
+      }
+      const unassigned=review.parts.filter(p=>!p.group_id);
+      if (unassigned.length) {const details=el('details');details.append(el('summary','Other source evidence'));for(const part of unassigned)details.append(el('p',`${part.role}: ${part.text}`));result.append(details);}
+      for (const relation of review.relations) result.append(el('p',`Relationship hypothesis: ${relation.source} ${relation.kind} ${relation.target}. ${relation.note}`));
+      if (review.clarification) result.append(el('p','Proposed clarification: '+review.clarification));
+      const identity=el('details');identity.append(el('summary','Proposal identity'),el('pre',JSON.stringify(data.restored_draft?{saved_unreviewed_draft:true}:{model:data.model,model_digest:data.model_digest,prompt_version:data.prompt_version,prompt_sha256:data.prompt_sha256,source_sha256:data.source_sha256},null,2)));result.append(identity);
+      const adopt=el('button','Use as editable draft');adopt.type='button';adopt.className='secondary-button';
+      result.append(el('p','This replaces unsaved grouping choices in this tab. It does not save, route or resolve the request.'),adopt);
+      adopt.addEventListener('click',()=>{if(sequence!==token || sourceKey()!==key)return;onAdopt(structuredClone(review));});
+      onReady(structuredClone(review));
+      feedback.textContent=`${data.restored_draft?'Restored unreviewed proposal.':'Proposal ready.'} Inspect it before replacing your editable draft.${data.generation_attempts===2?' The first attempt failed validation; the second passed structural checks.':''}`;state('draft','Draft ready for review');
   }
   generate.addEventListener('click',async()=>{
     if (!available || controller) return;
@@ -64,21 +83,7 @@ export function initProposals(host,getSource,onAdopt) {
       if (!response.ok) {const error=new Error(typeof data.detail==='string'?data.detail:'Proposal generation failed.');error.code=data.code || `http_${response.status}`;error.validationCode=data.validation_code || null;error.attempts=data.attempts ?? null;error.promptVersion=data.prompt_version ?? null;throw error;}
       const review=data.review;
       if (data.status!=='draft' || data.requires_human_review!==true || review?.source_text!==source.text || review.schema_version!==2 || !Array.isArray(review.parts) || !Array.isArray(review.groups) || !Array.isArray(review.relations)) throw new Error('The proposal response did not match the current message.');
-      const warning=el('p','Model draft — evidence checks passed, but the meaning, categories and relationships still need your review.');warning.className='technical-note';result.append(warning);
-      for (const group of review.groups) {
-        const card=el('article');card.className='proposal-need';card.append(el('strong',group.title),el('p',`${group.kind} · proposed category: ${group.category}`));
-        for (const part of review.parts.filter(p=>p.group_id===group.id)) card.append(el('blockquote',`${part.role}: ${part.text}`));
-        result.append(card);
-      }
-      const unassigned=review.parts.filter(p=>!p.group_id);
-      if (unassigned.length) {const details=el('details');details.append(el('summary','Other source evidence'));for(const part of unassigned)details.append(el('p',`${part.role}: ${part.text}`));result.append(details);}
-      for (const relation of review.relations) result.append(el('p',`Relationship hypothesis: ${relation.source} ${relation.kind} ${relation.target}. ${relation.note}`));
-      if (review.clarification) result.append(el('p','Proposed clarification: '+review.clarification));
-      const identity=el('details');identity.append(el('summary','Proposal identity'),el('pre',JSON.stringify({model:data.model,model_digest:data.model_digest,prompt_version:data.prompt_version,prompt_sha256:data.prompt_sha256,source_sha256:data.source_sha256},null,2)));result.append(identity);
-      const adopt=el('button','Use as editable draft');adopt.type='button';adopt.className='secondary-button';
-      result.append(el('p','This replaces unsaved grouping choices in this tab. It does not save, route or resolve the request.'),adopt);
-      adopt.addEventListener('click',()=>{if(sequence!==token || sourceKey()!==key)return;onAdopt(structuredClone(review));});
-      feedback.textContent=`Proposal ready. Inspect it before replacing your editable draft.${data.generation_attempts===2?' The first attempt failed validation; the second passed structural checks.':''}`;state('draft','Draft ready for review');
+      renderProposal(data,token,key);
     } catch(error) {
       if(sequence===token){
         state('error','Generation failed');recovery.hidden=false;
@@ -97,5 +102,5 @@ export function initProposals(host,getSource,onAdopt) {
   retry.addEventListener('click',()=>generate.click());
   copy.addEventListener('click',async()=>{if(!lastError)return;try{await navigator.clipboard.writeText(JSON.stringify(lastError,null,2));feedback.textContent='Error details copied. Customer message and generated text are not included.';}catch{feedback.textContent='Copy was unavailable. Select the visible error details to copy them.';}});
   refresh.addEventListener('click',check);check();
-  return {reset,generate:()=>{host.scrollIntoView({block:'center',behavior:'instant'});if(available){generate.focus();generate.click();}else{host.querySelector('.proposal-setup').open=true;refresh.focus();feedback.textContent='Check the local model configuration before generating a proposal.';}}};
+  return {reset,restore:(review)=>renderProposal({review,restored_draft:true}),isBusy:()=>controller!==null,generate:()=>{host.scrollIntoView({block:'center',behavior:'instant'});if(available){generate.focus();generate.click();}else{host.querySelector('.proposal-setup').open=true;refresh.focus();feedback.textContent='Check the local model configuration before generating a proposal.';}}};
 }

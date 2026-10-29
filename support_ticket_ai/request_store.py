@@ -40,7 +40,7 @@ class RequestStore:
         self.path.parent.mkdir(parents=True, exist_ok=True)
         with closing(self.connect()) as db:
             version = db.execute('PRAGMA user_version').fetchone()[0]
-            if version not in (0, 1, 2, 3):
+            if version not in (0, 1, 2, 3, 4):
                 raise ValueError('Unsupported request database schema.')
             if version == 0:
                 with db:
@@ -94,6 +94,16 @@ class RequestStore:
                     PRAGMA user_version=3;
                     COMMIT;
                     """)
+            if version < 4:
+                with db:
+                    db.executescript("""
+                    BEGIN IMMEDIATE;
+                    CREATE TABLE IF NOT EXISTS request_needs_drafts (
+                      request_id TEXT PRIMARY KEY REFERENCES requests(id), draft_json TEXT NOT NULL
+                    );
+                    PRAGMA user_version=4;
+                    COMMIT;
+                    """)
             db.execute('SELECT id,version FROM requests LIMIT 0')
 
     def connect(self):
@@ -125,7 +135,13 @@ class RequestStore:
                 raise StoreConflict('This save key was already used for another request.')
             return self.record(row) if row else None
 
-    def create(self, key, digest, message, prediction):
+    def create(self, key, digest, message, prediction, *, needs_draft=None):
+        if needs_draft is not None:
+            from .needs_draft import NeedsDraft
+            draft = NeedsDraft.model_validate(needs_draft)
+            if draft.source_text != message:
+                raise StoreConflict('The draft source must match the original request.')
+            needs_draft = draft.model_dump(mode='json')
         with closing(self.connect()) as db, db:
             db.execute('BEGIN IMMEDIATE')
             old = db.execute('SELECT * FROM requests WHERE client_request_id=?', (key,)).fetchone()
@@ -137,8 +153,12 @@ class RequestStore:
             db.execute('INSERT INTO requests(id,client_request_id,payload_hash,message,prediction_json,created_at,updated_at,status,review_state,version) VALUES(?,?,?,?,?,?,?,?,?,?)',
                        (request_id, key, digest, message, json.dumps(prediction, allow_nan=False) if prediction is not None else None,
                         timestamp, timestamp, 'open', 'pending', 1))
+            if needs_draft is not None:
+                db.execute('INSERT INTO request_needs_drafts VALUES(?,?)',(request_id,json.dumps(needs_draft,ensure_ascii=False)))
             row = db.execute('SELECT * FROM requests WHERE id=?', (request_id,)).fetchone()
-            self.event(db, request_id, 'Local user', 'created', '', None, lifecycle(row), timestamp)
+            initial = lifecycle(row)
+            if needs_draft is not None: initial['unreviewed_needs_draft_saved'] = True
+            self.event(db, request_id, 'Local user', 'created', '', None, initial, timestamp)
             return self.record(row)
 
     def get(self, request_id):
@@ -162,6 +182,8 @@ class RequestStore:
             if review:
                 result['need_review'] = {**dict(review), 'review': json.loads(review['review_json'])}
                 result['need_review'].pop('review_json')
+            draft = db.execute('SELECT draft_json FROM request_needs_drafts WHERE request_id=?',(request_id,)).fetchone()
+            result['needs_draft'] = json.loads(draft[0]) if draft else None
             result['need_progress'] = self.need_progress(db, request_id, result['need_review']['review'] if review else None)
             return result
 
@@ -218,6 +240,8 @@ class RequestStore:
                     raise StoreConflict('Confirm a category on an open request before starting work.')
                 after['status'] = 'in_progress'
             elif action == 'resolve':
+                if db.execute('SELECT 1 FROM request_needs_drafts WHERE request_id=?',(request_id,)).fetchone():
+                    raise StoreConflict('Review and explicitly save the transferred needs draft before resolving this request.')
                 if row['status'] != 'in_progress' or row['review_state'] != 'reviewed' or not row['confirmed_category']:
                     raise StoreConflict('Review the category and start handling the request before resolving it.')
                 review = db.execute('SELECT review_json FROM request_need_reviews WHERE request_id=?',(request_id,)).fetchone()
@@ -270,6 +294,9 @@ class RequestStore:
                     reset_ids.append(need_id)
                     db.execute('DELETE FROM request_need_progress WHERE request_id=? AND need_id=?',(request_id,need_id))
             before = {**lifecycle(row), 'need_review': previous, 'need_progress': old_progress}
+            pending = db.execute('SELECT draft_json FROM request_needs_drafts WHERE request_id=?',(request_id,)).fetchone()
+            if pending: before['unreviewed_needs_draft'] = json.loads(pending[0])
+            db.execute('DELETE FROM request_needs_drafts WHERE request_id=?',(request_id,))
             db.execute('UPDATE requests SET version=version+1,updated_at=? WHERE id=?', (timestamp,request_id))
             db.execute("""INSERT INTO request_need_reviews(request_id,reviewed_at,actor,request_version,review_json)
                           VALUES(?,?,?,?,?) ON CONFLICT(request_id) DO UPDATE SET
