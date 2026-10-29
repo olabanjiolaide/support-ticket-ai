@@ -505,3 +505,17 @@ body[data-density="compact"] .customer-needs, body[data-density="compact"] .brea
 @media (max-width:720px) { .next-review-action { align-items: stretch; flex-direction: column; gap: 10px; } .next-review-action button { width: 100%; } }
 @media print { .breakdown-part[hidden] { display: block !important; } }
 @media (max-width:720px) { .form-actions { position: static; } }
+
+/* Operational state and source-preserving evidence editing. */
+.diagnostics-panel { margin: 0 0 20px; padding: 14px 18px; border: 1px solid var(--border); border-radius: 12px; background: var(--surface); font-size: 12px; }
+.diagnostics-panel summary { cursor: pointer; font-weight: 600; }
+#diagnostics-summary { display: inline-block; margin-left: 12px; font-weight: 400; color: var(--muted); }
+#diagnostics-values { display: grid; grid-template-columns: minmax(100px,160px) minmax(0,1fr); gap: 10px; }
+#diagnostics-values dt { font-weight: 600; } #diagnostics-values dd { margin: 0; overflow-wrap: anywhere; }
+.evidence-editor { margin: 16px 0; padding: 16px; border: 1px solid var(--border); border-radius: 12px; background: var(--soft); }
+.evidence-editor summary { cursor: pointer; font-weight: 600; }
+.evidence-editor label { display: block; margin-top: 14px; }
+.evidence-editor select,.evidence-editor textarea { width: 100%; margin-top: 8px; }
+.evidence-edit-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+@media(max-width: 600px) { #diagnostics-values { grid-template-columns: minmax(0,1fr); gap: 6px; } #diagnostics-values dd { margin-bottom: 10px; } .evidence-edit-actions button { width: 100%; } }
+@media print { .diagnostics-panel,.evidence-editor { display: none !important; } }

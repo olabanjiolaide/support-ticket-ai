@@ -1,3 +1,4 @@
+import { editEvidence } from './evidence-edit.js';
 import { initProposals } from './proposal-view.js';
 import { describeResult } from './result-view.js';
 
@@ -42,7 +43,17 @@ export function initBreakdown(host, getSource, stageNote = null, persistence = n
   details.append(el('summary', 'Review fragments and assign them to needs'));
   const filters=el('div','','evidence-filters');filters.setAttribute('aria-label','Filter evidence by need');
   const emptyFilter=el('p','No fragments assigned to this need yet. Choose All fragments to assign evidence.','technical-note');emptyFilter.hidden=true;
-  const results = el('div', '', 'breakdown-parts'); details.append(filters,emptyFilter,results);
+  const editor=el('details','','evidence-editor');
+  editor.append(el('summary','Edit evidence boundaries'));
+  const editHelp=el('p','Select a fragment. Place the cursor in the original message where it should split, or merge it with the following fragment. Changed fragments must be reviewed again. Undo restores the entire draft from before the last boundary edit, including its review choices. Nothing is saved automatically.','technical-note');
+  const [fragmentLabel,fragmentChoice]=select('Fragment to edit',[]);
+  const originalLabel=el('label','Original message — select a split position'), original=el('textarea');original.readOnly=true;original.rows=4;originalLabel.append(original);
+  const position=el('p','','technical-note');position.setAttribute('role','status');
+  const split=el('button','Split at cursor','secondary-button'),merge=el('button','Merge with next fragment','secondary-button'),undo=el('button','Undo boundary edit','text-button');
+  for(const button of [split,merge,undo])button.type='button';
+  const editActions=el('div','','evidence-edit-actions');editActions.append(split,merge,undo);
+  editor.append(editHelp,fragmentLabel,originalLabel,position,editActions);
+  const results = el('div', '', 'breakdown-parts'); details.append(filters,emptyFilter,editor,results);
   const footer = el('div'); footer.hidden = true;
   const questionLabel = el('label', 'Clarification question / coordination note');
   const question = el('textarea'); question.rows = 2; question.maxLength = 600;
@@ -57,12 +68,13 @@ export function initBreakdown(host, getSource, stageNote = null, persistence = n
   if (persistence) footer.append(saveGroups, el('p', 'Explicitly saves your roles, need groups, categories and clarification. It does not confirm the overall category, change status or create tasks. Reviewer label above is required.', 'technical-note'));
   host.replaceChildren(heading, intro, caution, proposalHost, build, feedback, compact, reviewProgress, nextReview, groupPanel, relationPanel, addGroup, details, footer);
   let generation = 0, currentKey = null, records = [], preview = null;
-  let groups = [], relations = [], modelDraft = false, selectedNeed = null;
+  let groups = [], relations = [], modelDraft = false, selectedNeed = null, undoEdits = [];
   const proposalsUI = initProposals(proposalHost, getSource, document => restore(document, true));
   const controllers = new Set();
   const sourceKey = (source) => JSON.stringify([source?.key, source?.text, source?.mode]);
   const makeController = () => { const controller = new AbortController(); controllers.add(controller); return controller; };
-  function reset() {
+  function reset(preserveEdits = false) {
+    if(!preserveEdits)undoEdits=[];
     proposalsUI.reset();
     ++generation; for (const controller of controllers) controller.abort(); controllers.clear();
     currentKey = null; preview = null; records = []; groups = []; relations = []; selectedNeed=null; reviewProgress.hidden=true; nextReview.hidden=true; filters.replaceChildren(); emptyFilter.hidden=true; modelDraft=false; confirmation.hidden=true; confirmed.checked=false; relationPanel.replaceChildren(); results.replaceChildren(); groupPanel.replaceChildren(); addGroup.hidden = true; details.open = true; details.hidden = true; compact.textContent = 'No customer needs grouped yet.'; footer.hidden = true; question.value = '';
@@ -109,6 +121,12 @@ export function initBreakdown(host, getSource, stageNote = null, persistence = n
     }
     if(selectedNeed && !groups.some(group=>group.id===selectedNeed))selectedNeed=null;
     filterEvidence(selectedNeed);
+    const previous=fragmentChoice.value;
+    fragmentChoice.replaceChildren(...records.map((r,index)=>new Option(`Fragment ${index+1}: ${r.part.text.slice(0,60)}`,String(index))));
+    fragmentChoice.value=records[Number(previous)]?previous:'0';
+    original.value=preview?.source_text || '';
+    undo.disabled=!undoEdits.length;
+    merge.disabled=!records[Number(fragmentChoice.value)+1];
   }
   function syncGroups(invalidate = true) {
     for (const record of records) {
@@ -203,6 +221,31 @@ export function initBreakdown(host, getSource, stageNote = null, persistence = n
       card.append(kindLabel,label,evidence,remove);relationPanel.append(card);
     }
   }
+  function editingDocument() {
+    return {schema_version:2,source_text:preview.source_text,
+      parts:records.map(r=>({id:r.part.id,start:r.part.start,end:r.part.end,text:r.part.text,role:r.role.value,group_id:r.group.value || null,category:r.category.value || null})),
+      groups:groups.map(g=>({id:g.id,title:g.title.value,category:g.category.value,kind:g.kind.value})),relations:structuredClone(relations),clarification:question.value};
+  }
+  function splitPosition(){return Array.from(original.value.slice(0,original.selectionStart)).length;}
+  function showPosition(){position.textContent=`Split position: original character ${splitPosition()}. Original text is read-only.`;}
+  original.addEventListener('select',showPosition);original.addEventListener('click',showPosition);original.addEventListener('keyup',showPosition);
+  fragmentChoice.addEventListener('change',()=>{
+    const record=records[Number(fragmentChoice.value)];if(!record)return;
+    const text=Array.from(original.value),start=text.slice(0,record.part.start).join('').length,end=text.slice(0,record.part.end).join('').length;
+    original.focus();original.setSelectionRange(start,end);showPosition();merge.disabled=!records[Number(fragmentChoice.value)+1];
+  });
+  function applyEdit(operation){
+    if(!preview || currentKey!==sourceKey(getSource())){feedback.textContent='Generate a fresh preview first.';return;}
+    try{
+      const before=editingDocument(),updated=editEvidence(before,operation,Number(fragmentChoice.value),splitPosition());
+      undoEdits.push({document:before,modelDraft});if(undoEdits.length>20)undoEdits.shift();
+      const proposal=modelDraft;restore(updated,proposal,true);details.open=true;editor.open=true;
+      feedback.textContent='Evidence boundaries changed. Review the changed fragments again. Relationships using them were removed; Undo restores them. Nothing saved.';
+      editor.querySelector('summary').focus();
+    }catch(error){feedback.textContent=error.message;}
+  }
+  split.addEventListener('click',()=>applyEdit('split'));merge.addEventListener('click',()=>applyEdit('merge'));
+  undo.addEventListener('click',()=>{const previous=undoEdits.pop();if(!previous)return;restore(previous.document,previous.modelDraft,true);details.open=true;editor.open=true;feedback.textContent='Previous boundaries and review choices restored. Nothing saved.';undo.focus();});
   function reviewedDocument() {
     if (!preview || currentKey !== sourceKey(getSource())) throw new Error('Generate a fresh preview for this message first.');
     if (modelDraft && !confirmed.checked) throw new Error('Confirm that you reviewed the model draft before saving or staging it.');
@@ -324,8 +367,8 @@ export function initBreakdown(host, getSource, stageNote = null, persistence = n
     heading.focus({preventScroll:true});
     host.scrollIntoView({block:'start', behavior:'instant'});
   }
-  function restore(document, fromProposal = false) {
-    reset(); if (!document) return;
+  function restore(document, fromProposal = false, preserveEdits = false) {
+    reset(preserveEdits); if (!document) return;
     const source = getSource(); if (document.source_text !== source?.text) return;
     currentKey = sourceKey(source); preview = {source_text:document.source_text,parts:document.parts};
     results.replaceChildren(...document.parts.map((part,index) => drawPart(part,index,generation,currentKey,source.mode)));

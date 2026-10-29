@@ -1,6 +1,7 @@
 """Local FastAPI service for reviewed category suggestions."""
 
 from contextlib import asynccontextmanager
+import hashlib
 import logging
 import os
 from pathlib import Path
@@ -8,10 +9,11 @@ from typing import Annotated, Literal
 
 from fastapi import FastAPI, HTTPException
 from fastapi.exceptions import RequestValidationError
-from fastapi.responses import FileResponse, JSONResponse
+from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
+from .version import __version__
 from .predict import MAX_TEXT_LENGTH, TicketPredictor
 from .breakdown import BreakdownRequest, preview
 
@@ -103,16 +105,45 @@ def create_app(model_dir: Path | None = None, semantic_model_dir: Path | None = 
 
     application = FastAPI(
         title="Support Ticket AI",
-        version="0.8.0",
+        version=__version__,
         description="Category suggestions requiring human review; scores are not calibrated.",
         lifespan=lifespan,
     )
     web_directory = Path(__file__).resolve().parent / "web"
+    # Content-address the entire module graph, including relative JS imports.
+    digest = hashlib.sha256()
+    for asset in sorted(web_directory.iterdir()):
+        if asset.suffix in {'.html', '.css', '.js'}:
+            digest.update(asset.name.encode()); digest.update(b'\0'); digest.update(asset.read_bytes())
+    frontend_build = digest.hexdigest()[:16]
+    application.mount(f"/assets/{frontend_build}", StaticFiles(directory=web_directory), name="versioned-assets")
     application.mount("/assets", StaticFiles(directory=web_directory), name="assets")
+
+    @application.middleware('http')
+    async def fresh_workspace(request, call_next):
+        response = await call_next(request)
+        if request.url.path == '/' or request.url.path.startswith('/assets/') or request.url.path == '/diagnostics':
+            response.headers['Cache-Control'] = 'no-store'
+        return response
+
+    @application.get('/diagnostics')
+    def diagnostics():
+        def identity(attribute):
+            predictor = getattr(application.state, attribute, None)
+            return {'loaded': predictor is not None,
+                    'model_sha256': predictor.metadata.get('model_sha256') if predictor else None}
+        proposer = application.state.proposer
+        return {'application_version': __version__, 'frontend_build': frontend_build,
+                'models': {'word': identity('predictor'), 'semantic': identity('semantic_predictor')},
+                'proposals': proposer.status() if proposer else {'configured': False, 'available': False},
+                'storage_available': application.state.request_store is not None,
+                'human_review_required': True}
 
     @application.get("/", include_in_schema=False)
     def workspace():
-        return FileResponse(web_directory / "index.html", headers={"Cache-Control": "no-cache"})
+        html = (web_directory / 'index.html').read_text(encoding='utf-8')
+        html = html.replace('/assets/', f'/assets/{frontend_build}/').replace('__WORKSPACE_BUILD__', frontend_build)
+        return HTMLResponse(html)
 
     @application.exception_handler(RequestValidationError)
     async def validation_error_handler(request, error):

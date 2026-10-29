@@ -2,6 +2,8 @@
 
 A Python portfolio project for classifying support requests and routing uncertain predictions to human review.
 
+The [diagnostics and evidence-editing milestone](docs/43-diagnostics-evidence-evaluation.md) adds application/model identities, consistent frontend builds, Unicode-safe manual split/merge/undo, and evidence-aligned proposal error reports. Model weights are unchanged; live proposal quality remains unevaluated.
+
 The [saved-request workspace](docs/38-request-management.md) adds SQLite persistence, six working sections, human review/corrections, clarification, handling, resolution notes, history and an overview. Saving is explicit; predictions alone are not stored.
 
 The [decision-first result card](docs/37-decision-first-results.md) now separates suggested categories from manual-classification decisions, shows recorded withholding reasons and next review steps, and keeps scores/JSON in expandable details. Retry and cancellation have dedicated states.

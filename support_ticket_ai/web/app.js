@@ -1,3 +1,4 @@
+import { initDiagnostics } from './diagnostics.js';
 import { initInteractions } from './interactions.js';
 import { initBreakdown } from './breakdown.js';
 import { describeResult, technicalFacts } from "./result-view.js";
@@ -395,6 +396,7 @@ import { initWorkspace } from "./workspace.js";
     onSaved: () => { input.value = ""; resizeInput(); edit(); },
   });
   initInteractions();
+  initDiagnostics();
   showModel();
   updateControls();
   checkReadiness();

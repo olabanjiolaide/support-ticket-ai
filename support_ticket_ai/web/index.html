@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="workspace-build" content="__WORKSPACE_BUILD__" />
     <meta name="theme-color" content="#f7f8fa" />
     <title>Support Ticket AI · Workspace</title>
     <link
@@ -69,6 +70,12 @@
       <div class="mobile-navigation"><label for="workspace-view">Workspace section</label><select id="workspace-view"><option value="new">New request</option><option value="requests">All requests</option><option value="review">Review queue</option><option value="in-progress">In progress</option><option value="resolved">Resolved requests</option><option value="overview">Overview</option></select></div>
       <main id="workspace" tabindex="-1">
         <p id="storage-notice" class="storage-notice" role="status">Checking local request storage…</p>
+        <details id="diagnostics-panel" class="diagnostics-panel">
+          <summary>Application diagnostics <span id="diagnostics-summary">Open to check versions and models</span></summary>
+          <p id="diagnostics-status" role="status"></p>
+          <dl id="diagnostics-values"></dl>
+          <button id="refresh-diagnostics" class="secondary-button" type="button">Refresh diagnostics</button>
+        </details>
         <section id="classification-view" aria-label="New request">
         <div class="page-heading">
           <div>

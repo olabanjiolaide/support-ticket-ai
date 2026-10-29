@@ -98,6 +98,25 @@ class ApiTests(unittest.TestCase):
             self.assertIn("/predict", response.json()["paths"])
             self.assertIn("PredictionResponse", response.json()["components"]["schemas"])
 
+    def test_diagnostics_versions_asset_identity_and_no_private_paths(self):
+        from support_ticket_ai.version import __version__
+        with TestClient(create_app(self.root)) as client:
+            diagnostic = client.get('/diagnostics')
+            data = diagnostic.json()
+            self.assertEqual(data['application_version'], __version__)
+            self.assertEqual(client.get('/openapi.json').json()['info']['version'], __version__)
+            self.assertEqual(data['models']['word']['model_sha256'], self.model_sha)
+            self.assertFalse(data['models']['semantic']['loaded'])
+            self.assertNotIn(str(self.root), diagnostic.text)
+            self.assertNotIn('password', diagnostic.text)
+            html = client.get('/')
+            self.assertIn(f'/assets/{data["frontend_build"]}/app.js', html.text)
+            self.assertIn(f'content="{data["frontend_build"]}"', html.text)
+            for path in ['/', '/diagnostics', '/assets/app.js', f'/assets/{data["frontend_build"]}/breakdown.js']:
+                self.assertEqual(client.get(path).headers['cache-control'], 'no-store')
+            # Relative module imports resolve inside the same content-addressed graph.
+            self.assertEqual(client.get(f'/assets/{data["frontend_build"]}/evidence-edit.js').status_code, 200)
+
     def test_workspace_and_local_assets_are_served(self):
         with TestClient(create_app(self.root)) as client:
             response = client.get("/")
