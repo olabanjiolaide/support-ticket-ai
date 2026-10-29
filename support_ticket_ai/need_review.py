@@ -24,11 +24,38 @@ class ReviewedFragment(Strict):
     category: Category | None = None
 
 
+class EvidenceTarget(Strict):
+    text: Annotated[str, Field(min_length=1, max_length=300)]
+    start: Annotated[int, Field(ge=0)]
+    end: Annotated[int, Field(gt=0)]
+
+
+class ReviewedAction(Strict):
+    description: Annotated[str, Field(min_length=1, max_length=200)]
+    target: EvidenceTarget | None = None
+
+    @field_validator('description')
+    @classmethod
+    def nonblank(cls, value):
+        if not value.strip():
+            raise ValueError('Describe the proposed action.')
+        return value.strip()
+
+
 class CustomerNeed(Strict):
     id: GroupId
     title: Annotated[str, Field(min_length=1, max_length=160)]
     category: Category
     kind: Literal['goal', 'obstacle', 'unclear'] = 'goal'
+    actions: Annotated[list[ReviewedAction], Field(max_length=8)] = Field(default_factory=list)
+    unknowns: Annotated[list[Annotated[str, Field(min_length=1, max_length=200)]], Field(max_length=8)] = Field(default_factory=list)
+
+    @field_validator('unknowns')
+    @classmethod
+    def nonblank_unknowns(cls, values):
+        if any(not value.strip() for value in values):
+            raise ValueError('Unknowns cannot be blank.')
+        return [value.strip() for value in values]
 
     @field_validator('title')
     @classmethod
@@ -47,7 +74,7 @@ class NeedRelation(Strict):
 
 
 class NeedReview(Strict):
-    schema_version: Annotated[int, Field(ge=1, le=2)] = 1
+    schema_version: Annotated[int, Field(ge=1, le=3)] = 1
     source_text: Annotated[str, Field(min_length=1, max_length=2000)]
     parts: Annotated[list[ReviewedFragment], Field(min_length=1, max_length=24)]
     groups: Annotated[list[CustomerNeed], Field(max_length=12)]
@@ -84,6 +111,13 @@ class NeedReview(Strict):
             if p.category is not None and (p.role != 'request' or p.group_id is not None):
                 raise ValueError('Grouped and non-request fragments use the need category, not a separate fragment category.')
         for group in self.groups:
+            if self.schema_version < 3 and (group.actions or group.unknowns):
+                raise ValueError('Actions, targets and unknowns require schema version 3.')
+            for action in group.actions:
+                target = action.target
+                if target and (target.end <= target.start or target.end > len(self.source_text)
+                               or self.source_text[target.start:target.end] != target.text or not target.text.strip()):
+                    raise ValueError('Action targets must quote an exact range in the original message.')
             if not any(p.group_id == group.id and p.role in ACTIVE for p in self.parts):
                 raise ValueError('Each need must include a current or unresolved request; background alone is not a need.')
         seen = set()
@@ -123,4 +157,19 @@ class SaveNeedReview(Strict):
     def reviewer(cls, value):
         if not value.strip():
             raise ValueError('Enter a reviewer label.')
+        return value.strip()
+
+
+class NeedProgress(Strict):
+    version: Annotated[int, Field(ge=1)]
+    actor: Annotated[str, Field(min_length=1, max_length=80)]
+    need_id: GroupId
+    status: Literal['open', 'in_progress', 'resolved', 'dismissed']
+    note: Annotated[str, Field(min_length=1, max_length=1000)]
+
+    @field_validator('actor', 'note')
+    @classmethod
+    def not_blank(cls, value):
+        if not value.strip():
+            raise ValueError('Enter a reviewer label and a note explaining this update.')
         return value.strip()

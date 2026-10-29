@@ -19,7 +19,7 @@ async def check(base, out):
         await page.goto(base)
         await expect(page.locator('#service-label')).to_have_text('Model ready')
         await page.locator('#diagnostics-panel summary').click()
-        await expect(page.locator('#diagnostics-summary')).to_contain_text('v0.20.0')
+        await expect(page.locator('#diagnostics-summary')).to_contain_text('v0.21.0')
         await expect(page.locator('#diagnostics-status')).to_contain_text('identities match')
         diagnostic=await (await page.request.get(base+'/diagnostics')).json()
         await page.route('**/diagnostics',lambda route:route.fulfill(json={**diagnostic,'frontend_build':'changed-build'}))

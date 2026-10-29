@@ -60,7 +60,7 @@ async def check(base,out):
         await host.get_by_role('button',name='Save grouped review',exact=True).click()
         await expect(page.locator('#detail-feedback')).to_contain_text('Grouped needs review saved locally')
         after=await (await page.request.get(base+'/requests/'+request_id)).json()
-        assert after['need_review']['review']['schema_version']==2
+        assert after['need_review']['review']['schema_version']==3
         assert after['need_review']['review']['relations']==review['relations']
         assert after['need_review']['review']['groups'][1]['kind']=='obstacle'
         assert after['prediction']==before['prediction'] and after['status']=='open' and after['confirmed_category'] is None

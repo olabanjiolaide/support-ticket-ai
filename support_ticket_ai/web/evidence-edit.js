@@ -27,6 +27,6 @@ export function editEvidence(document, operation, index, offset=null) {
   // Do not silently invent relationships for newly split or merged evidence.
   copy.relations=(copy.relations || []).filter(relation=>relation.evidence_parts.every(id=>!edited.includes(id)))
     .map(relation=>({...relation,evidence_parts:relation.evidence_parts.map(id=>ids.get(id))}));
-  copy.schema_version=2;
+  copy.schema_version=document.schema_version>=3?3:2;
   return copy;
 }

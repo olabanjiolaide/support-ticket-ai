@@ -16,6 +16,7 @@ on:
       - scripts/check_proposals_ui.py
       - scripts/check_interactions_ui.py
       - scripts/check_evidence_ui.py
+      - scripts/check_need_contract_ui.py
       - .github/workflows/package.yml
   pull_request:
     paths:
@@ -32,6 +33,7 @@ on:
       - scripts/check_proposals_ui.py
       - scripts/check_interactions_ui.py
       - scripts/check_evidence_ui.py
+      - scripts/check_need_contract_ui.py
       - .github/workflows/package.yml
 permissions:
   contents: read
@@ -98,6 +100,11 @@ jobs:
         run: |
           cd "$RUNNER_TEMP"
           "$RUNNER_TEMP/ticket-wheel-env/bin/python" "$GITHUB_WORKSPACE/scripts/check_evidence_ui.py" --artifacts "$GITHUB_WORKSPACE/artifacts/evidence-checks"
+      - name: Check interpretation contracts and partial resolution
+        shell: bash
+        run: |
+          cd "$RUNNER_TEMP"
+          "$RUNNER_TEMP/ticket-wheel-env/bin/python" "$GITHUB_WORKSPACE/scripts/check_need_contract_ui.py" --artifacts "$GITHUB_WORKSPACE/artifacts/need-contract-checks"
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -114,3 +121,4 @@ jobs:
             artifacts/proposal-checks/
             artifacts/interaction-checks/
             artifacts/evidence-checks/
+            artifacts/need-contract-checks/

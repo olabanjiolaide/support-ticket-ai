@@ -40,7 +40,7 @@ class RequestStore:
         self.path.parent.mkdir(parents=True, exist_ok=True)
         with closing(self.connect()) as db:
             version = db.execute('PRAGMA user_version').fetchone()[0]
-            if version not in (0, 1, 2):
+            if version not in (0, 1, 2, 3):
                 raise ValueError('Unsupported request database schema.')
             if version == 0:
                 with db:
@@ -79,6 +79,19 @@ class RequestStore:
                       request_version INTEGER NOT NULL, review_json TEXT NOT NULL
                     );
                     PRAGMA user_version=2;
+                    COMMIT;
+                    """)
+            if version < 3:
+                with db:
+                    db.executescript("""
+                    BEGIN IMMEDIATE;
+                    CREATE TABLE IF NOT EXISTS request_need_progress (
+                      request_id TEXT NOT NULL REFERENCES requests(id), need_id TEXT NOT NULL,
+                      status TEXT NOT NULL CHECK(status IN ('open','in_progress','resolved','dismissed')),
+                      note TEXT NOT NULL, updated_at TEXT NOT NULL, actor TEXT NOT NULL,
+                      PRIMARY KEY(request_id,need_id)
+                    );
+                    PRAGMA user_version=3;
                     COMMIT;
                     """)
             db.execute('SELECT id,version FROM requests LIMIT 0')
@@ -149,6 +162,7 @@ class RequestStore:
             if review:
                 result['need_review'] = {**dict(review), 'review': json.loads(review['review_json'])}
                 result['need_review'].pop('review_json')
+            result['need_progress'] = self.need_progress(db, request_id, result['need_review']['review'] if review else None)
             return result
 
     def list(self, *, q='', status=None, category=None, review_state=None, queue=None, limit=20, offset=0):
@@ -206,6 +220,10 @@ class RequestStore:
             elif action == 'resolve':
                 if row['status'] != 'in_progress' or row['review_state'] != 'reviewed' or not row['confirmed_category']:
                     raise StoreConflict('Review the category and start handling the request before resolving it.')
+                review = db.execute('SELECT review_json FROM request_need_reviews WHERE request_id=?',(request_id,)).fetchone()
+                progress = self.need_progress(db, request_id, json.loads(review[0]) if review else None)
+                if any(item['status'] not in {'resolved','dismissed'} for item in progress):
+                    raise StoreConflict('Finish or explicitly dismiss every saved need before resolving the request.')
                 after.update(status='resolved', resolution_note=note, resolved_at=now())
             elif action == 'reopen':
                 if row['status'] != 'resolved':
@@ -238,7 +256,20 @@ class RequestStore:
                 raise StoreConflict('The review source does not match the saved original message.')
             timestamp = now()
             old = db.execute('SELECT review_json FROM request_need_reviews WHERE request_id=?', (request_id,)).fetchone()
-            before = {**lifecycle(row), 'need_review': json.loads(old[0]) if old else None}
+            previous = json.loads(old[0]) if old else None
+            old_progress = self.need_progress(db, request_id, previous)
+            prior = {g['id']: g for g in previous['groups']} if previous else {}
+            incoming = {g['id']: g for g in document['groups']}
+            reset_ids = []
+            for state in old_progress:
+                need_id = state['need_id']
+                changed = need_id not in incoming or self.need_identity(previous, prior[need_id]) != self.need_identity(document, incoming[need_id])
+                if changed:
+                    if state['status'] in {'resolved','dismissed'}:
+                        raise StoreConflict('Reopen a completed or dismissed need before changing or removing its interpretation.')
+                    reset_ids.append(need_id)
+                    db.execute('DELETE FROM request_need_progress WHERE request_id=? AND need_id=?',(request_id,need_id))
+            before = {**lifecycle(row), 'need_review': previous, 'need_progress': old_progress}
             db.execute('UPDATE requests SET version=version+1,updated_at=? WHERE id=?', (timestamp,request_id))
             db.execute("""INSERT INTO request_need_reviews(request_id,reviewed_at,actor,request_version,review_json)
                           VALUES(?,?,?,?,?) ON CONFLICT(request_id) DO UPDATE SET
@@ -246,8 +277,62 @@ class RequestStore:
                           request_version=excluded.request_version, review_json=excluded.review_json""",
                        (request_id,timestamp,actor.strip(),version+1,json.dumps(document,ensure_ascii=False)))
             after_row = db.execute('SELECT * FROM requests WHERE id=?', (request_id,)).fetchone()
-            after = {**lifecycle(after_row), 'need_review': document}
+            after = {**lifecycle(after_row), 'need_review': document, 'need_progress': self.need_progress(db,request_id,document), 'reset_need_progress':reset_ids}
             self.event(db,request_id,actor.strip(),'needs_review','',before,after,timestamp)
+        return self.get(request_id)
+
+    @staticmethod
+    def need_identity(document, group):
+        from .need_review import CustomerNeed
+        canonical = CustomerNeed.model_validate(group).model_dump(mode='json')
+        evidence = [{key:p.get(key) for key in ('start','end','text','role')} for p in document['parts'] if p.get('group_id') == group['id']]
+        return payload_hash({'need':canonical,'evidence':evidence})
+
+    @staticmethod
+    def need_progress(db, request_id, document):
+        states = {r['need_id']:dict(r) for r in db.execute('SELECT need_id,status,note,updated_at,actor FROM request_need_progress WHERE request_id=?',(request_id,))}
+        return [{**{'need_id':g['id'],'status':'open','note':'','updated_at':None,'actor':None},**states.get(g['id'],{})}
+                for g in document['groups']] if document else []
+
+    def change_need(self, request_id, *, version, actor, need_id, status, note):
+        from .need_review import NeedProgress, NeedReview
+        body = NeedProgress.model_validate(dict(version=version,actor=actor,need_id=need_id,status=status,note=note))
+        actor, note = body.actor, body.note
+        with closing(self.connect()) as db, db:
+            db.execute('BEGIN IMMEDIATE')
+            row = db.execute('SELECT * FROM requests WHERE id=?',(request_id,)).fetchone()
+            if row is None:
+                raise RequestMissing('Saved request not found.')
+            if row['version'] != version:
+                raise StoreConflict('This request changed in another tab. Reload it before saving your changes.')
+            if row['status'] == 'resolved':
+                raise StoreConflict('Reopen the parent request before updating a need.')
+            review = db.execute('SELECT review_json FROM request_need_reviews WHERE request_id=?',(request_id,)).fetchone()
+            document = json.loads(review[0]) if review else None
+            group = next((g for g in document['groups'] if g['id']==need_id),None) if document else None
+            if group is None:
+                raise RequestMissing('Saved customer need not found. Save its reviewed interpretation first.')
+            # Revalidate legacy reviews as well as new contracts.
+            NeedReview.model_validate(document)
+            before_states = self.need_progress(db,request_id,document)
+            current = next(item for item in before_states if item['need_id']==need_id)
+            allowed = {'open':{'in_progress','dismissed'},'in_progress':{'open','resolved','dismissed'},'resolved':{'open'},'dismissed':{'open'}}
+            if status not in allowed[current['status']]:
+                raise StoreConflict('Start a need before resolving it; reopen a closed need before changing it.')
+            if status in {'in_progress','resolved'} and (row['status'] != 'in_progress' or row['review_state'] != 'reviewed'):
+                raise StoreConflict('Review the parent category and start handling the request first.')
+            if status == 'resolved':
+                unresolved = group.get('unknowns') or group['category']=='UNCLEAR' or group.get('kind')=='unclear' or any(p.get('group_id')==need_id and p['role'] in {'unclear','conditional','alternative'} for p in document['parts'])
+                if unresolved:
+                    raise StoreConflict('Clarify this need before resolving it, or explicitly dismiss it with a reason.')
+            timestamp = now()
+            db.execute('INSERT INTO request_need_progress VALUES(?,?,?,?,?,?) ON CONFLICT(request_id,need_id) DO UPDATE SET status=excluded.status,note=excluded.note,updated_at=excluded.updated_at,actor=excluded.actor',
+                       (request_id,need_id,status,note,timestamp,actor))
+            db.execute('UPDATE requests SET version=version+1,updated_at=? WHERE id=?',(timestamp,request_id))
+            after_row = db.execute('SELECT * FROM requests WHERE id=?',(request_id,)).fetchone()
+            self.event(db,request_id,actor,'need_progress',note,
+                       {**lifecycle(row),'need_progress':before_states},
+                       {**lifecycle(after_row),'need_progress':self.need_progress(db,request_id,document),'changed_need':need_id},timestamp)
         return self.get(request_id)
 
     def overview(self):

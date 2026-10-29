@@ -12,7 +12,7 @@ const date = (value) => new Date(value).toLocaleString();
 const statusLabel = (r) => r.status === 'resolved' ? 'Resolved' : r.status === 'in_progress' ? 'In progress'
   : r.status === 'needs_clarification' ? 'Needs clarification' : r.review_state === 'reviewed' ? 'Ready to handle' : 'Awaiting review';
 const titles = {new: 'New request', requests: 'All requests', review: 'Review queue', 'in-progress': 'In progress', resolved: 'Resolved requests', overview: 'Overview'};
-const actionLabels = {created: 'Request saved', review: 'Category reviewed', clarify: 'Clarification needed', start: 'Handling started', resolve: 'Request resolved', reopen: 'Reopened for review', note: 'Note added', needs_review: 'Customer needs reviewed'};
+const actionLabels = {created: 'Request saved', review: 'Category reviewed', clarify: 'Clarification needed', start: 'Handling started', resolve: 'Request resolved', reopen: 'Reopened for review', note: 'Note added', needs_review: 'Customer needs reviewed', need_progress:'Individual need updated'};
 
 async function api(path, options = {}) {
   const controller = new AbortController();
@@ -171,6 +171,7 @@ export function initWorkspace({getDraft, setSaving, onSaved}) {
     savedBreakdown.reset();
     current = record;
     savedBreakdown.restore(record.need_review?.review);
+    renderNeedHandling(record);
     byId('request-detail-content').hidden = false;
     byId('request-detail-title').textContent = shortId(record.id);
     byId('breadcrumb-current').textContent = `Requests / ${shortId(record.id)}`;
@@ -190,9 +191,15 @@ export function initWorkspace({getDraft, setSaving, onSaved}) {
       const item = element('li');
       item.append(element('strong', actionLabels[event.action] || event.action), element('p', `${date(event.happened_at)} · ${event.actor} · Version ${event.after.version}`, 'history-meta'));
       if (event.note) item.append(element('p', event.note, 'saved-message'));
+      if (event.action === 'need_progress') {
+        const previous=event.before?.need_progress?.find(p=>p.need_id===event.after.changed_need);
+        const next=event.after.need_progress?.find(p=>p.need_id===event.after.changed_need);
+        item.append(element('p',`${event.after.changed_need}: ${previous?.status} → ${next?.status}`,'technical-note'));
+      }
       if (event.action === 'needs_review') {
         const details = element('details', '', 'response-details');
         details.append(element('summary','Grouped review before / after'), element('pre',JSON.stringify({before:event.before?.need_review,after:event.after?.need_review},null,2)));
+        if(event.after.reset_need_progress?.length)item.append(element('p',`Interpretation changes reset need progress: ${event.after.reset_need_progress.join(', ')}. Earlier outcomes remain in history.`,'technical-note'));
         item.append(element('p',`${event.after.need_review.groups.length} human-authored need(s) recorded. Handling status was not changed.`,'technical-note'),details);
       }
       const changes = [];
@@ -208,6 +215,39 @@ export function initWorkspace({getDraft, setSaving, onSaved}) {
       return item;
     }));
     updateActions();
+  }
+  function renderNeedHandling(record){
+    const host=byId('need-handling');host.replaceChildren(element('h2','Progress for each need'));
+    const groups=record.need_review?.review.groups || [], states=record.need_progress || [];
+    const finished=states.filter(s=>['resolved','dismissed'].includes(s.status)).length;
+    host.append(element('p',groups.length?`${finished}/${groups.length} needs finished or explicitly dismissed. Finish all needs before resolving this request.`:'Save a grouped review to track individual needs.','technical-note'));
+    if(groups.length)host.append(element('p','Save interpretation edits before updating progress. A progress update reloads the last saved interpretation. Notes record human-reported outcomes; this app performs no customer-account operations.','technical-note'));
+    for(const group of groups){
+      const state=states.find(s=>s.need_id===group.id) || {status:'open',note:''};
+      const card=element('article','','need-handling-card');card.dataset.needId=group.id;
+      const statusText=element('p',`${group.kind || 'goal'} · ${group.category} · ${{open:'Open',in_progress:'In progress',resolved:'Resolved',dismissed:'Dismissed'}[state.status]}`,'need-handling-status');statusText.dataset.status=state.status;
+      card.append(element('h3',group.title),statusText);
+      if(state.note)card.append(element('p',state.note,'saved-message'));
+      const label=element('label','Update note / completion evidence'),note=element('textarea');note.rows=2;note.maxLength=1000;note.disabled=record.status==='resolved';label.append(note);card.append(label);
+      const next=state.status==='open'?[['in_progress','Start need'],['dismissed','Dismiss with reason']]:state.status==='in_progress'?[['resolved','Resolve need'],['dismissed','Dismiss with reason'],['open','Return need to open']]:[['open','Reopen need']];
+      for(const [status,title] of next){
+        const button=element('button',title,'secondary-button');button.type='button';button.disabled=record.status==='resolved';
+        button.addEventListener('click',async()=>{
+          if(actionPending)return;
+          const actor=byId('reviewer-name').value.trim();
+          if(!actor){showError('detail-error','Enter a reviewer label above.');byId('reviewer-name').focus();return;}
+          if(!note.value.trim()){showError('detail-error','Add a note explaining this need update.');note.focus();return;}
+          const id=record.id,version=record.version;++detailSequence;actionPending=true;updateActions();
+          host.querySelectorAll('button,textarea').forEach(control=>control.disabled=true);
+          try{
+            const updated=await api(`/requests/${id}/need-progress`,{method:'POST',body:JSON.stringify({version,actor,need_id:group.id,status,note:note.value.trim()})});
+            if(detailId===id){renderDetail(updated,true);showError('detail-feedback','Need progress saved. Parent handling status was not changed.');}
+          }catch(error){showError('detail-error',error.message);}
+          finally{actionPending=false;updateActions();if(detailId===id)host.querySelectorAll('button,textarea').forEach(control=>control.disabled=current?.status==='resolved');}
+        });card.append(button);
+      }
+      host.append(card);
+    }
   }
   async function loadDetail(id, preserveDraft = false) {
     const sequence = ++detailSequence; showError('detail-error');

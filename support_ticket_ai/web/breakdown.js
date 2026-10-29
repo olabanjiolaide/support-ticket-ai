@@ -1,3 +1,4 @@
+import { createNeedContract } from './need-contract.js';
 import { editEvidence } from './evidence-edit.js';
 import { initProposals } from './proposal-view.js';
 import { describeResult } from './result-view.js';
@@ -28,7 +29,7 @@ export function initBreakdown(host, getSource, stageNote = null, persistence = n
   const heading = el('h2', 'Understand the individual needs');
   heading.tabIndex = -1;
   const intro = el('p', 'Human-assisted preview · group related fragments under one customer goal, attach background, and review one category for each need.', 'section-description');
-  const caution = el('p', 'Read the complete message when grouping fragments. Manual fragments are text boundaries; optional language-model proposals are unverified interpretations. You make the final decision.', 'technical-note');
+  const caution = el('p', 'Goal = desired outcome; obstacle = reported barrier; action = proposed step; evidence = original wording; unknown = information still needed. Interpretations and action targets require human review; no operations are executed.', 'technical-note');
   const proposalHost = el('section');
   const build = el('button', 'Break down message', 'secondary-button'); build.type = 'button';
   const feedback = el('p', '', 'technical-note'); feedback.setAttribute('role','status');
@@ -176,9 +177,10 @@ export function initBreakdown(host, getSource, stageNote = null, persistence = n
     const result = el('p', '', 'technical-note'); result.setAttribute('role','status');
     const remove = el('button', 'Remove need', 'text-button'); remove.type = 'button';
     const groupHeading = el('h3', saved?.title || `Your need ${id.slice(5)}`);
-    const group = {id, title, kind, category, card, members, assess, result, call:0, pending:false}; groups.push(group);
+    const contract=createNeedContract(saved,preview?.source_text || getSource()?.text || '',()=>syncGroups(false));
+    const group = {id, title, kind, category, contract, card, members, assess, result, call:0, pending:false}; groups.push(group);
     const inspect=el('button','Inspect assigned evidence','text-button');inspect.type='button';inspect.addEventListener('click',()=>{details.open=true;filterEvidence(id);details.scrollIntoView({block:'start',behavior:'instant'});});
-    card.append(groupHeading, titleLabel, kindLabel, categoryLabel, members, assess, result, inspect, remove);
+    card.append(groupHeading, titleLabel, kindLabel, categoryLabel, members, contract.host, assess, result, inspect, remove);
     groupPanel.append(card);
     title.addEventListener('input', () => { groupHeading.textContent = title.value.trim() || `Your need ${id.slice(5)}`; syncGroups(false); });
     category.addEventListener('change', () => syncGroups(false));
@@ -222,9 +224,9 @@ export function initBreakdown(host, getSource, stageNote = null, persistence = n
     }
   }
   function editingDocument() {
-    return {schema_version:2,source_text:preview.source_text,
+    return {schema_version:3,source_text:preview.source_text,
       parts:records.map(r=>({id:r.part.id,start:r.part.start,end:r.part.end,text:r.part.text,role:r.role.value,group_id:r.group.value || null,category:r.category.value || null})),
-      groups:groups.map(g=>({id:g.id,title:g.title.value,category:g.category.value,kind:g.kind.value})),relations:structuredClone(relations),clarification:question.value};
+      groups:groups.map(g=>({id:g.id,title:g.title.value,category:g.category.value,kind:g.kind.value,...g.contract.read()})),relations:structuredClone(relations),clarification:question.value};
   }
   function splitPosition(){return Array.from(original.value.slice(0,original.selectionStart)).length;}
   function showPosition(){position.textContent=`Split position: original character ${splitPosition()}. Original text is read-only.`;}
@@ -252,13 +254,14 @@ export function initBreakdown(host, getSource, stageNote = null, persistence = n
     if (records.some(r => r.role.value === 'unconfirmed')) throw new Error('Review the interpretation of every fragment first.');
     if (records.some(r => ['request','obstacle','unclear','conditional','alternative'].includes(r.role.value) && !r.group.value)) throw new Error('Assign each current or unresolved request to a customer need.');
     for (const group of groups) {
+      group.contract.validate();
       if (!group.title.value.trim() || !group.category.value) throw new Error('Give each need a title and human category (or choose Outside current categories / Unclear).');
       if (!records.some(r => r.group.value === group.id && ['request','obstacle','unclear','conditional','alternative'].includes(r.role.value))) throw new Error('Background alone is not a current need. Assign a current or unresolved request, or remove the empty need.');
     }
     if ((records.some(r => ['unclear','conditional','alternative'].includes(r.role.value)) || groups.some(g => g.category.value === 'UNCLEAR' || g.kind.value === 'unclear') || relations.length) && !question.value.trim()) throw new Error('Add a clarification question or relationship note for unresolved requests.');
-    return {schema_version:2, source_text:preview.source_text,
+    return {schema_version:3, source_text:preview.source_text,
       parts:records.map(r => ({id:r.part.id,start:r.part.start,end:r.part.end,text:r.part.text,role:r.role.value,group_id:r.group.value || null,category:r.category.value || null})),
-      groups:groups.map(g => ({id:g.id,title:g.title.value.trim(),category:g.category.value,kind:g.kind.value})), relations:structuredClone(relations), clarification:question.value.trim()};
+      groups:groups.map(g => ({id:g.id,title:g.title.value.trim(),category:g.category.value,kind:g.kind.value,...g.contract.read()})), relations:structuredClone(relations), clarification:question.value.trim()};
   }
   saveGroups.addEventListener('click', async () => {
     let document;

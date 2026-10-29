@@ -8,7 +8,7 @@ from uuid import UUID
 from fastapi import HTTPException, Query
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
-from .need_review import SaveNeedReview
+from .need_review import SaveNeedReview, NeedProgress
 from .request_store import CATEGORIES, RequestMissing, StoreConflict, payload_hash
 
 logger = logging.getLogger(__name__)
@@ -115,3 +115,7 @@ def register_request_routes(application, predict, prediction_request_type, predi
     def save_need_review(request_id: UUID, body: SaveNeedReview):
         return call(store().save_need_review, str(request_id), version=body.version,
                     actor=body.actor, review=body.review.model_dump(mode='json', exclude_unset=True))
+
+    @application.post('/requests/{request_id}/need-progress')
+    def change_need(request_id: UUID, body: NeedProgress):
+        return call(store().change_need, str(request_id), **body.model_dump())

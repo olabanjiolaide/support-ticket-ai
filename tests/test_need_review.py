@@ -122,7 +122,7 @@ class NeedReviewTests(unittest.TestCase):
         self.assertEqual(repository.get(self.record['id'])['message'],TEXT)
         self.assertEqual(len(repository.get(self.record['id'])['history']),1)
         with sqlite3.connect(self.db) as db:
-            self.assertEqual(db.execute('PRAGMA user_version').fetchone()[0],2)
+            self.assertEqual(db.execute('PRAGMA user_version').fetchone()[0],3)
         self.save()
 
     def test_resolved_request_requires_reopening_before_editing_groups(self):

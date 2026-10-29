@@ -519,3 +519,15 @@ body[data-density="compact"] .customer-needs, body[data-density="compact"] .brea
 .evidence-edit-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
 @media(max-width: 600px) { #diagnostics-values { grid-template-columns: minmax(0,1fr); gap: 6px; } #diagnostics-values dd { margin-bottom: 10px; } .evidence-edit-actions button { width: 100%; } }
 @media print { .diagnostics-panel,.evidence-editor { display: none !important; } }
+
+.need-contract { border-top: 1px solid var(--border); margin: 14px 0; padding-top: 12px; font-size: 12px; }
+.need-contract summary { cursor: pointer; font-weight: 600; }
+.need-contract label { display: block; margin: 12px 0; }
+.need-contract textarea,.need-contract input { width: 100%; margin-top: 8px; }
+.need-action,.need-handling-card { border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin: 12px 0; overflow-wrap: anywhere; }
+.need-action button,.need-handling-card button { margin: 6px 8px 6px 0; }
+.need-handling-card textarea { width: 100%; }
+@media(max-width:600px) { .need-handling-card button { width: 100%; } }
+#need-handling { padding: 22px; }
+.need-handling-card textarea { min-height: 88px; }
+.need-contract textarea { min-height: 88px; }
