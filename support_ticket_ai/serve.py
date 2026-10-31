@@ -15,10 +15,11 @@ def main() -> None:
     parser.add_argument("--semantic-model-dir", type=Path, help="Optional trusted experimental semantic bundle")
     parser.add_argument("--requests-db", type=Path, default=Path("artifacts/requests.sqlite3"), help="Local SQLite request database (created on first launch)")
     parser.add_argument("--proposal-model", help="Optional installed local Ollama model for structured needs proposals")
+    parser.add_argument('--proposal-evidence-mode', choices=['fragments','excerpts'], default='fragments', help='Numbered source fragments (default) or legacy exact-copy excerpts for comparison')
     args = parser.parse_args()
     if not 1 <= args.port <= 65535:
         parser.error("Port must be between 1 and 65535.")
-    uvicorn.run(create_app(args.model_dir, args.semantic_model_dir, args.requests_db, args.proposal_model), host="127.0.0.1", port=args.port)
+    uvicorn.run(create_app(args.model_dir, args.semantic_model_dir, args.requests_db, args.proposal_model, args.proposal_evidence_mode), host="127.0.0.1", port=args.port)
 
 
 if __name__ == "__main__":

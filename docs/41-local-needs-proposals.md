@@ -1,5 +1,7 @@
 # Experimental local language-model proposals (0.18.0)
 
+**Current default (0.25.0):** the model assigns numbered original excerpts rather than copying evidence text. See [numbered proposal evidence](48-numbered-proposal-evidence.md) for boundaries, limitations and the legacy comparison mode.
+
 ## What this adds
 
 The existing sentence encoder scores categories; it does not generate interpretations. This optional feature connects to a **separate local Ollama language model** to propose goals, account-access obstacles, background, uncertainty, finer evidence boundaries and relationships. It is off by default. The app never substitutes an authored fixture or rule output when the model is missing.

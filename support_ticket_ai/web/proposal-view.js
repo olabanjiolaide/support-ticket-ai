@@ -50,6 +50,7 @@ export function initProposals(host,getSource,onAdopt,onReady=()=>{},onState=()=>
   function renderProposal(data,token=sequence,key=sourceKey()){
     const review=data.review;result.replaceChildren();
       const warning=el('p','Model draft — evidence checks passed, but the meaning, categories and relationships still need your review.');warning.className='technical-note';result.append(warning);
+      if(data.evidence_mode==='fragments'){const note=el('p','Evidence text comes from numbered original excerpts. Boundaries are heuristic: inspect for combined or missed needs and edit boundaries after adoption.');note.className='technical-note';result.append(note);}
       for (const group of review.groups) {
         const card=el('article');card.className='proposal-need';card.append(el('strong',group.title),el('p',`${group.kind} · proposed category: ${group.category}`));
         for (const part of review.parts.filter(p=>p.group_id===group.id)) card.append(el('blockquote',`${part.role}: ${part.text}`));
@@ -59,7 +60,7 @@ export function initProposals(host,getSource,onAdopt,onReady=()=>{},onState=()=>
       if (unassigned.length) {const details=el('details');details.append(el('summary','Other source evidence'));for(const part of unassigned)details.append(el('p',`${part.role}: ${part.text}`));result.append(details);}
       for (const relation of review.relations) result.append(el('p',`Relationship hypothesis: ${relation.source} ${relation.kind} ${relation.target}. ${relation.note}`));
       if (review.clarification) result.append(el('p','Proposed clarification: '+review.clarification));
-      const identity=el('details');identity.append(el('summary','Proposal identity'),el('pre',JSON.stringify(data.restored_draft?{saved_unreviewed_draft:true}:{model:data.model,model_digest:data.model_digest,prompt_version:data.prompt_version,prompt_sha256:data.prompt_sha256,source_sha256:data.source_sha256},null,2)));result.append(identity);
+      const identity=el('details');identity.append(el('summary','Proposal identity'),el('pre',JSON.stringify(data.restored_draft?{saved_unreviewed_draft:true}:{model:data.model,model_digest:data.model_digest,evidence_mode:data.evidence_mode,prompt_version:data.prompt_version,prompt_sha256:data.prompt_sha256,source_sha256:data.source_sha256},null,2)));result.append(identity);
       const adopt=el('button','Use as editable draft');adopt.type='button';adopt.className='primary-button proposal-adopt';
       result.append(el('p','This replaces unsaved grouping choices in this tab. It does not save, route or resolve the request.'),adopt);
       adopt.addEventListener('click',()=>{if(sequence!==token || sourceKey()!==key)return;onAdopt(structuredClone(review));});
@@ -80,7 +81,7 @@ export function initProposals(host,getSource,onAdopt,onReady=()=>{},onState=()=>
       const response=await fetch('/proposals',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text:source.text}),signal:active.signal});
       const data=await response.json();
       if (sequence!==token || sourceKey()!==key) return;
-      if (!response.ok) {const error=new Error(typeof data.detail==='string'?data.detail:'Proposal generation failed.');error.code=data.code || `http_${response.status}`;error.validationCode=data.validation_code || null;error.attempts=data.attempts ?? null;error.promptVersion=data.prompt_version ?? null;throw error;}
+      if (!response.ok) {const error=new Error(typeof data.detail==='string'?data.detail:'Proposal generation failed.');error.code=data.code || `http_${response.status}`;error.validationCode=data.validation_code || null;error.attempts=data.attempts ?? null;error.promptVersion=data.prompt_version ?? null;error.evidenceMode=data.evidence_mode ?? null;throw error;}
       const review=data.review;
       if (data.status!=='draft' || data.requires_human_review!==true || review?.source_text!==source.text || review.schema_version!==2 || !Array.isArray(review.parts) || !Array.isArray(review.groups) || !Array.isArray(review.relations)) throw new Error('The proposal response did not match the current message.');
       renderProposal(data,token,key);
@@ -89,7 +90,7 @@ export function initProposals(host,getSource,onAdopt,onReady=()=>{},onState=()=>
         state('error','Generation failed');recovery.hidden=false;
         errorMessage.textContent=error.name==='AbortError'?'Generation stopped or timed out. The local model may still be finishing.':error.message;
         nextStep.textContent=error.code==='busy'?'Wait for the current local generation to finish, then retry.':error.code==='unavailable'?'Open Ollama, choose Check local model, then retry.':'Retry generation once, or use Break down message to review the original text manually. Copy the error details if it fails again.';
-        lastError={code:error.code || (error.name==='AbortError'?'client_timeout':'invalid_response'),validation_code:error.validationCode || null,attempts:error.attempts ?? null,model,prompt_version:error.promptVersion ?? null};
+        lastError={code:error.code || (error.name==='AbortError'?'client_timeout':'invalid_response'),validation_code:error.validationCode || null,attempts:error.attempts ?? null,model,prompt_version:error.promptVersion ?? null,evidence_mode:error.evidenceMode ?? null};
         diagnostics.textContent=JSON.stringify(lastError,null,2);
         feedback.textContent='Generation failed. Your current review is unchanged.';
       }

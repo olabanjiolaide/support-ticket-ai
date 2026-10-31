@@ -21,7 +21,7 @@ class ProposalRecoveryTests(unittest.TestCase):
             if clock is not None:clock[0]=121
             return httpx.Response(200,json={'model':'local:latest','done':True,'done_reason':'stop','message':{'content':content}})
         self.enterContext(patch('support_ticket_ai.proposals.httpx.Client',side_effect=lambda **kwargs:original(transport=httpx.MockTransport(handler),**kwargs)))
-        return OllamaProposer('local')
+        return OllamaProposer('local', evidence_mode='excerpts')
 
     def test_one_repair_can_recover_but_must_pass_original_evidence_checks(self):
         broken=generated();broken['segments'][0]['text']='Please find my order number!'

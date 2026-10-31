@@ -1,0 +1,111 @@
+{
+  "schema_version": 1,
+  "authored_on": "2026-10-31",
+  "purpose": "Authored regressions informed by a reported failure; reused development cases, not independent ground truth or live-model measurements.",
+  "manual_review_pilot_used": false,
+  "locked_test_used": false,
+  "cases": [
+    {
+      "id": "order-number-and-refund-typo",
+      "text": "Please, what is my order number and also check if the refund had been made for my cancelled ordered.",
+      "expected_plan": {
+        "segments": [
+          {
+            "text": "Please, what is my order number",
+            "role": "request",
+            "group_id": "need-1"
+          },
+          {
+            "text": "and also check if the refund had been made for my cancelled ordered.",
+            "role": "request",
+            "group_id": "need-2"
+          }
+        ],
+        "groups": [
+          {
+            "id": "need-1",
+            "title": "Retrieve the order number",
+            "category": "ORDER",
+            "kind": "goal"
+          },
+          {
+            "id": "need-2",
+            "title": "Check refund status",
+            "category": "REFUND",
+            "kind": "goal"
+          }
+        ],
+        "relations": [],
+        "clarification": ""
+      }
+    },
+    {
+      "id": "unicode-order-and-refund",
+      "text": "👩🏿‍💻 Please find my order number and also check my refund.",
+      "expected_plan": {
+        "segments": [
+          {
+            "text": "👩🏿‍💻 Please find my order number",
+            "role": "request",
+            "group_id": "need-1"
+          },
+          {
+            "text": "and also check my refund.",
+            "role": "request",
+            "group_id": "need-2"
+          }
+        ],
+        "groups": [
+          {
+            "id": "need-1",
+            "title": "Retrieve the order number",
+            "category": "ORDER",
+            "kind": "goal"
+          },
+          {
+            "id": "need-2",
+            "title": "Check refund status",
+            "category": "REFUND",
+            "kind": "goal"
+          }
+        ],
+        "relations": [],
+        "clarification": ""
+      }
+    },
+    {
+      "id": "same-category-different-targets",
+      "text": "Cancel order A. Keep order B.",
+      "expected_plan": {
+        "segments": [
+          {
+            "text": "Cancel order A.",
+            "role": "request",
+            "group_id": "need-1"
+          },
+          {
+            "text": "Keep order B.",
+            "role": "request",
+            "group_id": "need-2"
+          }
+        ],
+        "groups": [
+          {
+            "id": "need-1",
+            "title": "Cancel order A",
+            "category": "ORDER",
+            "kind": "goal"
+          },
+          {
+            "id": "need-2",
+            "title": "Keep order B",
+            "category": "ORDER",
+            "kind": "goal"
+          }
+        ],
+        "relations": [],
+        "clarification": ""
+      }
+    }
+  ]
+}

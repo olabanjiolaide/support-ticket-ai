@@ -60,7 +60,7 @@ class PredictionResponse(BaseModel):
     request_check_version: int | None = None
 
 
-def create_app(model_dir: Path | None = None, semantic_model_dir: Path | None = None, requests_db: Path | None = None, proposal_model: str | None = None) -> FastAPI:
+def create_app(model_dir: Path | None = None, semantic_model_dir: Path | None = None, requests_db: Path | None = None, proposal_model: str | None = None, proposal_evidence_mode: str = 'fragments') -> FastAPI:
     """Load one trusted bundle per worker at startup, not per request."""
 
     @asynccontextmanager
@@ -70,7 +70,7 @@ def create_app(model_dir: Path | None = None, semantic_model_dir: Path | None = 
         if configured_proposal:
             try:
                 from .proposals import OllamaProposer
-                application.state.proposer = OllamaProposer(configured_proposal)
+                application.state.proposer = OllamaProposer(configured_proposal, evidence_mode=proposal_evidence_mode)
             except ValueError:
                 logger.error('Invalid local proposal model configuration')
         application.state.request_store = None
@@ -192,7 +192,8 @@ def create_app(model_dir: Path | None = None, semantic_model_dir: Path | None = 
             return application.state.proposer.propose(body.text)
         except ProposalFailure as error:
             return JSONResponse(status_code=error.status,content={'detail':str(error),'code':error.code,
-                'validation_code':error.validation_code,'attempts':error.attempts,'prompt_version':PROMPT_VERSION})
+                'validation_code':error.validation_code,'attempts':error.attempts,'prompt_version':getattr(application.state.proposer,'prompt_version',PROMPT_VERSION),
+                'evidence_mode':getattr(application.state.proposer,'evidence_mode',None)})
         except Exception as error:
             logger.error('Proposal generation failed (%s)',type(error).__name__)
             raise HTTPException(status_code=500,detail='The proposal could not be generated. No draft was applied.') from error

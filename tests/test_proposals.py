@@ -49,7 +49,7 @@ class ProposalTests(unittest.TestCase):
             return httpx.Response(200,json=response)
         mock=patch('support_ticket_ai.proposals.httpx.Client',side_effect=lambda **kwargs:original(transport=httpx.MockTransport(handler),**kwargs))
         self.enterContext(mock)
-        return OllamaProposer('local'),calls
+        return OllamaProposer('local', evidence_mode='excerpts'),calls
 
     def test_structured_local_adapter_and_server_derived_exact_offsets(self):
         engine,calls=self.mock_engine()

@@ -15,16 +15,20 @@ def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--model',required=True)
     parser.add_argument('--output',type=Path,required=True)
-    parser.add_argument('--limit',type=int,default=8)
+    parser.add_argument('--limit',type=int)
+    parser.add_argument('--evidence-mode',choices=['fragments','excerpts'],default='fragments')
+    parser.add_argument('--suite',choices=['development','evidence-regressions'],default='development')
     args=parser.parse_args()
-    if not 1 <= args.limit <= 8: parser.error('Use a limit from 1 to 8.')
-    proposer=OllamaProposer(args.model)
+    fixture_name = 'needs_proposals_development.json' if args.suite == 'development' else 'needs_evidence_regressions.json'
+    fixture_bytes=data_path(fixture_name).read_bytes()
+    fixture=json.loads(fixture_bytes)
+    if args.limit is None: args.limit=len(fixture['cases'])
+    if not 1 <= args.limit <= len(fixture['cases']): parser.error('Limit must be within the selected development suite.')
+    proposer=OllamaProposer(args.model,evidence_mode=args.evidence_mode)
     status=proposer.status()
     if not status['available']:
         print('Local proposal model is unavailable. No evaluation was performed.')
         return 1
-    fixture_bytes=data_path('needs_proposals_development.json').read_bytes()
-    fixture=json.loads(fixture_bytes)
     rows=[]
     for case in fixture['cases'][:args.limit]:
         expected=align_plan(case['text'],case['expected_plan'])
@@ -38,6 +42,7 @@ def main():
     report={'live_model_evaluated':True,'evaluation_scope':'Authored development cases only; no independent generalization claim.',
             'manual_review_pilot_used':False,'locked_test_used':False,'model':status['model'],
             'application_version':__version__,'model_digest':status.get('model_digest'),
+            'evidence_mode':args.evidence_mode,'suite':args.suite,'prompt_version':proposer.prompt_version,
             'fixture_sha256':hashlib.sha256(fixture_bytes).hexdigest(),'metric_version':2,'matching_rule':'One-to-one active evidence character IoU >= 0.5; category and kind errors checked after matching.',
             'metric_limitations':'Evidence overlap is a proxy, not proof of semantic equivalence. Clarification wording and relationship evidence correctness require inspection.',
             'summary':summarize(rows),'attempted':len(rows),'valid_structured_responses':sum(row['valid_structured_response'] for row in rows),'cases':rows}

@@ -17,7 +17,7 @@ async def check(base,out):
     case=json.loads(data_path('needs_proposals_development.json').read_text())['cases'][0]
     text=case['text'];review=align_plan(text,case['expected_plan'])
     proposal={'status':'draft','requires_human_review':True,'review':review,'model':'UI-fixture:latest',
-              'generation_attempts':2,'recovered_from_validation':'evidence_mismatch','prompt_version':2,
+              'generation_attempts':2,'recovered_from_validation':'fragment_coverage','prompt_version':3,'evidence_mode':'fragments',
               'source_sha256':hashlib.sha256(text.encode()).hexdigest()}
     failure={'detail':'Generation failed validation after two attempts (evidence_mismatch). No draft was applied.',
              'code':'invalid_output','validation_code':'evidence_mismatch','attempts':2,'prompt_version':2}
@@ -52,7 +52,9 @@ async def check(base,out):
                 await panel.screenshot(path=str(out/f'proposal-error-{width}-{theme}.png'))
                 await page.locator('.proposal-launch').screenshot(path=str(out/f'proposal-launch-{width}-{theme}.png'))
         await page.unroute('**/proposals')
+        release_response=asyncio.Event();release_response.set()
         async def success(route):
+            await release_response.wait()
             await asyncio.sleep(.4)
             try:await route.fulfill(json=proposal)
             except Exception:pass
@@ -60,11 +62,14 @@ async def check(base,out):
         await panel.get_by_role('button',name='Retry generation',exact=True).click()
         await expect(panel.get_by_role('progressbar')).to_be_visible()
         await expect(panel).to_have_attribute('data-state','draft')
+        await expect(panel).to_contain_text('Evidence text comes from numbered original excerpts.')
         await expect(panel).to_contain_text('second passed structural checks')
         await expect(host.get_by_label('Customer need / goal')).to_have_value('Preserve my manual draft')
         await expect(panel.get_by_role('button',name='Use as editable draft',exact=True)).to_be_visible()
         # Cancellation and source changes still discard late replies without adopting them.
+        release_response.clear()
         await shortcut.click();await panel.get_by_role('button',name='Cancel generation',exact=True).click()
+        release_response.set()
         await page.wait_for_timeout(600);await expect(panel.get_by_role('button',name='Use as editable draft',exact=True)).to_have_count(0)
         await page.emulate_media(reduced_motion='reduce')
         assert await panel.locator('.proposal-spinner').evaluate('(el)=>getComputedStyle(el).animationName')=='none'

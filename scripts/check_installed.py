@@ -52,7 +52,8 @@ def api_checks(model: Path):
     assert len(load_tickets(data_path('sample_tickets.csv'))) == 12
     assert verify_manifest(data_path('ambiguity_review_cases.csv'), data_path('ambiguity_review_manifest.json'))['rows'] == 72
     for name in ('development_challenge.csv', 'robustness_probes.csv', 'scope_training_negatives.csv',
-                 'review_pilot.csv', 'ambiguity_review_cases.csv', 'ambiguity_review_manifest.json'):
+                 'review_pilot.csv', 'ambiguity_review_cases.csv', 'ambiguity_review_manifest.json',
+                 'needs_proposals_development.json', 'needs_evidence_regressions.json'):
         assert data_path(name).is_file(), name
     assert json.loads(report_path('semantic_experiment.json').read_text())['test_evaluated'] is False
     with TestClient(create_app(model)) as client:
