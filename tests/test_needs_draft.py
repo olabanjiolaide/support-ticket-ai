@@ -52,11 +52,13 @@ class NeedsDraftTests(unittest.TestCase):
     def test_save_retry_is_idempotent_and_does_not_resurrect_a_reviewed_draft(self):
         first=self.save().json();again=self.save().json();self.assertEqual(first,again)
         self.assertEqual(self.client.get('/requests').json()['total'],1)
+        self.assertTrue(self.client.get('/requests').json()['items'][0]['needs_review_pending'])
         result=self.client.post(f"/requests/{first['id']}/needs-review",json={'version':1,'actor':'Reviewer','review':align_plan(TEXT,generated())})
         self.assertEqual(result.status_code,200,result.text)
         reviewed=result.json();self.assertIsNone(reviewed['needs_draft'])
         self.assertIn('unreviewed_needs_draft',reviewed['history'][-1]['before'])
         self.assertEqual(self.save().json(),reviewed)
+        self.assertFalse(self.client.get('/requests').json()['items'][0]['needs_review_pending'])
         changed=draft();changed['proposed']['groups'][0]['title']='A changed proposal'
         self.assertEqual(self.save(changed).status_code,409)
 

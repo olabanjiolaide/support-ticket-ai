@@ -40,26 +40,39 @@ async def check(base,out):
         identifier=page.url.split('#request/')[1]
         await expect(saved.locator('[data-stage="saved"]')).to_contain_text('Unreviewed draft saved')
         await expect(saved.locator('.proposal-need')).to_have_count(2)
+        # Category confirmation must not imply that the needs draft was reviewed.
+        await page.locator('#reviewer-name').fill('Workflow reviewer')
+        await page.locator('#review-category').select_option('ORDER')
+        await page.locator('#confirm-review').click()
+        await expect(page.locator('#request-detail-content')).to_contain_text('Category reviewed · needs review pending')
+        listing=await (await page.request.get(base+'/requests')).json()
+        assert listing['items'][0]['needs_review_pending'] is True
         record=await (await page.request.get(base+'/requests/'+identifier)).json()
-        assert record['need_review'] is None and record['review_state']=='pending' and record['needs_draft']['editable'] is None
+        assert record['need_review'] is None and record['review_state']=='reviewed' and record['needs_draft']['editable'] is None
         await page.reload();await expect(saved.locator('.proposal-need')).to_have_count(2)
-        await saved.get_by_role('button',name='Use as editable draft',exact=True).click()
+        await saved.get_by_role('button',name='Adopt proposals for review',exact=True).click()
         await expect(saved.locator('.customer-need')).to_have_count(2)
         await expect(saved.locator('[data-stage="saved"]')).to_contain_text('Unsaved changes')
         await expect(saved.locator('[data-stage="reviewed"]')).to_contain_text('Confirmation required')
         await saved.get_by_role('button',name='Save grouped review',exact=True).click()
         await expect(saved).to_contain_text('Confirm that you reviewed the model draft')
+        await saved.get_by_role('button',name='Inspect and confirm needs',exact=True).click()
+        await expect(saved.get_by_label('I reviewed the proposed evidence, roles, categories and relationships against the complete message.')).to_be_focused()
+        await expect(saved.get_by_label('I reviewed the proposed evidence, roles, categories and relationships against the complete message.')).not_to_be_checked()
         await page.locator('#reviewer-name').fill('Handoff reviewer')
         await saved.get_by_label('I reviewed the proposed evidence, roles, categories and relationships against the complete message.').check()
         await expect(saved.locator('[data-stage="reviewed"]')).to_contain_text('Ready for explicit save')
+        await expect(saved.get_by_role('button',name='Save reviewed needs',exact=True)).to_be_visible()
         await saved.locator('.customer-need').first.get_by_label('Customer need / goal').fill('Find the requested order number')
         await expect(saved.get_by_label('I reviewed the proposed evidence, roles, categories and relationships against the complete message.')).not_to_be_checked()
         await saved.get_by_label('I reviewed the proposed evidence, roles, categories and relationships against the complete message.').check()
-        await saved.get_by_role('button',name='Save grouped review',exact=True).click()
+        await saved.get_by_role('button',name='Save reviewed needs',exact=True).click()
         await expect(saved.locator('[data-stage="saved"]')).to_contain_text('Human review saved')
         record=await (await page.request.get(base+'/requests/'+identifier)).json()
         assert record['needs_draft'] is None and record['need_review'] is not None
-        assert record['confirmed_category'] is None and record['status']=='open' and record['prediction'] is None
+        assert record['confirmed_category']=='ORDER' and record['status']=='open' and record['prediction'] is None
+        listing=await (await page.request.get(base+'/requests')).json()
+        assert listing['items'][0]['needs_review_pending'] is False
         # A checked confirmation in New request is never carried over as a reviewed database decision.
         await page.goto(base+'/#new');await page.locator('#ticket').fill(text)
         await page.locator('#generate-needs-shortcut').click();await expect(draft).to_contain_text('Proposal ready.')

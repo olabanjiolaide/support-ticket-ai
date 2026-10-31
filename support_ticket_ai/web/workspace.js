@@ -10,7 +10,7 @@ const element = (tag, text = '', className = '') => {
 const shortId = (id) => `REQ-${id.slice(0, 8).toUpperCase()}`;
 const date = (value) => new Date(value).toLocaleString();
 const statusLabel = (r) => r.status === 'resolved' ? 'Resolved' : r.status === 'in_progress' ? 'In progress'
-  : r.status === 'needs_clarification' ? 'Needs clarification' : r.review_state === 'reviewed' ? 'Ready to handle' : 'Awaiting review';
+  : r.status === 'needs_clarification' ? 'Needs clarification' : r.review_state === 'reviewed' ? (r.needs_draft || r.needs_review_pending ? 'Category reviewed · needs review pending' : 'Category reviewed') : 'Awaiting review';
 const titles = {new: 'New request', requests: 'All requests', review: 'Review queue', 'in-progress': 'In progress', resolved: 'Resolved requests', overview: 'Overview'};
 const actionLabels = {created: 'Request saved', review: 'Category reviewed', clarify: 'Clarification needed', start: 'Handling started', resolve: 'Request resolved', reopen: 'Reopened for review', note: 'Note added', needs_review: 'Customer needs reviewed', need_progress:'Individual need updated'};
 
@@ -290,7 +290,7 @@ export function initWorkspace({getDraft, setSaving, onSaved}) {
     try {
       const data = await api('/requests/overview');
       if (sequence !== overviewSequence || route !== 'overview') return;
-      const metrics = [['Saved requests',data.total,'requests'],['Pending review',data.pending_review,'review'],['Ready to handle',data.ready_to_handle,'requests'],['In progress',data.by_status.in_progress,'in-progress'],['Resolved',data.by_status.resolved,'resolved'],['Needs clarification',data.by_status.needs_clarification,'review']];
+      const metrics = [['Saved requests',data.total,'requests'],['Pending review',data.pending_review,'review'],['Category reviewed · open',data.ready_to_handle,'requests'],['In progress',data.by_status.in_progress,'in-progress'],['Resolved',data.by_status.resolved,'resolved'],['Needs clarification',data.by_status.needs_clarification,'review']];
       byId('overview-metrics').replaceChildren(...metrics.map(([label,count,target]) => {
         const card = element('a', '', 'card metric-card'); card.href = `#${target}`;
         card.append(element('span', label), element('strong', String(count))); return card;

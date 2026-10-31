@@ -206,8 +206,9 @@ class RequestStore:
             # A read transaction keeps total and page consistent during writes.
             db.execute('BEGIN')
             total = db.execute('SELECT COUNT(*) FROM requests' + where, parameters).fetchone()[0]
-            rows = db.execute('SELECT * FROM requests' + where + ' ORDER BY created_at DESC,id DESC LIMIT ? OFFSET ?', parameters + [limit, offset])
-            return {'items': [self.record(row) for row in rows], 'total': total, 'limit': limit, 'offset': offset}
+            rows = db.execute('SELECT *, EXISTS(SELECT 1 FROM request_needs_drafts d WHERE d.request_id=requests.id) AS needs_review_pending FROM requests' + where + ' ORDER BY created_at DESC,id DESC LIMIT ? OFFSET ?', parameters + [limit, offset])
+            items = [{**self.record(row), 'needs_review_pending': bool(row['needs_review_pending'])} for row in rows]
+            return {'items': items, 'total': total, 'limit': limit, 'offset': offset}
 
     def change(self, request_id, *, version, action, actor, note='', category=None):
         if not actor.strip() or len(actor) > 80 or len(note) > 2000:

@@ -60,7 +60,7 @@ export function initProposals(host,getSource,onAdopt,onReady=()=>{},onState=()=>
       for (const relation of review.relations) result.append(el('p',`Relationship hypothesis: ${relation.source} ${relation.kind} ${relation.target}. ${relation.note}`));
       if (review.clarification) result.append(el('p','Proposed clarification: '+review.clarification));
       const identity=el('details');identity.append(el('summary','Proposal identity'),el('pre',JSON.stringify(data.restored_draft?{saved_unreviewed_draft:true}:{model:data.model,model_digest:data.model_digest,prompt_version:data.prompt_version,prompt_sha256:data.prompt_sha256,source_sha256:data.source_sha256},null,2)));result.append(identity);
-      const adopt=el('button','Use as editable draft');adopt.type='button';adopt.className='secondary-button';
+      const adopt=el('button','Use as editable draft');adopt.type='button';adopt.className='primary-button proposal-adopt';
       result.append(el('p','This replaces unsaved grouping choices in this tab. It does not save, route or resolve the request.'),adopt);
       adopt.addEventListener('click',()=>{if(sequence!==token || sourceKey()!==key)return;onAdopt(structuredClone(review));});
       onReady(structuredClone(review));
@@ -102,5 +102,5 @@ export function initProposals(host,getSource,onAdopt,onReady=()=>{},onState=()=>
   retry.addEventListener('click',()=>generate.click());
   copy.addEventListener('click',async()=>{if(!lastError)return;try{await navigator.clipboard.writeText(JSON.stringify(lastError,null,2));feedback.textContent='Error details copied. Customer message and generated text are not included.';}catch{feedback.textContent='Copy was unavailable. Select the visible error details to copy them.';}});
   refresh.addEventListener('click',check);check();
-  return {reset,restore:(review)=>renderProposal({review,restored_draft:true}),isBusy:()=>controller!==null,generate:()=>{host.scrollIntoView({block:'center',behavior:'instant'});if(available){generate.focus();generate.click();}else{host.querySelector('.proposal-setup').open=true;refresh.focus();feedback.textContent='Check the local model configuration before generating a proposal.';}}};
+  return {adopt:()=>host.querySelector('.proposal-adopt')?.click(),reset,restore:(review)=>renderProposal({review,restored_draft:true}),isBusy:()=>controller!==null,generate:()=>{host.scrollIntoView({block:'center',behavior:'instant'});if(available){generate.focus();generate.click();}else{host.querySelector('.proposal-setup').open=true;refresh.focus();feedback.textContent='Check the local model configuration before generating a proposal.';}}};
 }

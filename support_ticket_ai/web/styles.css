@@ -572,3 +572,16 @@ body[data-density="compact"] .customer-needs, body[data-density="compact"] .brea
 @media print { .needs-workflow,.needs-workflow li { background: white !important; color: #111; break-inside: avoid; } .breakdown-details { break-inside: auto !important; } .breakdown-parts { display: block; } .breakdown-part { margin-bottom: 10px; } }
 
 @media print { .evidence-empty-hint[hidden],.breakdown-details[hidden] { display: none !important; } }
+
+/* Keep the next review action visible without confirming anything automatically. */
+.workflow-next { margin-top: 10px; min-height: 44px; white-space: normal; }
+@media(max-width:600px) { .workflow-next { width: 100%; } }
+@media print {
+ .breakdown-card,.proposal-panel,.detail-card,.breakdown-details,.customer-needs,.need-relations { break-inside: auto !important; }
+ .breakdown-details > summary,h2,h3,h4 { break-after: avoid; }
+ .breakdown-card,.proposal-panel,.detail-card { padding: 8px !important; margin-bottom: 10px !important; }
+ .breakdown-part,.customer-need,.proposal-need { padding: 8px !important; }
+ .needs-workflow { padding: 10px; margin: 10px 0; }
+ .needs-workflow li { padding: 7px; }
+ p { orphans: 2; widows: 2; }
+}

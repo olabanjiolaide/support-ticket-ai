@@ -37,7 +37,8 @@ export function initBreakdown(host, getSource, stageNote = null, persistence = n
   const workflowTitle=el('h3','Analysis to saved review'), stages=el('ol'), workflowMessage=el('p','','technical-note');workflowMessage.setAttribute('role','status');
   const stageValues={};
   for(const [name,label] of [['proposed','Proposed'],['adopted','Editable draft'],['reviewed','Human review'],['saved','Saved']]){const item=el('li');item.dataset.stage=name;const value=el('span');stageValues[name]=value;item.append(el('strong',label),value);stages.append(item);}
-  workflow.append(workflowTitle,stages,workflowMessage);
+  const workflowAction=el('button','Review next step','primary-button workflow-next');workflowAction.type='button';
+  workflow.append(workflowTitle,stages,workflowMessage,workflowAction);
   const compact = el('p', 'No customer needs grouped yet.', 'need-summary'); compact.setAttribute('role','status');
   const reviewProgress=el('div','','review-progress');reviewProgress.hidden=true;reviewProgress.setAttribute('role','progressbar');reviewProgress.setAttribute('aria-label','Interpretation selection progress');reviewProgress.setAttribute('aria-valuemin','0');
   const progressFill=el('span');reviewProgress.append(progressFill);
@@ -425,7 +426,19 @@ export function initBreakdown(host, getSource, stageNote = null, persistence = n
     stageValues.adopted.textContent=groups.length?`${groups.length} editable need(s)${proposalAdopted?' · adopted':''}`:proposedReview?'Awaiting adoption':'No editable needs';
     stageValues.reviewed.textContent=savedReview?'Confirmed':valid?'Ready for explicit save':(modelDraft || pendingTransfer)?'Confirmation required':'Review incomplete';
     stageValues.saved.textContent=extraProposal?'Review saved · proposal unsaved':savedReview?'Human review saved':savedDraft?'Unreviewed draft saved':savedReviewFingerprint || savedDraftFingerprint?'Unsaved changes':'Not saved';
-    workflowMessage.textContent=extraProposal?'Your existing human review is saved. The new proposal is temporary until explicitly adopted and reviewed.':savedReview?'Your human review is saved. Classification and handling remain separate.':savedDraft?'The request retains this unreviewed analysis. Adopt and review it, then explicitly save the human review.':proposedReview && !proposalAdopted?'Next: Use as editable draft. Saving the request preserves these proposals without confirming them.':draft?'Review the editable needs. Saving a request carries the draft forward; Save grouped review records the human decision.':'Generate proposals or break down the message to begin.';
+    workflowMessage.textContent=extraProposal?'Your existing human review is saved. The new proposal is temporary until explicitly adopted and reviewed.':savedReview?'Your human review is saved. Classification and handling remain separate.':savedDraft?(proposalAdopted?'Your editable needs draft is saved but unreviewed. Inspect the evidence, confirm your review, then explicitly save the reviewed needs.':'The request retains this unreviewed analysis. Review the editable needs or adopt the proposals, then explicitly save the human review.'):proposedReview && !proposalAdopted?'Next: Use as editable draft. Saving the request preserves these proposals without confirming them.':draft?'Review the editable needs. Saving a request carries the draft forward; Save grouped review records the human decision.':'Generate proposals or break down the message to begin.';
+    const awaitingAdoption=Boolean(proposedReview && !proposalAdopted && !savedReview && !groups.length);
+    const needsConfirmation=Boolean((modelDraft || pendingTransfer) && !confirmed.checked);
+    workflowAction.hidden=Boolean(savedReview);
+    workflowAction.disabled=lockedControls!==null || proposalsUI.isBusy() || host.getAttribute('aria-busy')==='true';
+    workflowAction.textContent=awaitingAdoption?'Adopt proposals for review':!draft?'Start AI needs analysis':valid && persistence?'Save reviewed needs':needsConfirmation && !records.some(r=>r.role.value==='unconfirmed')?'Inspect and confirm needs':'Continue needs review';
+    workflowAction.onclick=()=>{
+      if(awaitingAdoption){proposalsUI.adopt();return;}
+      if(!draft){proposalsUI.generate();return;}
+      if(valid && persistence){saveGroups.click();return;}
+      nextButton.click();
+    };
+    if(awaitingAdoption)workflowMessage.textContent='Next: adopt the proposals to populate the editable needs. Then inspect, confirm and save the review. Adoption replaces editable grouping choices; it does not save or resolve the request.';
     document.dispatchEvent(new Event('draft-controls-changed'));
   }
   function interpretationChanged(event){
