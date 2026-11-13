@@ -4,7 +4,7 @@ The reported order-number/refund example failed the exact-copy generator with `e
 
 We compared three designs: improve the copying prompt, assign numbered source fragments, or select finer source ranges. Numbered fragments remove text copying from the model's task while retaining the existing evidence and human-review contracts. Range selection remains a future comparison; this release does not implement it.
 
-## Default behavior: prompt version 3
+## Numbered evidence behavior (introduced with prompt version 3)
 
 Python creates at most 24 ordered excerpts using punctuation and selected English coordination boundaries. The original message and each numbered excerpt are supplied to the local model as untrusted data. The model returns a role and need assignment for every fragment ID. It does not supply evidence text or offsets.
 
@@ -24,7 +24,7 @@ The regression sentence is split before `and also`, preserving its spelling and 
 
 The ordinary serve command now uses numbered fragments by default. To explicitly select the old generator for comparison, add `--proposal-evidence-mode excerpts`. Use `--proposal-evidence-mode fragments` for the new generator. Both use the same installed model; the word/semantic category selector does not change the proposal model.
 
-The evidence-regressions suite contains three provisional authored cases: the reported coordination/spelling example, a Unicode variant and two ORDER goals with different targets. It does not use the paused private review pilot or protected test data.
+The original evidence-regressions suite contained three provisional authored cases: the reported coordination/spelling example, a Unicode variant and two ORDER goals with different targets. It does not use the paused private review pilot or protected test data.
 
 Run both commands from the project directory in the working environment, preferably while no other proposal is running:
 
@@ -42,3 +42,7 @@ These reused cases are a debugging comparison, not independent evidence of gener
 Unit tests exercise exact spelling, Unicode offsets, repeated text, the fragment limit, ID coverage failures, forbidden model text/offset fields, unchanged relationship checks, bounded recovery, safe API errors, mode identities and all three authored regression plans. Mocked model responses exercise contracts, not Qwen accuracy. Browser checks use authored responses to verify proposal presentation and the existing explicit adoption/review/save behavior.
 
 Live Qwen generation was not run in the implementation workspace because Ollama was unavailable. No live accuracy or speed improvement is claimed. Run the comparison above before concluding that this change improves proposal quality for the installed model.
+
+## Subsequent interpretation update
+
+v0.26.0 defaults to fragment prompt version 4 and expands the regression suite to eight cases. See [Current needs and useful clarification](49-current-needs-and-clarification.md) for the observed semantic failure, limitations and reproducible version-3/version-4 comparison. The evidence adapter is unchanged.

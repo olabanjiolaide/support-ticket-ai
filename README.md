@@ -157,3 +157,7 @@ Use the sticky section navigation, compact spacing option, mobile workspace menu
 Review workflow decisions and validation: [Review-first optimization](docs/47-review-first-optimization.md).
 
 Local proposals now use [numbered original evidence](docs/48-numbered-proposal-evidence.md), with the exact-copy generator retained for comparison.
+
+### Current needs and clarification
+
+Version 0.26.0 uses fragment prompt version 4 to distinguish current requests from historical background and avoid asking customers for the answer they requested. This is an instruction change awaiting live-model comparison, not verified accuracy improvement. See [the comparison and limitations](docs/49-current-needs-and-clarification.md).

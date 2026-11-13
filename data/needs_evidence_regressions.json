@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "authored_on": "2026-10-31",
-  "purpose": "Authored regressions informed by a reported failure; reused development cases, not independent ground truth or live-model measurements.",
+  "purpose": "Authored development regressions, including a reported prompt-v3 semantic failure; reused cases, not independent ground truth or live-model measurements.",
   "manual_review_pilot_used": false,
   "locked_test_used": false,
   "cases": [
@@ -106,6 +106,137 @@
         "relations": [],
         "clarification": ""
       }
+    },
+    {
+      "id": "historical-cancel-current-refund",
+      "text": "My order was cancelled. Please check my refund.",
+      "expected_plan": {
+        "segments": [
+          {
+            "text": "My order was cancelled.",
+            "role": "context",
+            "group_id": "need-1"
+          },
+          {
+            "text": "Please check my refund.",
+            "role": "request",
+            "group_id": "need-1"
+          }
+        ],
+        "groups": [
+          {
+            "id": "need-1",
+            "title": "Check refund status",
+            "category": "REFUND",
+            "kind": "goal"
+          }
+        ],
+        "relations": [],
+        "clarification": ""
+      }
+    },
+    {
+      "id": "negated-refund-current-order",
+      "text": "Do not refund my order. Find its order number.",
+      "expected_plan": {
+        "segments": [
+          {
+            "text": "Do not refund my order.",
+            "role": "negated",
+            "group_id": null
+          },
+          {
+            "text": "Find its order number.",
+            "role": "request",
+            "group_id": "need-1"
+          }
+        ],
+        "groups": [
+          {
+            "id": "need-1",
+            "title": "Retrieve order number",
+            "category": "ORDER",
+            "kind": "goal"
+          }
+        ],
+        "relations": [],
+        "clarification": ""
+      }
+    },
+    {
+      "id": "conditional-refund",
+      "text": "If delivery fails, refund the purchase.",
+      "expected_plan": {
+        "segments": [
+          {
+            "text": "If delivery fails, refund the purchase.",
+            "role": "conditional",
+            "group_id": "need-1"
+          }
+        ],
+        "groups": [
+          {
+            "id": "need-1",
+            "title": "Conditional refund",
+            "category": "REFUND",
+            "kind": "goal"
+          }
+        ],
+        "relations": [],
+        "clarification": "The refund is conditional on delivery failure."
+      }
+    },
+    {
+      "id": "resolved-refund-current-order",
+      "text": "My refund arrived yesterday. Please find my order number.",
+      "expected_plan": {
+        "segments": [
+          {
+            "text": "My refund arrived yesterday.",
+            "role": "resolved",
+            "group_id": null
+          },
+          {
+            "text": "Please find my order number.",
+            "role": "request",
+            "group_id": "need-1"
+          }
+        ],
+        "groups": [
+          {
+            "id": "need-1",
+            "title": "Retrieve order number",
+            "category": "ORDER",
+            "kind": "goal"
+          }
+        ],
+        "relations": [],
+        "clarification": ""
+      }
+    },
+    {
+      "id": "unclear-order-target",
+      "text": "Change the address on that one.",
+      "expected_plan": {
+        "segments": [
+          {
+            "text": "Change the address on that one.",
+            "role": "request",
+            "group_id": "need-1"
+          }
+        ],
+        "groups": [
+          {
+            "id": "need-1",
+            "title": "Change shipping address",
+            "category": "SHIPPING",
+            "kind": "goal"
+          }
+        ],
+        "relations": [],
+        "clarification": "Which order should have its address changed?"
+      }
     }
-  ]
+  ],
+  "revision": "2026-11-13"
 }

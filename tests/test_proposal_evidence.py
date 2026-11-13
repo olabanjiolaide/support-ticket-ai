@@ -103,7 +103,7 @@ class NumberedEvidenceTests(unittest.TestCase):
 
     def test_default_engine_uses_ids_and_original_server_text(self):
         engine=self.engine([referenced()]);result=engine.propose(TEXT)
-        self.assertEqual((result['evidence_mode'],result['prompt_version']),('fragments',3))
+        self.assertEqual((result['evidence_mode'],result['prompt_version']),('fragments',4))
         self.assertEqual(result['source_sha256'],hashlib.sha256(TEXT.encode()).hexdigest())
         self.assertEqual(result['review'],align_plan(TEXT,generated()))
         payload=json.loads(self.chats[0]['messages'][1]['content'])
@@ -126,7 +126,7 @@ class NumberedEvidenceTests(unittest.TestCase):
             client.app.state.proposer=engine
             result=client.post('/proposals',json={'text':TEXT})
         self.assertEqual(result.status_code,502)
-        self.assertEqual((result.json()['validation_code'],result.json()['prompt_version']),('fragment_coverage',3))
+        self.assertEqual((result.json()['validation_code'],result.json()['prompt_version']),('fragment_coverage',4))
         self.assertEqual(result.json()['evidence_mode'],'fragments')
         self.assertNotIn(TEXT,result.text)
         self.assertTrue(engine.slot.acquire(blocking=False));engine.slot.release()
@@ -140,3 +140,41 @@ class NumberedEvidenceTests(unittest.TestCase):
         text='Tell me my order number and refund status.'
         self.assertEqual(len(source_fragments(text)['fragments']),1)
         self.assertIn('not detected needs',source_fragments(text)['limitations'])
+
+    def test_reported_valid_but_incomplete_proposal_is_measured_as_a_missed_need(self):
+        from support_ticket_ai.proposal_metrics import compare
+        from support_ticket_ai.resources import data_path
+        case=json.loads(data_path('needs_evidence_regressions.json').read_text())['cases'][0]
+        bad=copy.deepcopy(case['expected_plan'])
+        bad['segments'][1].update(role='context',group_id='need-1')
+        bad['groups'].pop()
+        bad['clarification']='Please provide your order number and confirm if a refund has been processed for your cancelled order.'
+        actual=align_plan(REGRESSION,bad)
+        metrics=compare(align_plan(REGRESSION,case['expected_plan']),actual)
+        self.assertEqual(metrics['missed_needs'],1)
+        self.assertEqual(metrics['unexpected_clarification'],1)
+        self.assertFalse(metrics['category_set_match'])
+        # Structural acceptance must not be confused with semantic success or patched to a canned answer.
+        self.assertEqual(len(actual['groups']),1)
+
+    def test_prompt_comparison_uses_same_evidence_and_distinct_versioned_identity(self):
+        from support_ticket_ai.proposals import fragment_system, FRAGMENT_SYSTEM_V3
+        self.assertEqual(fragment_system(3),FRAGMENT_SYSTEM_V3)
+        self.assertNotEqual(prompt_sha256('fragments',3),prompt_sha256('fragments',4))
+        self.assertEqual(OllamaProposer('local',fragment_prompt_version=3).prompt_version,3)
+        with self.assertRaises(ValueError):OllamaProposer('local',fragment_prompt_version=9)
+        engine=self.engine([referenced()]);engine.prompt_version=3
+        old=engine.propose(TEXT)
+        old_payload=json.loads(self.chats[-1]['messages'][1]['content'])
+        old_system=self.chats[-1]['messages'][0]['content']
+        engine.prompt_version=4
+        new=engine.propose(TEXT)
+        new_payload=json.loads(self.chats[-1]['messages'][1]['content'])
+        new_system=self.chats[-1]['messages'][0]['content']
+        self.assertEqual(old_payload,new_payload)
+        self.assertNotEqual(old_system,new_system)
+        self.assertEqual((old['prompt_version'],new['prompt_version']),(3,4))
+        self.assertNotEqual(old['prompt_sha256'],new['prompt_sha256'])
+        self.assertEqual(old['review'],new['review'])  # Authored output, not live quality evidence.
+        self.assertIn('only the cancellation is historical',new_system)
+        self.assertIn('supply the answer they are requesting',new_system)

@@ -73,3 +73,16 @@ class ProposalMetricTests(unittest.TestCase):
         self.assertEqual(result['failed_responses'], 1)
         self.assertEqual(result['p95_elapsed_seconds_all_attempts'], 8)
         self.assertEqual(summarize([])['structural_success_rate'], None)
+
+    def test_clarification_presence_diagnostics_do_not_judge_wording(self):
+        expected=copy.deepcopy(self.plan);expected['clarification']=''
+        actual=copy.deepcopy(expected);actual['clarification']='Please supply the answer.'
+        result=compare(expected,actual)
+        self.assertEqual(result['unexpected_clarification'],1)
+        self.assertEqual(result['missing_clarification'],0)
+        self.assertEqual(compare(actual,expected)['missing_clarification'],1)
+        # Different nonempty questions cannot be judged by this presence-only proxy.
+        actual['clarification']='A different question'
+        self.assertEqual(compare(self.plan,actual)['unexpected_clarification'],0)
+        report=summarize([{'valid_structured_response':True,'metrics':result,'elapsed_seconds':1}])
+        self.assertEqual(report['valid_response_totals']['unexpected_clarification'],1)

@@ -80,6 +80,9 @@ def compare(expected, actual):
     return {
         # Retain original pilot fields for report consumers.
         'category_set_match': {g['category'] for g in eg} == {g['category'] for g in ag},
+        # Presence against authored reference only; wording/usefulness still needs inspection.
+        'unexpected_clarification': int(not expected.get('clarification', '').strip() and bool(actual.get('clarification', '').strip())),
+        'missing_clarification': int(bool(expected.get('clarification', '').strip()) and not actual.get('clarification', '').strip()),
         'need_count_match': len(eg) == len(ag),
         'non_whitespace_role_character_agreement': sum(er.get(i) == ar.get(i) for i in indices) / len(indices) if indices else 1.0,
         'relation_kind_set_match': {r['kind'] for r in expected.get('relations', [])} == {r['kind'] for r in actual.get('relations', [])},
@@ -100,7 +103,7 @@ def compare(expected, actual):
 def summarize(rows):
     valid = [row['metrics'] for row in rows if row['valid_structured_response']]
     times = sorted(row['elapsed_seconds'] for row in rows)
-    counts = ['expected_needs', 'proposed_needs', 'matched_needs', 'missed_needs', 'extra_needs',
+    counts = ['unexpected_clarification', 'missing_clarification', 'expected_needs', 'proposed_needs', 'matched_needs', 'missed_needs', 'extra_needs',
               'matched_category_errors', 'matched_kind_errors', 'negated_or_resolved_as_active_characters',
               'correct_relation_edges', 'missing_relation_edges', 'extra_relation_edges', 'matched_relation_evidence_errors']
     return {'attempted': len(rows), 'valid_structured_responses': len(valid),
