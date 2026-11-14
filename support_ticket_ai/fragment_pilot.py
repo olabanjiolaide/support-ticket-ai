@@ -6,7 +6,7 @@ from pathlib import Path
 from time import monotonic, perf_counter
 import httpx
 from .proposal_evidence import source_fragments
-from .staged_proposals import StagedProposer, MeaningPlan, ROLE_SYSTEM
+from .staged_proposals import StagedProposer, MeaningPlan, ROLE_SYSTEM, FOCUSED_ROLE_SYSTEM
 from .proposals import ProposalFailure, align_plan
 from .resources import data_path
 from .version import __version__
@@ -50,13 +50,16 @@ def classify(engine, text):
 
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--role-prompt',choices=['baseline','focused'],default='baseline')
+    parser.add_argument('--suite',choices=['evidence-regressions','role-contrasts'],default='evidence-regressions')
     parser.add_argument('--model',required=True)
     parser.add_argument('--output',required=True,type=Path)
     args=parser.parse_args()
     if args.output.exists(): parser.error('Output already exists; choose another filename.')
-    raw=data_path('needs_evidence_regressions.json').read_bytes()
+    raw=data_path('needs_evidence_regressions.json' if args.suite == 'evidence-regressions' else 'needs_role_contrasts.json').read_bytes()
     fixture=json.loads(raw)
     engine=StagedProposer(args.model)
+    engine.role_system = ROLE_SYSTEM if args.role_prompt == 'baseline' else FOCUSED_ROLE_SYSTEM
     if not engine.status()['available']:
         print('Local model unavailable; no evaluation performed.');return 1
     rows=[]
@@ -80,8 +83,8 @@ def main():
     valid=[r for r in rows if r['valid_structured_response']]
     keys=['fragments','role_errors','expected_active_fragments','active_category_errors','active_demoted_to_background','excluded_promoted_to_active']
     report={'application_version':__version__,'model':engine.model,'interpretation_mode':'classification_only',
-            'live_model_evaluated':True,'fixture_sha256':hashlib.sha256(raw).hexdigest(),
-            'prompt_sha256':hashlib.sha256((ROLE_SYSTEM+json.dumps(MeaningPlan.model_json_schema(),sort_keys=True)).encode()).hexdigest(),
+            'role_prompt':args.role_prompt,'suite':args.suite,'live_model_evaluated':True,'fixture_sha256':hashlib.sha256(raw).hexdigest(),
+            'prompt_sha256':hashlib.sha256((engine.role_system+json.dumps(MeaningPlan.model_json_schema(),sort_keys=True)).encode()).hexdigest(),
             'limitations':'Reused authored development cases. No grouping, clarification or generalization evaluated. Error totals cover valid responses only; failures remain separate. Background category labels are not scored.',
             'summary':{'attempted':len(rows),'valid':len(valid),'failed':len(rows)-len(valid),'valid_response_totals':{k:sum(r['metrics'][k] for r in valid) for k in keys},'mean_elapsed_seconds_all_attempts':sum(r['elapsed_seconds'] for r in rows)/len(rows)},'cases':rows}
     args.output.parent.mkdir(parents=True,exist_ok=True)
