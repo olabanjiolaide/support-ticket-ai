@@ -56,7 +56,7 @@ class StagedProposer(OllamaProposer):
         super().__init__(model)
         self.prompt_version = 5
 
-    def generate_response(self, client, payload, schema, system, deadline):
+    def classify_response(self, client, payload, deadline):
         evidence = {'fragments': payload['source_fragments']}
         ids = [p['id'] for p in evidence['fragments']]
         first_schema = MeaningPlan.model_json_schema()
@@ -71,6 +71,12 @@ class StagedProposer(OllamaProposer):
             raise ProposalFailure('invalid_output', 'The classification pass failed validation.', validation_code='schema_invalid') from error
         if [p.fragment_id for p in meanings.fragments] != ids:
             raise ProposalFailure('invalid_output', 'The classification pass did not cover the source IDs.', validation_code='fragment_coverage')
+        return meanings
+
+    def generate_response(self, client, payload, schema, system, deadline):
+        evidence = {'fragments': payload['source_fragments']}
+        ids = [p['id'] for p in evidence['fragments']]
+        meanings = self.classify_response(client, payload, deadline)
         remaining = deadline - monotonic()
         if remaining <= 0:
             raise httpx.ReadTimeout('Shared generation time budget exceeded.')

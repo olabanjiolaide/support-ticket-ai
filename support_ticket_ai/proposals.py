@@ -370,7 +370,9 @@ class OllamaProposer:
                     'prompt_sha256':prompt_sha256(self.evidence_mode, self.fragment_prompt_version),'generation_attempts':attempt,'recovered_from_validation':recovery_code,
                     'review':document,
                     'validation':'Exact evidence coverage and structural consistency passed; meaning and relationships are not verified.'}
-        except ProposalFailure:
+        except ProposalFailure as error:
+            if error.attempts == 0:
+                error.attempts = attempt
             raise
         except httpx.TimeoutException as error:
             raise ProposalFailure('timeout','Local generation exceeded its time budget. Retry or use the manual breakdown.',504,attempts=attempt) from error
