@@ -265,6 +265,7 @@ class OllamaProposer:
         if evidence_mode not in {'fragments', 'excerpts'}:
             raise ValueError('Use fragments or excerpts evidence mode.')
         self.evidence_mode = evidence_mode
+        self.fragment_prompt_version = fragment_prompt_version
         fragment_system(fragment_prompt_version)  # Validate comparison option before model access.
         self.prompt_version = fragment_prompt_version if evidence_mode == 'fragments' else EXCERPT_PROMPT_VERSION
         if not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9_.:-]{0,99}', model) or 'cloud' in model.lower():
@@ -308,6 +309,14 @@ class OllamaProposer:
             return {'configured':True,'available':False,'model':self.model,
                     'detail':'Start local Ollama and install the configured local model.'}
 
+    def generate_response(self, client, payload, schema, system, deadline):
+        return self.read_json(client, '/api/chat', body={
+            'model': self.model, 'stream': False, 'format': schema,
+            'messages': [{'role': 'system', 'content': system + '\nJSON schema: ' + json.dumps(schema)},
+                         {'role': 'user', 'content': json.dumps(payload, ensure_ascii=False)}],
+            'options': {'temperature': 0, 'seed': 42, 'num_predict': 4096, 'num_ctx': 8192},
+            'keep_alive': '5m'}, deadline=deadline)
+
     def propose(self, text):
         if not self.slot.acquire(blocking=False):
             raise ProposalFailure('busy','A proposal is already running. Wait before trying again.',409)
@@ -318,7 +327,7 @@ class OllamaProposer:
                 before = self.digest(client,deadline=deadline)
                 evidence = source_fragments(text) if self.evidence_mode == 'fragments' else None
                 schema = fragment_schema(evidence) if evidence else GeneratedPlan.model_json_schema()
-                system = fragment_system(self.prompt_version) if evidence else SYSTEM
+                system = fragment_system(self.fragment_prompt_version) if evidence else SYSTEM
                 for attempt in (1, 2):
                     remaining = deadline - monotonic()
                     if remaining <= 0:
@@ -328,12 +337,7 @@ class OllamaProposer:
                     if evidence: payload['source_fragments'] = evidence['fragments']
                     if recovery_code:
                         payload['validation_retry'] = {'code':recovery_code,'hint':OUTPUT_HINTS[recovery_code]}
-                    response = self.read_json(client,'/api/chat',body={
-                        'model':self.model,'stream':False,'format':schema,
-                        'messages':[{'role':'system','content':system + '\nJSON schema: ' + json.dumps(schema)},
-                                    {'role':'user','content':json.dumps(payload,ensure_ascii=False)}],
-                        'options':{'temperature':0,'seed':42,'num_predict':4096,'num_ctx':8192},
-                        'keep_alive':'5m'}, deadline=deadline)
+                    response = self.generate_response(client, payload, schema, system, deadline)
                     if response.get('done') is not True or response.get('done_reason') != 'stop':
                         raise ProposalFailure('incomplete_generation','The local model did not finish a complete proposal. Manual review remains available.',attempts=attempt)
                     if response.get('model') != self.model:
@@ -363,7 +367,7 @@ class OllamaProposer:
             return {'status':'draft','requires_human_review':True,'source_sha256':hashlib.sha256(text.encode()).hexdigest(),
                     'model':self.model,'model_digest':before,'prompt_version':self.prompt_version,'evidence_mode':self.evidence_mode,
                     'evidence':evidence,
-                    'prompt_sha256':prompt_sha256(self.evidence_mode, self.prompt_version),'generation_attempts':attempt,'recovered_from_validation':recovery_code,
+                    'prompt_sha256':prompt_sha256(self.evidence_mode, self.fragment_prompt_version),'generation_attempts':attempt,'recovered_from_validation':recovery_code,
                     'review':document,
                     'validation':'Exact evidence coverage and structural consistency passed; meaning and relationships are not verified.'}
         except ProposalFailure:

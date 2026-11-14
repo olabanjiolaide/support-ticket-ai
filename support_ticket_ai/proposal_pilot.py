@@ -13,6 +13,7 @@ from .resources import data_path
 
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--interpretation-mode', choices=['single','staged'], default='single')
     parser.add_argument('--model',required=True)
     parser.add_argument('--output',type=Path,required=True)
     parser.add_argument('--limit',type=int)
@@ -23,12 +24,17 @@ def main():
     args=parser.parse_args()
     if args.evidence_mode != 'fragments' and args.fragment_prompt_version != PROMPT_VERSION:
         parser.error('--fragment-prompt-version applies only to fragments evidence mode.')
+    if args.interpretation_mode == 'staged' and (args.evidence_mode != 'fragments' or args.fragment_prompt_version != 4):
+        parser.error('Staged comparison requires fragments and baseline prompt version 4.')
     fixture_name = 'needs_proposals_development.json' if args.suite == 'development' else 'needs_evidence_regressions.json'
     fixture_bytes=data_path(fixture_name).read_bytes()
     fixture=json.loads(fixture_bytes)
     if args.limit is None: args.limit=len(fixture['cases'])
     if not 1 <= args.limit <= len(fixture['cases']): parser.error('Limit must be within the selected development suite.')
     proposer=OllamaProposer(args.model,evidence_mode=args.evidence_mode, fragment_prompt_version=args.fragment_prompt_version)
+    if args.interpretation_mode == 'staged':
+        from .staged_proposals import StagedProposer
+        proposer = StagedProposer(args.model)
     status=proposer.status()
     if not status['available']:
         print('Local proposal model is unavailable. No evaluation was performed.')
@@ -46,7 +52,7 @@ def main():
     report={'live_model_evaluated':True,'evaluation_scope':'Authored development cases only; no independent generalization claim.',
             'manual_review_pilot_used':False,'locked_test_used':False,'model':status['model'],
             'application_version':__version__,'model_digest':status.get('model_digest'),
-            'evidence_mode':args.evidence_mode,'suite':args.suite,'prompt_version':proposer.prompt_version,
+            'interpretation_mode':args.interpretation_mode,'evidence_mode':args.evidence_mode,'suite':args.suite,'prompt_version':proposer.prompt_version,
             'fixture_sha256':hashlib.sha256(fixture_bytes).hexdigest(),'metric_version':3,'matching_rule':'One-to-one active evidence character IoU >= 0.5; category and kind errors checked after matching.',
             'metric_limitations':'Evidence overlap is a proxy, not proof of semantic equivalence. Clarification presence is compared with authored expectations only; wording, usefulness and relationship evidence correctness require human inspection.',
             'summary':summarize(rows),'attempted':len(rows),'valid_structured_responses':sum(row['valid_structured_response'] for row in rows),'cases':rows}

@@ -163,11 +163,11 @@ class NumberedEvidenceTests(unittest.TestCase):
         self.assertNotEqual(prompt_sha256('fragments',3),prompt_sha256('fragments',4))
         self.assertEqual(OllamaProposer('local',fragment_prompt_version=3).prompt_version,3)
         with self.assertRaises(ValueError):OllamaProposer('local',fragment_prompt_version=9)
-        engine=self.engine([referenced()]);engine.prompt_version=3
+        engine=self.engine([referenced()]);engine.prompt_version=3;engine.fragment_prompt_version=3
         old=engine.propose(TEXT)
         old_payload=json.loads(self.chats[-1]['messages'][1]['content'])
         old_system=self.chats[-1]['messages'][0]['content']
-        engine.prompt_version=4
+        engine.prompt_version=4;engine.fragment_prompt_version=4
         new=engine.propose(TEXT)
         new_payload=json.loads(self.chats[-1]['messages'][1]['content'])
         new_system=self.chats[-1]['messages'][0]['content']
