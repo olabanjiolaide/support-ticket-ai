@@ -68,10 +68,13 @@ class MeaningPlan(Strict):
 
 
 class StagedProposer(OllamaProposer):
-    def __init__(self, model):
+    def __init__(self, model, *, role_prompt="baseline"):
         super().__init__(model)
         self.prompt_version = 5
-        self.role_system = ROLE_SYSTEM
+        if role_prompt not in {"baseline", "focused"}:
+            raise ValueError("Use baseline or focused role prompt.")
+        self.role_prompt = role_prompt
+        self.role_system = ROLE_SYSTEM if role_prompt == "baseline" else FOCUSED_ROLE_SYSTEM
 
     def classify_response(self, client, payload, deadline):
         evidence = {'fragments': payload['source_fragments']}
@@ -118,6 +121,6 @@ class StagedProposer(OllamaProposer):
 
     def propose(self, text):
         result = super().propose(text)
-        result.update(prompt_version=5, interpretation_mode='staged',
+        result.update(prompt_version=5, interpretation_mode='staged', role_prompt=self.role_prompt,
                       prompt_sha256=hashlib.sha256((self.role_system + GROUP_SYSTEM + json.dumps(MeaningPlan.model_json_schema(),sort_keys=True) + result['prompt_sha256']).encode()).hexdigest())
         return result

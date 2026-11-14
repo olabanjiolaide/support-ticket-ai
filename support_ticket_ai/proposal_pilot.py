@@ -14,19 +14,23 @@ from .resources import data_path
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--interpretation-mode', choices=['single','staged'], default='single')
+    parser.add_argument('--role-prompt',choices=['baseline','focused'],default='baseline',help='First-pass role definitions for staged mode only.')
     parser.add_argument('--model',required=True)
     parser.add_argument('--output',type=Path,required=True)
     parser.add_argument('--limit',type=int)
     parser.add_argument('--evidence-mode',choices=['fragments','excerpts'],default='fragments')
     parser.add_argument('--fragment-prompt-version', type=int, choices=[3, 4], default=PROMPT_VERSION,
                         help='Compare interpretation prompts on the same numbered evidence; fragments mode only.')
-    parser.add_argument('--suite',choices=['development','evidence-regressions'],default='development')
+    parser.add_argument('--suite',choices=['development','evidence-regressions','role-contrasts'],default='development')
     args=parser.parse_args()
+    if args.role_prompt != 'baseline' and args.interpretation_mode != 'staged':
+        parser.error('--role-prompt focused requires staged interpretation mode.')
+    if args.output.exists(): parser.error('Output already exists; choose another filename.')
     if args.evidence_mode != 'fragments' and args.fragment_prompt_version != PROMPT_VERSION:
         parser.error('--fragment-prompt-version applies only to fragments evidence mode.')
     if args.interpretation_mode == 'staged' and (args.evidence_mode != 'fragments' or args.fragment_prompt_version != 4):
         parser.error('Staged comparison requires fragments and baseline prompt version 4.')
-    fixture_name = 'needs_proposals_development.json' if args.suite == 'development' else 'needs_evidence_regressions.json'
+    fixture_name = {'development':'needs_proposals_development.json','evidence-regressions':'needs_evidence_regressions.json','role-contrasts':'needs_role_contrasts.json'}[args.suite]
     fixture_bytes=data_path(fixture_name).read_bytes()
     fixture=json.loads(fixture_bytes)
     if args.limit is None: args.limit=len(fixture['cases'])
@@ -34,7 +38,7 @@ def main():
     proposer=OllamaProposer(args.model,evidence_mode=args.evidence_mode, fragment_prompt_version=args.fragment_prompt_version)
     if args.interpretation_mode == 'staged':
         from .staged_proposals import StagedProposer
-        proposer = StagedProposer(args.model)
+        proposer = StagedProposer(args.model,role_prompt=args.role_prompt)
     status=proposer.status()
     if not status['available']:
         print('Local proposal model is unavailable. No evaluation was performed.')
@@ -52,12 +56,13 @@ def main():
     report={'live_model_evaluated':True,'evaluation_scope':'Authored development cases only; no independent generalization claim.',
             'manual_review_pilot_used':False,'locked_test_used':False,'model':status['model'],
             'application_version':__version__,'model_digest':status.get('model_digest'),
-            'interpretation_mode':args.interpretation_mode,'evidence_mode':args.evidence_mode,'suite':args.suite,'prompt_version':proposer.prompt_version,
+            'role_prompt':args.role_prompt if args.interpretation_mode == 'staged' else None,'interpretation_mode':args.interpretation_mode,'evidence_mode':args.evidence_mode,'suite':args.suite,'prompt_version':proposer.prompt_version,
             'fixture_sha256':hashlib.sha256(fixture_bytes).hexdigest(),'metric_version':3,'matching_rule':'One-to-one active evidence character IoU >= 0.5; category and kind errors checked after matching.',
             'metric_limitations':'Evidence overlap is a proxy, not proof of semantic equivalence. Clarification presence is compared with authored expectations only; wording, usefulness and relationship evidence correctness require human inspection.',
             'summary':summarize(rows),'attempted':len(rows),'valid_structured_responses':sum(row['valid_structured_response'] for row in rows),'cases':rows}
     args.output.parent.mkdir(parents=True,exist_ok=True)
-    args.output.write_text(json.dumps(report,indent=2)+'\n')
+    with args.output.open('x') as output:
+        output.write(json.dumps(report,indent=2)+'\n')
     print('Saved development pilot. Valid evidence does not establish correct meaning.')
     return 0
 
