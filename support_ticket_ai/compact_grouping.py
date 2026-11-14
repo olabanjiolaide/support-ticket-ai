@@ -61,7 +61,9 @@ def expand_memberships(meanings, generated):
         if member.group_id is not None and member.group_id not in ids:
             raise ProposalFailure('invalid_output','Membership references an unknown need.',validation_code='unknown_need')
         if meaning.role in ACTIVE and member.group_id is None:
-            raise ProposalFailure('invalid_output','An active classified fragment is unassigned.',validation_code='unassigned_need')
+            error=ProposalFailure('invalid_output','An active classified fragment is unassigned.',validation_code='unassigned_need')
+            error.diagnostics={'stage':'membership_validation','fragment_id':meaning.fragment_id,'classified_role':meaning.role,'classified_category':meaning.category}
+            raise error
     groups=[]
     for group in plan.groups:
         active=[meaning for meaning,member in zip(meanings.fragments,plan.memberships) if member.group_id==group.id and meaning.role in ACTIVE]
@@ -81,23 +83,32 @@ class CompactStagedProposer(StagedProposer):
         super().__init__(model,role_prompt=role_prompt)
         self.prompt_version=6
 
-    def generate_response(self,client,payload,schema,system,deadline):
-        meanings=self.classify_response(client,payload,deadline)
+    grouping_system = COMPACT_SYSTEM
+
+    def membership_schema(self,meanings):
         ids=[p.fragment_id for p in meanings.fragments]
         compact_schema=MembershipPlan.model_json_schema()
         compact_schema['$defs']['Membership']['properties']['fragment_id']['enum']=ids
         compact_schema['properties']['memberships'].update(minItems=len(ids),maxItems=len(ids))
+        return compact_schema
+
+    def expand_response(self,meanings,raw):
+        return expand_memberships(meanings,raw)
+
+    def generate_response(self,client,payload,schema,system,deadline):
+        meanings=self.classify_response(client,payload,deadline)
+        compact_schema=self.membership_schema(meanings)
         remaining=deadline-monotonic()
         if remaining<=0:raise httpx.ReadTimeout('Shared generation budget exceeded.')
         client.timeout=httpx.Timeout(remaining,connect=min(3,remaining))
-        second=OllamaProposer.generate_response(self,client,{**payload,'fragment_classifications':meanings.model_dump(mode='json')['fragments']},compact_schema,COMPACT_SYSTEM,deadline)
+        second=OllamaProposer.generate_response(self,client,{**payload,'fragment_classifications':meanings.model_dump(mode='json')['fragments']},compact_schema,self.grouping_system,deadline)
         if second.get('model')!=self.model or second.get('done') is not True or second.get('done_reason')!='stop':
             raise ProposalFailure('incomplete_generation','Membership pass did not finish with the configured model.')
         try:
             raw=json.loads(second['message']['content'])
         except (KeyError,ValueError,TypeError) as error:
             raise ProposalFailure('invalid_output','Membership response was not JSON.',validation_code='invalid_json') from error
-        expanded=expand_memberships(meanings,raw)
+        expanded=self.expand_response(meanings,raw)
         return {**second,'message':{'content':json.dumps(expanded)}}
 
     def propose(self,text):

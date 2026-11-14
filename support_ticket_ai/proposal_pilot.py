@@ -14,7 +14,7 @@ from .resources import data_path
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--interpretation-mode', choices=['single','staged'], default='single')
-    parser.add_argument('--grouping-contract',choices=['full','memberships'],default='full')
+    parser.add_argument('--grouping-contract',choices=['full','memberships','constrained'],default='full')
     parser.add_argument('--role-prompt',choices=['baseline','focused'],default='baseline',help='First-pass role definitions for staged mode only.')
     parser.add_argument('--model',required=True)
     parser.add_argument('--output',type=Path,required=True)
@@ -41,7 +41,10 @@ def main():
     proposer=OllamaProposer(args.model,evidence_mode=args.evidence_mode, fragment_prompt_version=args.fragment_prompt_version)
     if args.interpretation_mode == 'staged':
         from .staged_proposals import StagedProposer
-        if args.grouping_contract == 'memberships':
+        if args.grouping_contract == 'constrained':
+            from .constrained_grouping import ConstrainedStagedProposer
+            proposer = ConstrainedStagedProposer(args.model,role_prompt=args.role_prompt)
+        elif args.grouping_contract == 'memberships':
             from .compact_grouping import CompactStagedProposer
             proposer = CompactStagedProposer(args.model,role_prompt=args.role_prompt)
         else:
@@ -58,7 +61,7 @@ def main():
             result=proposer.propose(case['text'])
             rows.append({'id':case['id'],'valid_structured_response':True,'metrics':compare(expected,result['review']), 'proposal':result,'elapsed_seconds':perf_counter()-started})
         except ProposalFailure as error:
-            rows.append({'id':case['id'],'valid_structured_response':False,'failure_code':error.code,'validation_code':error.validation_code,'generation_attempts':error.attempts,'metrics':None,'elapsed_seconds':perf_counter()-started})
+            rows.append({'id':case['id'],'valid_structured_response':False,'failure_code':error.code,'validation_code':error.validation_code,'generation_attempts':error.attempts,'diagnostics':getattr(error,'diagnostics',None),'metrics':None,'elapsed_seconds':perf_counter()-started})
         print(f"Completed {len(rows)}/{min(args.limit,len(fixture['cases']))}",flush=True)
     report={'live_model_evaluated':True,'evaluation_scope':'Authored development cases only; no independent generalization claim.',
             'manual_review_pilot_used':False,'locked_test_used':False,'model':status['model'],
