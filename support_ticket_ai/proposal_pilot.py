@@ -14,6 +14,7 @@ from .resources import data_path
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--interpretation-mode', choices=['single','staged'], default='single')
+    parser.add_argument('--grouping-contract',choices=['full','memberships'],default='full')
     parser.add_argument('--role-prompt',choices=['baseline','focused'],default='baseline',help='First-pass role definitions for staged mode only.')
     parser.add_argument('--model',required=True)
     parser.add_argument('--output',type=Path,required=True)
@@ -23,6 +24,8 @@ def main():
                         help='Compare interpretation prompts on the same numbered evidence; fragments mode only.')
     parser.add_argument('--suite',choices=['development','evidence-regressions','role-contrasts'],default='development')
     args=parser.parse_args()
+    if args.grouping_contract != 'full' and args.interpretation_mode != 'staged':
+        parser.error('Membership grouping requires staged interpretation mode.')
     if args.role_prompt != 'baseline' and args.interpretation_mode != 'staged':
         parser.error('--role-prompt focused requires staged interpretation mode.')
     if args.output.exists(): parser.error('Output already exists; choose another filename.')
@@ -38,7 +41,11 @@ def main():
     proposer=OllamaProposer(args.model,evidence_mode=args.evidence_mode, fragment_prompt_version=args.fragment_prompt_version)
     if args.interpretation_mode == 'staged':
         from .staged_proposals import StagedProposer
-        proposer = StagedProposer(args.model,role_prompt=args.role_prompt)
+        if args.grouping_contract == 'memberships':
+            from .compact_grouping import CompactStagedProposer
+            proposer = CompactStagedProposer(args.model,role_prompt=args.role_prompt)
+        else:
+            proposer = StagedProposer(args.model,role_prompt=args.role_prompt)
     status=proposer.status()
     if not status['available']:
         print('Local proposal model is unavailable. No evaluation was performed.')
@@ -56,7 +63,7 @@ def main():
     report={'live_model_evaluated':True,'evaluation_scope':'Authored development cases only; no independent generalization claim.',
             'manual_review_pilot_used':False,'locked_test_used':False,'model':status['model'],
             'application_version':__version__,'model_digest':status.get('model_digest'),
-            'role_prompt':args.role_prompt if args.interpretation_mode == 'staged' else None,'interpretation_mode':args.interpretation_mode,'evidence_mode':args.evidence_mode,'suite':args.suite,'prompt_version':proposer.prompt_version,
+            'grouping_contract':args.grouping_contract if args.interpretation_mode == 'staged' else None,'role_prompt':args.role_prompt if args.interpretation_mode == 'staged' else None,'interpretation_mode':args.interpretation_mode,'evidence_mode':args.evidence_mode,'suite':args.suite,'prompt_version':proposer.prompt_version,
             'fixture_sha256':hashlib.sha256(fixture_bytes).hexdigest(),'metric_version':3,'matching_rule':'One-to-one active evidence character IoU >= 0.5; category and kind errors checked after matching.',
             'metric_limitations':'Evidence overlap is a proxy, not proof of semantic equivalence. Clarification presence is compared with authored expectations only; wording, usefulness and relationship evidence correctness require human inspection.',
             'summary':summarize(rows),'attempted':len(rows),'valid_structured_responses':sum(row['valid_structured_response'] for row in rows),'cases':rows}
