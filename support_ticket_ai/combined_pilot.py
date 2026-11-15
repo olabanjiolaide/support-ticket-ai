@@ -7,7 +7,7 @@ from time import monotonic,perf_counter
 import httpx
 from .staged_proposals import StagedProposer,FOCUSED_ROLE_SYSTEM,MeaningPlan
 from .anchored_grouping import anchor_schema,expand_anchors,AnchorPlan
-from .clarification_pilot import decision_schema,validate_decision,ClarificationDecision,score as question_score
+from .clarification_pilot import CONSTRAINED_SYSTEM,decision_schema,validate_decision,ClarificationDecision,score as question_score
 from .proposal_evidence import source_fragments
 from .proposals import ProposalFailure,align_fragment_plan,align_plan,OllamaProposer,prompt_sha256
 from .proposal_metrics import compare,summarize
@@ -58,7 +58,8 @@ def preserve_conditions(meanings,evidence):
             for m in meanings.fragments if m.role=='conditional']
 
 
-def evaluate(engine,text):
+def evaluate(engine,text,question_contract="ask-only"):
+    if question_contract not in {'ask-only','reused-constrained'}:raise ValueError('Unknown question contract.')
     evidence=source_fragments(text);deadline=monotonic()+120;stage='classification';calls=0
     try:
         with httpx.Client(trust_env=False,timeout=httpx.Timeout(120,connect=3),follow_redirects=False) as client:
@@ -78,17 +79,22 @@ def evaluate(engine,text):
             expanded=expand_anchors(meanings,{**raw,'clarification':'\n'.join(required_notes)})
             review=align_fragment_plan(text,expanded)
             stage='question';schema=decision_schema(evidence,'constrained')
-            schema['anyOf']=[b for b in schema['anyOf'] if b['properties']['decision']['enum']!=['note']]
-            calls+=1;question=validate_decision(call(engine,client,payload,schema,QUESTION_SYSTEM,deadline),evidence)
-            if question['decision']=='note':
+            system=CONSTRAINED_SYSTEM if question_contract=='reused-constrained' else QUESTION_SYSTEM
+            if question_contract=='ask-only':
+                schema['anyOf']=[b for b in schema['anyOf'] if b['properties']['decision']['enum']!=['note']]
+            calls+=1;decision=validate_decision(call(engine,client,payload,schema,system,deadline),evidence)
+            if decision['decision']=='note' and question_contract=='ask-only':
                 raise ProposalFailure('invalid_output','Question pass cannot return a condition note.',validation_code='schema_invalid',attempts=1)
+            # A model note is retained for inspection, never used as a customer question
+            # or as replacement evidence for a classified condition.
+            question=decision if decision['decision']!='note' else {'decision':'none','reason':'none','evidence_parts':[],'text':''}
             review['clarification']='\n'.join(required_notes+([question['text']] if question['decision']=='ask' else []))
             remaining=deadline-monotonic()
             if remaining<=0:raise httpx.ReadTimeout('Shared time budget exceeded.')
             client.timeout=httpx.Timeout(min(3,remaining))
             if engine.digest(client,deadline=deadline)!=digest:
                 raise ProposalFailure('model_changed','Model changed during combined evaluation.',attempts=1)
-        return {'review':review,'question':question,'preserved_conditions':conditions,'model_digest':digest,
+        return {'review':review,'question':question,'clarification_decision':decision,'preserved_conditions':conditions,'model_digest':digest,
                 'generation_calls':calls,'requires_human_review':True}
     except ProposalFailure as error:
         error.attempts=1;error.diagnostics={**getattr(error,'diagnostics',{}),'combined_stage':stage,'generation_calls':calls};raise
@@ -102,6 +108,7 @@ def evaluate(engine,text):
 
 def main():
     parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--model',required=True);parser.add_argument('--output',required=True,type=Path)
+    parser.add_argument('--question-contract',choices=['ask-only','reused-constrained'],default='ask-only')
     args=parser.parse_args()
     if args.output.exists():parser.error('Output already exists; choose another filename.')
     raw=data_path('needs_role_contrasts.json').read_bytes();cases=json.loads(raw)['cases']
@@ -112,22 +119,24 @@ def main():
     for case in cases:
         started=perf_counter();row={'id':case['id']}
         try:
-            result=evaluate(engine,case['text']);expected=align_plan(case['text'],case['expected_plan'])
+            result=evaluate(engine,case['text'],args.question_contract);expected=align_plan(case['text'],case['expected_plan'])
             expected_question=dict(questions[case['id']])
             if expected_question['decision']=='note':expected_question={'decision':'none','reason':'none','evidence_parts':[]}
             expected_conditions={p['id'] for p in expected['parts'] if p['role']=='conditional'}
             actual_conditions={p['fragment_id'] for p in result['preserved_conditions']}
             row.update(valid_structured_response=True,proposal=result,metrics=compare(expected,result['review']),
                 question_metrics=question_score(expected_question,result['question']),
+                clarification_metrics=question_score(questions[case['id']],result['clarification_decision']),
                 condition_metrics={'missing':len(expected_conditions-actual_conditions),'extra':len(actual_conditions-expected_conditions)})
         except ProposalFailure as error:
             row.update(valid_structured_response=False,failure_code=error.code,validation_code=error.validation_code,diagnostics=getattr(error,'diagnostics',None),metrics=None)
         row['elapsed_seconds']=perf_counter()-started;rows.append(row);print(f'Completed {len(rows)}/{len(cases)}',flush=True)
     valid=[r for r in rows if r['valid_structured_response']]
-    report={'application_version':__version__,'model':engine.model,'evaluation_mode':'combined_conditions_questions','prompt_version':1,'live_model_evaluated':True,
-        'fixture_sha256':hashlib.sha256(raw).hexdigest(),'prompt_sha256':hashlib.sha256((FOCUSED_ROLE_SYSTEM+GROUP_SYSTEM+QUESTION_SYSTEM+json.dumps([MeaningPlan.model_json_schema(),AnchorPlan.model_json_schema(),ClarificationDecision.model_json_schema()],sort_keys=True)+prompt_sha256()).encode()).hexdigest(),
+    report={'application_version':__version__,'model':engine.model,'evaluation_mode':'combined_conditions_questions','prompt_version':2,'question_contract':args.question_contract,'live_model_evaluated':True,
+        'fixture_sha256':hashlib.sha256(raw).hexdigest(),'prompt_sha256':hashlib.sha256((FOCUSED_ROLE_SYSTEM+GROUP_SYSTEM+(CONSTRAINED_SYSTEM if args.question_contract=='reused-constrained' else QUESTION_SYSTEM)+args.question_contract+json.dumps([MeaningPlan.model_json_schema(),AnchorPlan.model_json_schema(),ClarificationDecision.model_json_schema()],sort_keys=True)+prompt_sha256()).encode()).hexdigest(),
         'limitations':'Reused authored development cases; no independent accuracy or UI evaluation. Conditions quote entire classified conditional fragments, not independently verified condition spans. First-pass role mistakes can omit conditions. Questions and notes require human review. Grouping metrics include legacy note presence, not wording quality.',
         'summary':summarize(rows),'question_totals_valid_only':{k:sum(r['question_metrics'][k] for r in valid) for k in ['decision_error','reason_error','unexpected_clarification','missing_clarification','evidence_id_set_error']},
+        'clarification_totals_valid_only':{k:sum(r['clarification_metrics'][k] for r in valid) for k in ['decision_error','reason_error','unexpected_clarification','missing_clarification','evidence_id_set_error']},
         'condition_totals_valid_only':{k:sum(r['condition_metrics'][k] for r in valid) for k in ['missing','extra']},'cases':rows}
     args.output.parent.mkdir(parents=True,exist_ok=True)
     with args.output.open('x') as f:json.dump(report,f,indent=2)

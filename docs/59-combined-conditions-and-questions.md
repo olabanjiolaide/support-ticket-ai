@@ -13,3 +13,18 @@ python -m support_ticket_ai.combined_pilot --model qwen2.5:7b --output artifacts
 The report has full grouping diagnostics, separate question-decision metrics, and missing/extra conditional-fragment counts. For question metrics only, the authored conditional note expectation becomes none; condition preservation is scored separately. Legacy grouping metrics still include presence of the compatibility note. Condition counts compare whole classified fragments, not fine-grained condition spans or correctness of condition interpretation. Question wording and useful group titles still require inspection.
 
 Failures retain their stage and attempted model-call count, and remain in the denominator. This reused 14-case development suite is not independent generalization evidence or a browser/save/review evaluation. Additional model calls can increase latency. Automated checks use authored responses to verify exact condition preservation despite a none decision, separation of questions, invalid note rejection and three-call composition. Live combined semantic quality is unverified until this local run.
+
+
+## Reusing the constrained clarification component (v0.37)
+
+The first combined live run returned 14 structurally valid results, preserved the one authored conditional case, and matched all 16 expected needs. Its custom question prompt nevertheless produced five unexpected questions, including invented either/or choices for simultaneous requests. These development results do not establish accuracy on new messages.
+
+Use the new explicit option to reuse CONSTRAINED_SYSTEM and the entire constrained none/ask/note schema from the standalone clarification pilot, unchanged:
+
+```bat
+python -m support_ticket_ai.combined_pilot --model qwen2.5:7b --question-contract reused-constrained --output artifacts/combined-7b-reused-constrained.json
+```
+
+The default ask-only option preserves the previous experiment. Both variants retain three model calls, the same grouping pass and source-based condition preservation. This comparison changes both the custom prompt and its ask-only schema back to the existing component; it does not isolate prompt wording alone.
+
+Reports retain the raw clarification_decision. An ask is also the customer question; a note is explicitly projected to an empty none question and is never appended to the review or used to create preserved_conditions. Raw clarification metrics score notes against the original authored expectations, so a hallucinated or missing note remains visible even when customer-question metrics omit notes. Preserved condition metrics still depend on first-pass labels. The report records the selected contract and its prompt hash. No server default changes. Live results for this option are pending; automated checks verify exact prompt/schema reuse and separation of model notes from source evidence.

@@ -7,14 +7,14 @@ from support_ticket_ai.staged_proposals import StagedProposer
 from support_ticket_ai.proposals import ProposalFailure
 
 class CombinedTests(unittest.TestCase):
-    def run_case(self,text,outputs):
+    def run_case(self,text,outputs,question_contract="ask-only"):
         original=httpx.Client;calls=[]
         def handler(request):
             if request.url.path=='/api/tags':return httpx.Response(200,json={'models':[{'name':'local:latest','digest':'a'*64,'details':{'format':'gguf'}}]})
             calls.append(json.loads(request.content))
             return httpx.Response(200,json={'model':'local:latest','done':True,'done_reason':'stop','message':{'content':json.dumps(outputs[len(calls)-1])}})
         with patch('support_ticket_ai.proposals.httpx.Client',side_effect=lambda **kw:original(transport=httpx.MockTransport(handler),**kw)):
-            result=evaluate(StagedProposer('local',role_prompt='focused'),text)
+            result=evaluate(StagedProposer('local',role_prompt='focused'),text,question_contract)
         return result,calls
 
     def test_condition_survives_none_question_without_model_invented_note(self):
@@ -45,3 +45,18 @@ class CombinedTests(unittest.TestCase):
         with self.assertRaises(ProposalFailure) as caught:self.run_case('Find my order number.',outputs)
         self.assertEqual(caught.exception.diagnostics['combined_stage'],'question')
         self.assertEqual(caught.exception.diagnostics['generation_calls'],3)
+
+    def test_reused_contract_retains_note_without_inventing_preserved_evidence(self):
+        from support_ticket_ai.clarification_pilot import CONSTRAINED_SYSTEM,decision_schema
+        from support_ticket_ai.proposal_evidence import source_fragments
+        text='Find my order number.'
+        outputs=[{'fragments':[{'fragment_id':'part-1','role':'request','category':'ORDER'}]},
+            {'groups':[{'anchor_fragment_id':'part-1','title':'Find order','fragment_ids':['part-1']}],'ungrouped':[]},
+            {'decision':'note','reason':'conditional_instruction','evidence_parts':['part-1'],'text':'Invented condition'}]
+        result,calls=self.run_case(text,outputs,'reused-constrained')
+        self.assertEqual(calls[2]['messages'][0]['content'],CONSTRAINED_SYSTEM+'\nJSON schema: '+json.dumps(decision_schema(source_fragments(text),'constrained')))
+        self.assertEqual(calls[2]['format'],decision_schema(source_fragments(text),'constrained'))
+        self.assertEqual(result['clarification_decision'],outputs[-1])
+        self.assertEqual(result['question']['decision'],'none')
+        self.assertEqual(result['preserved_conditions'],[])
+        self.assertEqual(result['review']['clarification'],'')
