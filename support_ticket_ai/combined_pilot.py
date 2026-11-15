@@ -109,10 +109,13 @@ def evaluate(engine,text,question_contract="ask-only"):
 def main():
     parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--model',required=True);parser.add_argument('--output',required=True,type=Path)
     parser.add_argument('--question-contract',choices=['ask-only','reused-constrained'],default='ask-only')
+    parser.add_argument('--suite',choices=['role-contrasts','frozen-followup'],default='role-contrasts')
     args=parser.parse_args()
     if args.output.exists():parser.error('Output already exists; choose another filename.')
-    raw=data_path('needs_role_contrasts.json').read_bytes();cases=json.loads(raw)['cases']
-    questions={c['id']:c['expected'] for c in json.loads(data_path('needs_clarification_development.json').read_bytes())['cases']}
+    fixture='needs_frozen_followup.json' if args.suite=='frozen-followup' else 'needs_role_contrasts.json'
+    raw=data_path(fixture).read_bytes();cases=json.loads(raw)['cases']
+    questions=({c['id']:c['expected_clarification'] for c in cases} if args.suite=='frozen-followup' else
+        {c['id']:c['expected'] for c in json.loads(data_path('needs_clarification_development.json').read_bytes())['cases']})
     engine=StagedProposer(args.model,role_prompt='focused')
     if not engine.status()['available']:print('Local model unavailable; no evaluation performed.');return 1
     rows=[]
@@ -133,8 +136,8 @@ def main():
         row['elapsed_seconds']=perf_counter()-started;rows.append(row);print(f'Completed {len(rows)}/{len(cases)}',flush=True)
     valid=[r for r in rows if r['valid_structured_response']]
     report={'application_version':__version__,'model':engine.model,'evaluation_mode':'combined_conditions_questions','prompt_version':2,'question_contract':args.question_contract,'live_model_evaluated':True,
-        'fixture_sha256':hashlib.sha256(raw).hexdigest(),'prompt_sha256':hashlib.sha256((FOCUSED_ROLE_SYSTEM+GROUP_SYSTEM+(CONSTRAINED_SYSTEM if args.question_contract=='reused-constrained' else QUESTION_SYSTEM)+args.question_contract+json.dumps([MeaningPlan.model_json_schema(),AnchorPlan.model_json_schema(),ClarificationDecision.model_json_schema()],sort_keys=True)+prompt_sha256()).encode()).hexdigest(),
-        'limitations':'Reused authored development cases; no independent accuracy or UI evaluation. Conditions quote entire classified conditional fragments, not independently verified condition spans. First-pass role mistakes can omit conditions. Questions and notes require human review. Grouping metrics include legacy note presence, not wording quality.',
+        'suite':args.suite,'fixture_sha256':hashlib.sha256(raw).hexdigest(),'prompt_sha256':hashlib.sha256((FOCUSED_ROLE_SYSTEM+GROUP_SYSTEM+(CONSTRAINED_SYSTEM if args.question_contract=='reused-constrained' else QUESTION_SYSTEM)+args.question_contract+json.dumps([MeaningPlan.model_json_schema(),AnchorPlan.model_json_schema(),ClarificationDecision.model_json_schema()],sort_keys=True)+prompt_sha256()).encode()).hexdigest(),
+        'limitations':'Authored development or follow-up cases; no independent accuracy or UI evaluation. Conditions quote entire classified conditional fragments, not independently verified condition spans. First-pass role mistakes can omit conditions. Questions and notes require human review. Grouping metrics include legacy note presence, not wording quality.',
         'summary':summarize(rows),'question_totals_valid_only':{k:sum(r['question_metrics'][k] for r in valid) for k in ['decision_error','reason_error','unexpected_clarification','missing_clarification','evidence_id_set_error']},
         'clarification_totals_valid_only':{k:sum(r['clarification_metrics'][k] for r in valid) for k in ['decision_error','reason_error','unexpected_clarification','missing_clarification','evidence_id_set_error']},
         'condition_totals_valid_only':{k:sum(r['condition_metrics'][k] for r in valid) for k in ['missing','extra']},'cases':rows}

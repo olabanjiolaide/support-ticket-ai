@@ -1,0 +1,377 @@
+{
+  "schema_version": 1,
+  "purpose": "Fresh authored follow-up cases with provisional labels fixed before observing live outputs. Prompt-informed by known failure families, not independent or representative test data. Do not tune prompts against this suite and continue calling it unseen.",
+  "cases": [
+    {
+      "id": "two-services",
+      "text": "Send the invoice for order K. Check the refund for order L.",
+      "expected_plan": {
+        "segments": [
+          {
+            "text": "Send the invoice for order K.",
+            "role": "request",
+            "group_id": "need-1"
+          },
+          {
+            "text": "Check the refund for order L.",
+            "role": "request",
+            "group_id": "need-2"
+          }
+        ],
+        "groups": [
+          {
+            "id": "need-1",
+            "title": "Send the invoice for order K.",
+            "category": "INVOICE",
+            "kind": "goal"
+          },
+          {
+            "id": "need-2",
+            "title": "Check the refund for order L.",
+            "category": "REFUND",
+            "kind": "goal"
+          }
+        ],
+        "relations": [],
+        "clarification": ""
+      },
+      "expected_clarification": {
+        "decision": "none",
+        "reason": "none",
+        "evidence_parts": []
+      }
+    },
+    {
+      "id": "two-order-targets",
+      "text": "Keep order J open. Cancel order K.",
+      "expected_plan": {
+        "segments": [
+          {
+            "text": "Keep order J open.",
+            "role": "request",
+            "group_id": "need-1"
+          },
+          {
+            "text": "Cancel order K.",
+            "role": "request",
+            "group_id": "need-2"
+          }
+        ],
+        "groups": [
+          {
+            "id": "need-1",
+            "title": "Keep order J open.",
+            "category": "ORDER",
+            "kind": "goal"
+          },
+          {
+            "id": "need-2",
+            "title": "Cancel order K.",
+            "category": "ORDER",
+            "kind": "goal"
+          }
+        ],
+        "relations": [],
+        "clarification": ""
+      },
+      "expected_clarification": {
+        "decision": "none",
+        "reason": "none",
+        "evidence_parts": []
+      }
+    },
+    {
+      "id": "refund-prohibited",
+      "text": "Never issue a refund for order H.",
+      "expected_plan": {
+        "segments": [
+          {
+            "text": "Never issue a refund for order H.",
+            "role": "negated",
+            "group_id": null
+          }
+        ],
+        "groups": [],
+        "relations": [],
+        "clarification": ""
+      },
+      "expected_clarification": {
+        "decision": "none",
+        "reason": "none",
+        "evidence_parts": []
+      }
+    },
+    {
+      "id": "access-obstacle",
+      "text": "The account login keeps failing.",
+      "expected_plan": {
+        "segments": [
+          {
+            "text": "The account login keeps failing.",
+            "role": "obstacle",
+            "group_id": "need-1"
+          }
+        ],
+        "groups": [
+          {
+            "id": "need-1",
+            "title": "The account login keeps failing.",
+            "category": "ACCOUNT",
+            "kind": "obstacle"
+          }
+        ],
+        "relations": [],
+        "clarification": ""
+      },
+      "expected_clarification": {
+        "decision": "none",
+        "reason": "none",
+        "evidence_parts": []
+      }
+    },
+    {
+      "id": "payment-obstacle",
+      "text": "My card payment failed twice.",
+      "expected_plan": {
+        "segments": [
+          {
+            "text": "My card payment failed twice.",
+            "role": "obstacle",
+            "group_id": "need-1"
+          }
+        ],
+        "groups": [
+          {
+            "id": "need-1",
+            "title": "My card payment failed twice.",
+            "category": "PAYMENT",
+            "kind": "obstacle"
+          }
+        ],
+        "relations": [],
+        "clarification": ""
+      },
+      "expected_clarification": {
+        "decision": "none",
+        "reason": "none",
+        "evidence_parts": []
+      }
+    },
+    {
+      "id": "completed-and-new",
+      "text": "The refund for order R arrived. Send the invoice for order S.",
+      "expected_plan": {
+        "segments": [
+          {
+            "text": "The refund for order R arrived.",
+            "role": "resolved",
+            "group_id": null
+          },
+          {
+            "text": "Send the invoice for order S.",
+            "role": "request",
+            "group_id": "need-1"
+          }
+        ],
+        "groups": [
+          {
+            "id": "need-1",
+            "title": "Send the invoice for order S.",
+            "category": "INVOICE",
+            "kind": "goal"
+          }
+        ],
+        "relations": [],
+        "clarification": ""
+      },
+      "expected_clarification": {
+        "decision": "none",
+        "reason": "none",
+        "evidence_parts": []
+      }
+    },
+    {
+      "id": "history-and-current",
+      "text": "Order M was cancelled yesterday. Track the refund for order M.",
+      "expected_plan": {
+        "segments": [
+          {
+            "text": "Order M was cancelled yesterday.",
+            "role": "context",
+            "group_id": "need-1"
+          },
+          {
+            "text": "Track the refund for order M.",
+            "role": "request",
+            "group_id": "need-1"
+          }
+        ],
+        "groups": [
+          {
+            "id": "need-1",
+            "title": "Track the refund for order M.",
+            "category": "REFUND",
+            "kind": "goal"
+          }
+        ],
+        "relations": [],
+        "clarification": ""
+      },
+      "expected_clarification": {
+        "decision": "none",
+        "reason": "none",
+        "evidence_parts": []
+      }
+    },
+    {
+      "id": "conditional-order",
+      "text": "If order P has not shipped, cancel order P.",
+      "expected_plan": {
+        "segments": [
+          {
+            "text": "If order P has not shipped, cancel order P.",
+            "role": "conditional",
+            "group_id": "need-1"
+          }
+        ],
+        "groups": [
+          {
+            "id": "need-1",
+            "title": "If order P has not shipped, cancel order P.",
+            "category": "ORDER",
+            "kind": "goal"
+          }
+        ],
+        "relations": [],
+        "clarification": "Review the stated choice or condition."
+      },
+      "expected_clarification": {
+        "decision": "note",
+        "reason": "conditional_instruction",
+        "evidence_parts": [
+          "part-1"
+        ]
+      }
+    },
+    {
+      "id": "conditional-refund-new",
+      "text": "Refund order W only if the parcel is returned.",
+      "expected_plan": {
+        "segments": [
+          {
+            "text": "Refund order W only if the parcel is returned.",
+            "role": "conditional",
+            "group_id": "need-1"
+          }
+        ],
+        "groups": [
+          {
+            "id": "need-1",
+            "title": "Refund order W only if the parcel is returned.",
+            "category": "REFUND",
+            "kind": "goal"
+          }
+        ],
+        "relations": [],
+        "clarification": "Review the stated choice or condition."
+      },
+      "expected_clarification": {
+        "decision": "note",
+        "reason": "conditional_instruction",
+        "evidence_parts": [
+          "part-1"
+        ]
+      }
+    },
+    {
+      "id": "action-choice",
+      "text": "Either cancel order Z or leave order Z active.",
+      "expected_plan": {
+        "segments": [
+          {
+            "text": "Either cancel order Z or leave order Z active.",
+            "role": "alternative",
+            "group_id": "need-1"
+          }
+        ],
+        "groups": [
+          {
+            "id": "need-1",
+            "title": "Either cancel order Z or leave order Z active.",
+            "category": "ORDER",
+            "kind": "goal"
+          }
+        ],
+        "relations": [],
+        "clarification": "Review the stated choice or condition."
+      },
+      "expected_clarification": {
+        "decision": "ask",
+        "reason": "alternative_choice",
+        "evidence_parts": [
+          "part-1"
+        ]
+      }
+    },
+    {
+      "id": "delivery-choice",
+      "text": "Should I change the delivery address or keep the current address?",
+      "expected_plan": {
+        "segments": [
+          {
+            "text": "Should I change the delivery address or keep the current address?",
+            "role": "alternative",
+            "group_id": "need-1"
+          }
+        ],
+        "groups": [
+          {
+            "id": "need-1",
+            "title": "Should I change the delivery address or keep the current address?",
+            "category": "SHIPPING",
+            "kind": "goal"
+          }
+        ],
+        "relations": [],
+        "clarification": "Review the stated choice or condition."
+      },
+      "expected_clarification": {
+        "decision": "ask",
+        "reason": "alternative_choice",
+        "evidence_parts": [
+          "part-1"
+        ]
+      }
+    },
+    {
+      "id": "unclear-referent",
+      "text": "Please change the delivery address for that order.",
+      "expected_plan": {
+        "segments": [
+          {
+            "text": "Please change the delivery address for that order.",
+            "role": "request",
+            "group_id": "need-1"
+          }
+        ],
+        "groups": [
+          {
+            "id": "need-1",
+            "title": "Please change the delivery address for that order.",
+            "category": "SHIPPING",
+            "kind": "goal"
+          }
+        ],
+        "relations": [],
+        "clarification": "Review the stated choice or condition."
+      },
+      "expected_clarification": {
+        "decision": "ask",
+        "reason": "ambiguous_target",
+        "evidence_parts": [
+          "part-1"
+        ]
+      }
+    }
+  ]
+}

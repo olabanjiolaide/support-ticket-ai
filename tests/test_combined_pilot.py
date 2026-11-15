@@ -60,3 +60,18 @@ class CombinedTests(unittest.TestCase):
         self.assertEqual(result['question']['decision'],'none')
         self.assertEqual(result['preserved_conditions'],[])
         self.assertEqual(result['review']['clarification'],'')
+
+    def test_followup_fixture_labels_align_and_inputs_are_new(self):
+        from support_ticket_ai.resources import data_path
+        from support_ticket_ai.proposals import align_plan
+        from support_ticket_ai.proposal_evidence import source_fragments
+        from support_ticket_ai.clarification_pilot import validate_decision
+        old=json.loads(data_path('needs_role_contrasts.json').read_bytes())['cases']
+        cases=json.loads(data_path('needs_frozen_followup.json').read_bytes())['cases']
+        self.assertEqual(len(cases),12)
+        self.assertEqual(len({c['id'] for c in cases}),len(cases))
+        self.assertFalse({c['text'] for c in old}&{c['text'] for c in cases})
+        for case in cases:
+            align_plan(case['text'],case['expected_plan'])
+            expected=case['expected_clarification']
+            validate_decision({**expected,'text':'Review this ambiguity or condition.' if expected['decision']!='none' else ''},source_fragments(case['text']))
