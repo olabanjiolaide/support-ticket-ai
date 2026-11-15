@@ -14,7 +14,7 @@ from .resources import data_path
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--interpretation-mode', choices=['single','staged'], default='single')
-    parser.add_argument('--grouping-contract',choices=['full','memberships','constrained'],default='full')
+    parser.add_argument('--grouping-contract',choices=['full','memberships','constrained','anchored'],default='full')
     parser.add_argument('--role-prompt',choices=['baseline','focused'],default='baseline',help='First-pass role definitions for staged mode only.')
     parser.add_argument('--model',required=True)
     parser.add_argument('--output',type=Path,required=True)
@@ -41,7 +41,10 @@ def main():
     proposer=OllamaProposer(args.model,evidence_mode=args.evidence_mode, fragment_prompt_version=args.fragment_prompt_version)
     if args.interpretation_mode == 'staged':
         from .staged_proposals import StagedProposer
-        if args.grouping_contract == 'constrained':
+        if args.grouping_contract == 'anchored':
+            from .anchored_grouping import AnchoredStagedProposer
+            proposer = AnchoredStagedProposer(args.model,role_prompt=args.role_prompt)
+        elif args.grouping_contract == 'constrained':
             from .constrained_grouping import ConstrainedStagedProposer
             proposer = ConstrainedStagedProposer(args.model,role_prompt=args.role_prompt)
         elif args.grouping_contract == 'memberships':
