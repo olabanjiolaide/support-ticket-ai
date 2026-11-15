@@ -1,0 +1,137 @@
+{
+  "purpose": "Provisional interpretation-only clarification labels on 14 reused development inputs; fulfilment information is out of scope. Not independent test data.",
+  "cases": [
+    {
+      "id": "order-number-and-refund-typo",
+      "text": "Please, what is my order number and also check if the refund had been made for my cancelled ordered.",
+      "expected": {
+        "decision": "none",
+        "reason": "none",
+        "evidence_parts": []
+      }
+    },
+    {
+      "id": "unicode-order-and-refund",
+      "text": "\ud83d\udc69\ud83c\udfff\u200d\ud83d\udcbb Please find my order number and also check my refund.",
+      "expected": {
+        "decision": "none",
+        "reason": "none",
+        "evidence_parts": []
+      }
+    },
+    {
+      "id": "same-category-different-targets",
+      "text": "Cancel order A. Keep order B.",
+      "expected": {
+        "decision": "none",
+        "reason": "none",
+        "evidence_parts": []
+      }
+    },
+    {
+      "id": "historical-cancel-current-refund",
+      "text": "My order was cancelled. Please check my refund.",
+      "expected": {
+        "decision": "none",
+        "reason": "none",
+        "evidence_parts": []
+      }
+    },
+    {
+      "id": "negated-refund-current-order",
+      "text": "Do not refund my order. Find its order number.",
+      "expected": {
+        "decision": "none",
+        "reason": "none",
+        "evidence_parts": []
+      }
+    },
+    {
+      "id": "conditional-refund",
+      "text": "If delivery fails, refund the purchase.",
+      "expected": {
+        "decision": "note",
+        "reason": "conditional_instruction",
+        "evidence_parts": [
+          "part-1"
+        ]
+      }
+    },
+    {
+      "id": "resolved-refund-current-order",
+      "text": "My refund arrived yesterday. Please find my order number.",
+      "expected": {
+        "decision": "none",
+        "reason": "none",
+        "evidence_parts": []
+      }
+    },
+    {
+      "id": "unclear-order-target",
+      "text": "Change the address on that one.",
+      "expected": {
+        "decision": "ask",
+        "reason": "ambiguous_target",
+        "evidence_parts": [
+          "part-1"
+        ]
+      }
+    },
+    {
+      "id": "negative-instruction",
+      "text": "Do not cancel order C.",
+      "expected": {
+        "decision": "none",
+        "reason": "none",
+        "evidence_parts": []
+      }
+    },
+    {
+      "id": "negative-access-problem",
+      "text": "I cannot log in.",
+      "expected": {
+        "decision": "none",
+        "reason": "none",
+        "evidence_parts": []
+      }
+    },
+    {
+      "id": "unresolved-refund-problem",
+      "text": "My refund has not arrived.",
+      "expected": {
+        "decision": "none",
+        "reason": "none",
+        "evidence_parts": []
+      }
+    },
+    {
+      "id": "simultaneous-targets",
+      "text": "Keep order C. Cancel order D.",
+      "expected": {
+        "decision": "none",
+        "reason": "none",
+        "evidence_parts": []
+      }
+    },
+    {
+      "id": "explicit-choice",
+      "text": "Either cancel order E or keep it active.",
+      "expected": {
+        "decision": "ask",
+        "reason": "alternative_choice",
+        "evidence_parts": [
+          "part-1"
+        ]
+      }
+    },
+    {
+      "id": "contracted-negative",
+      "text": "Please do not refund order D.",
+      "expected": {
+        "decision": "none",
+        "reason": "none",
+        "evidence_parts": []
+      }
+    }
+  ]
+}
