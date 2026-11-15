@@ -1,5 +1,6 @@
 """Isolated clarification decisions on authored development cases; no actions execute."""
 import argparse
+import copy
 import hashlib
 import json
 from pathlib import Path
@@ -31,6 +32,46 @@ Historical cancellation, a completed refund, a negated action and a reported obs
 not alone require clarification. Do not infer causal relationships or new customer needs.
 Use only evidence IDs supplied. Return JSON matching the schema. No tools or actions.'''
 
+CONSTRAINED_SYSTEM=SYSTEM + '''
+Decision distinctions:
+- "Find my order number and check my refund" requests BOTH outcomes. It is not an
+  alternative and does not require a priority question. Use none when both intents are clear.
+- "Cancel order A. Keep order B." is simultaneous, not an either/or choice.
+- A note requires an actual condition on an action. Negation, past events and sequential
+  sentences do not imply a condition. Do not relabel an ordinary request as conditional.
+- Ask only when the customer must choose or disambiguate the MEANING. For an explicit
+  either/or, name the offered options in the question. Do not merely copy a customer sentence.
+- No question or note is the normal outcome for a clear request. Do not populate evidence
+  or text for none. Do not invent uncertainty just to fill the schema.
+'''
+
+RULE_MESSAGES={
+    'none_payload': 'No clarification requires empty evidence/text and reason none.',
+    'missing_support': 'Questions/notes need nonblank text and distinct evidence IDs.',
+    'note_reason': 'Notes must identify conditional instructions.',
+    'ask_reason': 'Questions must identify an ambiguity.'}
+
+
+def decision_schema(evidence,contract='baseline'):
+    if contract not in {'baseline','constrained'}:raise ValueError('Unknown clarification contract.')
+    schema=ClarificationDecision.model_json_schema()
+    schema['properties']['evidence_parts']['items']['enum']=[p['id'] for p in evidence['fragments']]
+    if contract=='baseline':return schema
+    branches=[]
+    for decision,reasons in [('none',['none']),('ask',['ambiguous_target','alternative_choice','unclear_meaning']),('note',['conditional_instruction'])]:
+        branch=copy.deepcopy(schema)
+        branch['properties']['decision']['enum']=[decision]
+        branch['properties']['reason']['enum']=reasons
+        if decision=='none':
+            branch['properties']['evidence_parts']['maxItems']=0
+            branch['properties']['text']['maxLength']=0
+        else:
+            branch['properties']['evidence_parts'].update(minItems=1,uniqueItems=True)
+            branch['properties']['text'].update(minLength=1,pattern=r'\S')
+        branches.append(branch)
+    return {'anyOf':branches}
+
+
 class ClarificationDecision(Strict):
     decision: Literal['none','ask','note']
     reason: Literal['none','ambiguous_target','alternative_choice','unclear_meaning','conditional_instruction']
@@ -55,20 +96,27 @@ class ClarificationDecision(Strict):
 def validate_decision(raw,evidence):
     try:plan=ClarificationDecision.model_validate(raw)
     except ValidationError as error:
-        raise ProposalFailure('invalid_output','Clarification decision failed structure checks.',validation_code='schema_invalid',attempts=1) from error
+        failure=ProposalFailure('invalid_output','Clarification decision failed structure checks.',validation_code='schema_invalid',attempts=1)
+        rules=[]
+        for item in error.errors():
+            message=str(item.get('ctx',{}).get('error',''))
+            rule=next((key for key,value in RULE_MESSAGES.items() if message==value),'field_shape')
+            field=item.get('loc',())[0] if item.get('loc') else None
+            rules.append({'rule':rule,'field':field if field in {'decision','reason','evidence_parts','text'} else None})
+        failure.diagnostics={'stage':'clarification_validation','violations':rules[:8]}
+        raise failure from error
     if not set(plan.evidence_parts).issubset({p['id'] for p in evidence['fragments']}):
         raise ProposalFailure('invalid_output','Clarification refers to unknown evidence.',validation_code='fragment_coverage',attempts=1)
     return plan.model_dump(mode='json')
 
 
-def evaluate(engine,text):
+def evaluate(engine,text,contract="baseline"):
     evidence=source_fragments(text);deadline=monotonic()+120
     try:
         with httpx.Client(trust_env=False,timeout=httpx.Timeout(120,connect=3),follow_redirects=False) as client:
             digest=engine.digest(client,deadline=deadline)
-            schema=ClarificationDecision.model_json_schema()
-            schema['properties']['evidence_parts']['items']['enum']=[p['id'] for p in evidence['fragments']]
-            response=engine.generate_response(client,{'customer_message':text,'source_fragments':evidence['fragments']},schema,SYSTEM,deadline)
+            schema=decision_schema(evidence,contract)
+            response=engine.generate_response(client,{'customer_message':text,'source_fragments':evidence['fragments']},schema,SYSTEM if contract=="baseline" else CONSTRAINED_SYSTEM,deadline)
             if response.get('model')!=engine.model or response.get('done') is not True or response.get('done_reason')!='stop':
                 raise ProposalFailure('incomplete_generation','Clarification generation did not finish with the configured model.',attempts=1)
             plan=validate_decision(json.loads(response['message']['content']),evidence)
@@ -95,6 +143,7 @@ def score(expected,actual):
 
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--contract',choices=['baseline','constrained'],default='baseline')
     parser.add_argument('--model',required=True);parser.add_argument('--output',type=Path,required=True)
     args=parser.parse_args()
     if args.output.exists():parser.error('Output already exists; choose another filename.')
@@ -106,17 +155,17 @@ def main():
     for case in fixture['cases']:
         started=perf_counter();row={'id':case['id'],'expected':case['expected']}
         try:
-            result=evaluate(engine,case['text'])
+            result=evaluate(engine,case['text'],args.contract)
             row.update(valid_structured_response=True,result=result,metrics=score(case['expected'],result['decision']))
         except ProposalFailure as error:
-            row.update(valid_structured_response=False,failure_code=error.code,validation_code=error.validation_code,generation_attempts=error.attempts,metrics=None)
+            row.update(valid_structured_response=False,failure_code=error.code,validation_code=error.validation_code,generation_attempts=error.attempts,diagnostics=getattr(error,"diagnostics",None),metrics=None)
         row['elapsed_seconds']=perf_counter()-started;rows.append(row)
         print(f'Completed {len(rows)}/{len(fixture["cases"])}',flush=True)
     valid=[r for r in rows if r['valid_structured_response']]
     keys=['decision_error','reason_error','unexpected_clarification','missing_clarification','evidence_id_set_error']
-    report={'application_version':__version__,'model':engine.model,'evaluation_mode':'clarification_only','prompt_version':1,
+    report={'application_version':__version__,'model':engine.model,'evaluation_mode':'clarification_only','contract':args.contract,'prompt_version':1 if args.contract=='baseline' else 2,
         'live_model_evaluated':True,'fixture_sha256':hashlib.sha256(raw).hexdigest(),
-        'prompt_sha256':hashlib.sha256((SYSTEM+json.dumps(ClarificationDecision.model_json_schema(),sort_keys=True)).encode()).hexdigest(),
+        'prompt_sha256':hashlib.sha256(((SYSTEM if args.contract=='baseline' else CONSTRAINED_SYSTEM)+json.dumps(ClarificationDecision.model_json_schema() if args.contract=='baseline' else decision_schema({'fragments':[{'id':'source-specific'}]},'constrained'),sort_keys=True)).encode()).hexdigest(),
         'limitations':'Authored development cases reused from grouping experiments. No independent generalization, grouping or UI evaluation. Metrics compare provisional decisions/reasons/evidence IDs, not wording usefulness. Totals cover valid responses only; failures remain separate.',
         'summary':{'attempted':len(rows),'valid':len(valid),'failed':len(rows)-len(valid),'valid_response_totals':{k:sum(r['metrics'][k] for r in valid) for k in keys},'mean_elapsed_seconds_all_attempts':sum(r['elapsed_seconds'] for r in rows)/len(rows)},'cases':rows}
     args.output.parent.mkdir(parents=True,exist_ok=True)
