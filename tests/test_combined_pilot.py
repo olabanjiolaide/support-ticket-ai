@@ -75,3 +75,19 @@ class CombinedTests(unittest.TestCase):
             align_plan(case['text'],case['expected_plan'])
             expected=case['expected_clarification']
             validate_decision({**expected,'text':'Review this ambiguity or condition.' if expected['decision']!='none' else ''},source_fragments(case['text']))
+
+    def test_meaning_variant_changes_only_question_system_and_preserves_raw_wording(self):
+        from support_ticket_ai.combined_pilot import MEANING_FOCUSED_SYSTEM
+        outputs=[{'fragments':[{'fragment_id':'part-1','role':'request','category':'ORDER'}]},
+            {'groups':[{'anchor_fragment_id':'part-1','title':'Order choice','fragment_ids':['part-1']}],'ungrouped':[]},
+            {'decision':'ask','reason':'alternative_choice','evidence_parts':['part-1'],'text':'Which order should I cancel?'}]
+        text='Either cancel order Q or keep it active.'
+        baseline,old_calls=self.run_case(text,outputs,'reused-constrained')
+        result,new_calls=self.run_case(text,outputs,'meaning-focused')
+        self.assertEqual(new_calls[:2],old_calls[:2])
+        self.assertEqual(new_calls[2]['format'],old_calls[2]['format'])
+        self.assertEqual(new_calls[2]['messages'][1],old_calls[2]['messages'][1])
+        self.assertEqual(new_calls[2]['messages'][0]['content'],MEANING_FOCUSED_SYSTEM+'\nJSON schema: '+json.dumps(new_calls[2]['format']))
+        self.assertEqual(result['question'],outputs[-1])
+        self.assertEqual(result['review']['parts'][0]['role'],'request')
+        self.assertEqual(result,baseline)

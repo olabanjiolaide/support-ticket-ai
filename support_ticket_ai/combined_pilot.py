@@ -42,6 +42,11 @@ For an unresolved pronoun such as that one, ask which object is meant. Return on
 Do not generate notes or execute actions. Conditional evidence is preserved separately.'''
 
 
+MEANING_FOCUSED_SYSTEM=CONSTRAINED_SYSTEM+'\nAdditional interpretation and wording checks:\nFor an unresolved choice between actions on the same object, ask which action is wanted.\nKeep both stated alternatives in the question and retain their object. Do not turn an action\ninto an identifier or assume one alternative has already been selected. A known object\nidentifier does not need a which-object question just because its action is undecided.\nAn unresolved demonstrative reference (that order, that one, this item) needs an ambiguous_target\nquestion when the message supplies no uniquely identifying referent. Resolve references\nfrom the full message first; do not ask again when a stated identifier already resolves them.\nDistinguish missing meaning from details needed later to fulfill or troubleshoot a clear request.\nPreserve the existing rules for simultaneous requests, negation, history, obstacles and conditions.\nBefore returning ask, verify the wording resolves the stated ambiguity without adding an action,\nassuming a choice, or asking the customer to repeat information already provided.\n'
+QUESTION_SYSTEMS={'ask-only':QUESTION_SYSTEM,'reused-constrained':CONSTRAINED_SYSTEM,
+                  'meaning-focused':MEANING_FOCUSED_SYSTEM}
+
+
 def call(engine,client,payload,schema,system,deadline):
     remaining=deadline-monotonic()
     if remaining<=0:raise httpx.ReadTimeout('Shared time budget exceeded.')
@@ -59,7 +64,7 @@ def preserve_conditions(meanings,evidence):
 
 
 def evaluate(engine,text,question_contract="ask-only"):
-    if question_contract not in {'ask-only','reused-constrained'}:raise ValueError('Unknown question contract.')
+    if question_contract not in QUESTION_SYSTEMS:raise ValueError('Unknown question contract.')
     evidence=source_fragments(text);deadline=monotonic()+120;stage='classification';calls=0
     try:
         with httpx.Client(trust_env=False,timeout=httpx.Timeout(120,connect=3),follow_redirects=False) as client:
@@ -79,7 +84,7 @@ def evaluate(engine,text,question_contract="ask-only"):
             expanded=expand_anchors(meanings,{**raw,'clarification':'\n'.join(required_notes)})
             review=align_fragment_plan(text,expanded)
             stage='question';schema=decision_schema(evidence,'constrained')
-            system=CONSTRAINED_SYSTEM if question_contract=='reused-constrained' else QUESTION_SYSTEM
+            system=QUESTION_SYSTEMS[question_contract]
             if question_contract=='ask-only':
                 schema['anyOf']=[b for b in schema['anyOf'] if b['properties']['decision']['enum']!=['note']]
             calls+=1;decision=validate_decision(call(engine,client,payload,schema,system,deadline),evidence)
@@ -108,7 +113,7 @@ def evaluate(engine,text,question_contract="ask-only"):
 
 def main():
     parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--model',required=True);parser.add_argument('--output',required=True,type=Path)
-    parser.add_argument('--question-contract',choices=['ask-only','reused-constrained'],default='ask-only')
+    parser.add_argument('--question-contract',choices=list(QUESTION_SYSTEMS),default='ask-only')
     parser.add_argument('--suite',choices=['role-contrasts','frozen-followup'],default='role-contrasts')
     args=parser.parse_args()
     if args.output.exists():parser.error('Output already exists; choose another filename.')
@@ -135,8 +140,8 @@ def main():
             row.update(valid_structured_response=False,failure_code=error.code,validation_code=error.validation_code,diagnostics=getattr(error,'diagnostics',None),metrics=None)
         row['elapsed_seconds']=perf_counter()-started;rows.append(row);print(f'Completed {len(rows)}/{len(cases)}',flush=True)
     valid=[r for r in rows if r['valid_structured_response']]
-    report={'application_version':__version__,'model':engine.model,'evaluation_mode':'combined_conditions_questions','prompt_version':2,'question_contract':args.question_contract,'live_model_evaluated':True,
-        'suite':args.suite,'fixture_sha256':hashlib.sha256(raw).hexdigest(),'prompt_sha256':hashlib.sha256((FOCUSED_ROLE_SYSTEM+GROUP_SYSTEM+(CONSTRAINED_SYSTEM if args.question_contract=='reused-constrained' else QUESTION_SYSTEM)+args.question_contract+json.dumps([MeaningPlan.model_json_schema(),AnchorPlan.model_json_schema(),ClarificationDecision.model_json_schema()],sort_keys=True)+prompt_sha256()).encode()).hexdigest(),
+    report={'application_version':__version__,'model':engine.model,'evaluation_mode':'combined_conditions_questions','prompt_version':3 if args.question_contract=='meaning-focused' else 2,'question_contract':args.question_contract,'live_model_evaluated':True,
+        'suite':args.suite,'fixture_sha256':hashlib.sha256(raw).hexdigest(),'prompt_sha256':hashlib.sha256((FOCUSED_ROLE_SYSTEM+GROUP_SYSTEM+QUESTION_SYSTEMS[args.question_contract]+args.question_contract+json.dumps([MeaningPlan.model_json_schema(),AnchorPlan.model_json_schema(),ClarificationDecision.model_json_schema()],sort_keys=True)+prompt_sha256()).encode()).hexdigest(),
         'limitations':'Authored development or follow-up cases; no independent accuracy or UI evaluation. Conditions quote entire classified conditional fragments, not independently verified condition spans. First-pass role mistakes can omit conditions. Questions and notes require human review. Grouping metrics include legacy note presence, not wording quality.',
         'summary':summarize(rows),'question_totals_valid_only':{k:sum(r['question_metrics'][k] for r in valid) for k in ['decision_error','reason_error','unexpected_clarification','missing_clarification','evidence_id_set_error']},
         'clarification_totals_valid_only':{k:sum(r['clarification_metrics'][k] for r in valid) for k in ['decision_error','reason_error','unexpected_clarification','missing_clarification','evidence_id_set_error']},
