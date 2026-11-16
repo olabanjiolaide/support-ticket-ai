@@ -110,13 +110,13 @@ def validate_decision(raw,evidence):
     return plan.model_dump(mode='json')
 
 
-def evaluate(engine,text,contract="baseline"):
+def evaluate(engine,text,contract="baseline",*,system=None):
     evidence=source_fragments(text);deadline=monotonic()+120
     try:
         with httpx.Client(trust_env=False,timeout=httpx.Timeout(120,connect=3),follow_redirects=False) as client:
             digest=engine.digest(client,deadline=deadline)
             schema=decision_schema(evidence,contract)
-            response=engine.generate_response(client,{'customer_message':text,'source_fragments':evidence['fragments']},schema,SYSTEM if contract=="baseline" else CONSTRAINED_SYSTEM,deadline)
+            response=engine.generate_response(client,{'customer_message':text,'source_fragments':evidence['fragments']},schema,system if system is not None else (SYSTEM if contract=="baseline" else CONSTRAINED_SYSTEM),deadline)
             if response.get('model')!=engine.model or response.get('done') is not True or response.get('done_reason')!='stop':
                 raise ProposalFailure('incomplete_generation','Clarification generation did not finish with the configured model.',attempts=1)
             plan=validate_decision(json.loads(response['message']['content']),evidence)
